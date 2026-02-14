@@ -1,0 +1,600 @@
+
+mysql> show databases;
++--------------------------------+
+| Database                       |
++--------------------------------+
+| information_schema             |
+| mysql                          |
+| mysql_practice_and_training    |
+| performance_schema             |
+| praticing_all_queries_commands |
+| sys                            |
++--------------------------------+
+6 rows in set (0.16 sec)
+
+mysql> use mysql_practice_and_training;
+Database changed
+mysql> show tables;
++---------------------------------------+
+| Tables_in_mysql_practice_and_training |
++---------------------------------------+
+| students                              |
++---------------------------------------+
+1 row in set (0.03 sec)
+
+mysql> desc students;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| id         | int          | YES  |     | NULL    |       |
+| name       | varchar(200) | YES  |     | NULL    |       |
+| age        | int          | YES  |     | NULL    |       |
+| class      | varchar(100) | YES  |     | NULL    |       |
+| percentage | decimal(5,2) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+5 rows in set (0.02 sec)
+
+mysql> select * from students;
++------+------+------+-------+------------+
+| id   | name | age  | class | percentage |
++------+------+------+-------+------------+
+|    1 | abc  |   18 | 11th  |      85.50 |
+|    2 | mno  |   17 | 11th  |      75.50 |
+|    2 | mno  |   17 | 11th  |      75.50 |
+|    3 | pqr  |   18 | 11th  |      78.00 |
+|    4 | xyz  |   18 | 11th  |      72.30 |
+|    5 | asdf |   18 | 11th  |      70.40 |
+|    6 | mhd  |   17 | 11th  |      66.45 |
+|    7 | ytf  |   17 | 11th  |      80.00 |
+|    8 | ghj  |   18 | 11th  |      77.80 |
+|    9 | mjgf |   17 | 11th  |      84.67 |
+|   10 | mno  |   18 | 11th  |      85.10 |
++------+------+------+-------+------------+
+11 rows in set (0.03 sec)
+
+mysql> delete from students where id = 10;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from students;
++------+------+------+-------+------------+
+| id   | name | age  | class | percentage |
++------+------+------+-------+------------+
+|    1 | abc  |   18 | 11th  |      85.50 |
+|    2 | mno  |   17 | 11th  |      75.50 |
+|    2 | mno  |   17 | 11th  |      75.50 |
+|    3 | pqr  |   18 | 11th  |      78.00 |
+|    4 | xyz  |   18 | 11th  |      72.30 |
+|    5 | asdf |   18 | 11th  |      70.40 |
+|    6 | mhd  |   17 | 11th  |      66.45 |
+|    7 | ytf  |   17 | 11th  |      80.00 |
+|    8 | ghj  |   18 | 11th  |      77.80 |
+|    9 | mjgf |   17 | 11th  |      84.67 |
++------+------+------+-------+------------+
+10 rows in set (0.00 sec)
+
+mysql> insert into students values(10, 'ejf', 18, '11th', 85.33);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from students;
++------+------+------+-------+------------+
+| id   | name | age  | class | percentage |
++------+------+------+-------+------------+
+|    1 | abc  |   18 | 11th  |      85.50 |
+|    2 | mno  |   17 | 11th  |      75.50 |
+|    2 | mno  |   17 | 11th  |      75.50 |
+|    3 | pqr  |   18 | 11th  |      78.00 |
+|    4 | xyz  |   18 | 11th  |      72.30 |
+|    5 | asdf |   18 | 11th  |      70.40 |
+|    6 | mhd  |   17 | 11th  |      66.45 |
+|    7 | ytf  |   17 | 11th  |      80.00 |
+|    8 | ghj  |   18 | 11th  |      77.80 |
+|    9 | mjgf |   17 | 11th  |      84.67 |
+|   10 | ejf  |   18 | 11th  |      85.33 |
++------+------+------+-------+------------+
+11 rows in set (0.00 sec)
+
+mysql> update students set name='Omkar' where id = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from students;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | Omkar |   18 | 11th  |      85.50 |
+|    2 | mno   |   17 | 11th  |      75.50 |
+|    2 | mno   |   17 | 11th  |      75.50 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   17 | 11th  |      66.45 |
+|    7 | ytf   |   17 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   17 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
++------+-------+------+-------+------------+
+11 rows in set (0.00 sec)
+
+mysql> update students set name='absds' where id = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from students;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | absds |   18 | 11th  |      85.50 |
+|    2 | mno   |   17 | 11th  |      75.50 |
+|    2 | mno   |   17 | 11th  |      75.50 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   17 | 11th  |      66.45 |
+|    7 | ytf   |   17 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   17 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
++------+-------+------+-------+------------+
+11 rows in set (0.00 sec)
+
+mysql> update table students set name='hkldl' where id = 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table students set name='hkldl' where id = 1' at line 1
+mysql> update students set name='hkldl' where id = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from students;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | hkldl |   18 | 11th  |      85.50 |
+|    2 | mno   |   17 | 11th  |      75.50 |
+|    2 | mno   |   17 | 11th  |      75.50 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   17 | 11th  |      66.45 |
+|    7 | ytf   |   17 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   17 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
++------+-------+------+-------+------------+
+11 rows in set (0.00 sec)
+
+mysql> select name, percentage from students;
++-------+------------+
+| name  | percentage |
++-------+------------+
+| hkldl |      85.50 |
+| mno   |      75.50 |
+| mno   |      75.50 |
+| pqr   |      78.00 |
+| xyz   |      72.30 |
+| asdf  |      70.40 |
+| mhd   |      66.45 |
+| ytf   |      80.00 |
+| ghj   |      77.80 |
+| mjgf  |      84.67 |
+| ejf   |      85.33 |
++-------+------------+
+11 rows in set (0.00 sec)
+
+mysql> update students set name = 'lskjf' where id = 2;
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> update students set name = 'lskjf' and percentage = 72.44 where id = 2;
+ERROR 1292 (22007): Truncated incorrect DOUBLE value: 'lskjf'
+mysql> update students set percentage = 72.44 where id = 2;
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from students;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | hkldl |   18 | 11th  |      85.50 |
+|    2 | lskjf |   17 | 11th  |      72.44 |
+|    2 | lskjf |   17 | 11th  |      72.44 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   17 | 11th  |      66.45 |
+|    7 | ytf   |   17 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   17 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
++------+-------+------+-------+------------+
+11 rows in set (0.00 sec)
+
+mysql> delete from students where age=(select age from students desc limit 0,1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc limit 0,1)' at line 1
+mysql> delete from students where age=(select age from students order bydesc limit 0,1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'bydesc limit 0,1)' at line 1
+mysql> delete from students where age=(select age from students order by desc limit 0,1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc limit 0,1)' at line 1
+mysql> delete from students where age=(select age from students order by desc limit 1,0);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc limit 1,0)' at line 1
+mysql> delete from students where age=(select age from students order by desc limit 1
+    -> //
+    -> ^C
+mysql> delete from students where age=(select age from students order by desc limit 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc limit 1' at line 1
+mysql> select age from students order by desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc' at line 1
+mysql> select age from students order by desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc' at line 1
+mysql> select age from students order by asc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'asc' at line 1
+mysql> select age from students order by age desc;
++------+
+| age  |
++------+
+|   18 |
+|   18 |
+|   18 |
+|   18 |
+|   18 |
+|   18 |
+|   17 |
+|   17 |
+|   17 |
+|   17 |
+|   17 |
++------+
+11 rows in set (0.01 sec)
+
+mysql> delete from students where age=(select age from students order by age desc limit 1);
+ERROR 1093 (HY000): You can't specify target table 'students' for update in FROM clause
+mysql> delete from students where age=(select min(id) having age=17 );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from students;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | hkldl |   18 | 11th  |      85.50 |
+|    2 | lskjf |   17 | 11th  |      72.44 |
+|    2 | lskjf |   17 | 11th  |      72.44 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   17 | 11th  |      66.45 |
+|    7 | ytf   |   17 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   17 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
++------+-------+------+-------+------------+
+11 rows in set (0.00 sec)
+
+mysql> delete from students where id=2;
+Query OK, 2 rows affected (0.01 sec)
+
+mysql> select * from students;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | hkldl |   18 | 11th  |      85.50 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   17 | 11th  |      66.45 |
+|    7 | ytf   |   17 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   17 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
++------+-------+------+-------+------------+
+9 rows in set (0.00 sec)
+
+mysql> insert into students values(2,'lkjhf',17,'11th',34.90);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from students;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | hkldl |   18 | 11th  |      85.50 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   17 | 11th  |      66.45 |
+|    7 | ytf   |   17 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   17 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
+|    2 | lkjhf |   17 | 11th  |      34.90 |
++------+-------+------+-------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from students id order by;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select * from students  order by id;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | hkldl |   18 | 11th  |      85.50 |
+|    2 | lkjhf |   17 | 11th  |      34.90 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   17 | 11th  |      66.45 |
+|    7 | ytf   |   17 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   17 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
++------+-------+------+-------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from students;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | hkldl |   18 | 11th  |      85.50 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   17 | 11th  |      66.45 |
+|    7 | ytf   |   17 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   17 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
+|    2 | lkjhf |   17 | 11th  |      34.90 |
++------+-------+------+-------+------------+
+10 rows in set (0.00 sec)
+
+mysql> update students set age = 18;
+Query OK, 4 rows affected (0.01 sec)
+Rows matched: 10  Changed: 4  Warnings: 0
+
+mysql> select * from students;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | hkldl |   18 | 11th  |      85.50 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   18 | 11th  |      66.45 |
+|    7 | ytf   |   18 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   18 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
+|    2 | lkjhf |   18 | 11th  |      34.90 |
++------+-------+------+-------+------------+
+10 rows in set (0.00 sec)
+
+mysql> update students set age = 6 where id = 6;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update students set age = 17 where id = 6;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update students set age = 17 where id = 7;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update students set age = 17 where id = 9;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update students set age = 17 where id = 2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from students;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | hkldl |   18 | 11th  |      85.50 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   17 | 11th  |      66.45 |
+|    7 | ytf   |   17 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   17 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
+|    2 | lkjhf |   17 | 11th  |      34.90 |
++------+-------+------+-------+------------+
+10 rows in set (0.00 sec)
+
+mysql> insert into students values(2,'lkjhf',17,'11th',34.90);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into students values(2,'lkjhf',17,'11th',34.90);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from students;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | hkldl |   18 | 11th  |      85.50 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   17 | 11th  |      66.45 |
+|    7 | ytf   |   17 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   17 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
+|    2 | lkjhf |   17 | 11th  |      34.90 |
+|    2 | lkjhf |   17 | 11th  |      34.90 |
+|    2 | lkjhf |   17 | 11th  |      34.90 |
++------+-------+------+-------+------------+
+12 rows in set (0.00 sec)
+
+mysql> delete from students where id = 2 and name = 'lkjhf' and age = 17 and class = '11th' and percentage = 34.90 limit 1;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from students;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | hkldl |   18 | 11th  |      85.50 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   17 | 11th  |      66.45 |
+|    7 | ytf   |   17 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   17 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
+|    2 | lkjhf |   17 | 11th  |      34.90 |
+|    2 | lkjhf |   17 | 11th  |      34.90 |
++------+-------+------+-------+------------+
+11 rows in set (0.00 sec)
+
+mysql> delete from students where id = 2 and name = 'lkjhf' and age = 17 and class = '11th' and percentage = 34.90 limit 1;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from students;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | hkldl |   18 | 11th  |      85.50 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   17 | 11th  |      66.45 |
+|    7 | ytf   |   17 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   17 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
+|    2 | lkjhf |   17 | 11th  |      34.90 |
++------+-------+------+-------+------------+
+10 rows in set (0.00 sec)
+
+mysql> insert into students values(2,'lkjhf',17,'11th',34.90);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into students values(2,'lkjhf',17,'11th',34.90);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into students values(2,'lkjhf',17,'11th',34.90);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from students;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | hkldl |   18 | 11th  |      85.50 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   17 | 11th  |      66.45 |
+|    7 | ytf   |   17 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   17 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
+|    2 | lkjhf |   17 | 11th  |      34.90 |
+|    2 | lkjhf |   17 | 11th  |      34.90 |
+|    2 | lkjhf |   17 | 11th  |      34.90 |
+|    2 | lkjhf |   17 | 11th  |      34.90 |
++------+-------+------+-------+------------+
+13 rows in set (0.00 sec)
+
+mysql> delete from students id = 2 and name='lkjhf' and age = 17 and class = '11th' and percenetage = 34.90 limit 3;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 2 and name='lkjhf' and age = 17 and class = '11th' and percenetage = 34.90 lim' at line 1
+mysql> alter table students add primary ket(id);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ket(id)' at line 1
+mysql> alter table students add primary key(id);
+ERROR 1062 (23000): Duplicate entry '2' for key 'students.PRIMARY'
+mysql> delete from students id = 2 and name='lkjhf' and age = 17 and class = '11th' and percenetage = 34.90 limit 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 2 and name='lkjhf' and age = 17 and class = '11th' and percenetage = 34.90 lim' at line 1
+mysql> delete from students where id = 2 and name='lkjhf' and age = 17 and class = '11th' and percenetage = 34.90 limit 1;
+ERROR 1054 (42S22): Unknown column 'percenetage' in 'where clause'
+mysql> delete from students where id = 2 and name='lkjhf' and age = 17 and class = '11th' and percentage = 34.90 limit 1;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> delete from students where id = 2 and name='lkjhf' and age = 17 and class = '11th' and percentage = 34.90 limit 1;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> delete from students where id = 2 and name='lkjhf' and age = 17 and class = '11th' and percentage = 34.90 limit 1;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from students;
++------+-------+------+-------+------------+
+| id   | name  | age  | class | percentage |
++------+-------+------+-------+------------+
+|    1 | hkldl |   18 | 11th  |      85.50 |
+|    3 | pqr   |   18 | 11th  |      78.00 |
+|    4 | xyz   |   18 | 11th  |      72.30 |
+|    5 | asdf  |   18 | 11th  |      70.40 |
+|    6 | mhd   |   17 | 11th  |      66.45 |
+|    7 | ytf   |   17 | 11th  |      80.00 |
+|    8 | ghj   |   18 | 11th  |      77.80 |
+|    9 | mjgf  |   17 | 11th  |      84.67 |
+|   10 | ejf   |   18 | 11th  |      85.33 |
+|    2 | lkjhf |   17 | 11th  |      34.90 |
++------+-------+------+-------+------------+
+10 rows in set (0.00 sec)
+
+mysql> alter table students add primary key(id);
+Query OK, 0 rows affected (0.17 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc students;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| id         | int          | NO   | PRI | NULL    |       |
+| name       | varchar(200) | YES  |     | NULL    |       |
+| age        | int          | YES  |     | NULL    |       |
+| class      | varchar(100) | YES  |     | NULL    |       |
+| percentage | decimal(5,2) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> insert into students(2, 'lkjhf', 17, '11th', 34.90);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '2, 'lkjhf', 17, '11th', 34.90)' at line 1
+mysql> insert into students values(2, 'lkjhf', 17, '11th', 34.90);
+ERROR 1062 (23000): Duplicate entry '2' for key 'students.PRIMARY'
+mysql> alter students add sr_no int first;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'students add sr_no int first' at line 1
+mysql> alter table students add sr_no int first;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from students;
++-------+----+-------+------+-------+------------+
+| sr_no | id | name  | age  | class | percentage |
++-------+----+-------+------+-------+------------+
+|  NULL |  1 | hkldl |   18 | 11th  |      85.50 |
+|  NULL |  2 | lkjhf |   17 | 11th  |      34.90 |
+|  NULL |  3 | pqr   |   18 | 11th  |      78.00 |
+|  NULL |  4 | xyz   |   18 | 11th  |      72.30 |
+|  NULL |  5 | asdf  |   18 | 11th  |      70.40 |
+|  NULL |  6 | mhd   |   17 | 11th  |      66.45 |
+|  NULL |  7 | ytf   |   17 | 11th  |      80.00 |
+|  NULL |  8 | ghj   |   18 | 11th  |      77.80 |
+|  NULL |  9 | mjgf  |   17 | 11th  |      84.67 |
+|  NULL | 10 | ejf   |   18 | 11th  |      85.33 |
++-------+----+-------+------+-------+------------+
+10 rows in set (0.00 sec)
+
+mysql> alter table students add admission_year int after pecentage;
+ERROR 1054 (42S22): Unknown column 'pecentage' in 'students'
+mysql> alter table students add admission_year int after percentage;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from students;
++-------+----+-------+------+-------+------------+----------------+
+| sr_no | id | name  | age  | class | percentage | admission_year |
++-------+----+-------+------+-------+------------+----------------+
+|  NULL |  1 | hkldl |   18 | 11th  |      85.50 |           NULL |
+|  NULL |  2 | lkjhf |   17 | 11th  |      34.90 |           NULL |
+|  NULL |  3 | pqr   |   18 | 11th  |      78.00 |           NULL |
+|  NULL |  4 | xyz   |   18 | 11th  |      72.30 |           NULL |
+|  NULL |  5 | asdf  |   18 | 11th  |      70.40 |           NULL |
+|  NULL |  6 | mhd   |   17 | 11th  |      66.45 |           NULL |
+|  NULL |  7 | ytf   |   17 | 11th  |      80.00 |           NULL |
+|  NULL |  8 | ghj   |   18 | 11th  |      77.80 |           NULL |
+|  NULL |  9 | mjgf  |   17 | 11th  |      84.67 |           NULL |
+|  NULL | 10 | ejf   |   18 | 11th  |      85.33 |           NULL |
++-------+----+-------+------+-------+------------+----------------+
+10 rows in set (0.00 sec)
+
+mysql>
