@@ -1,0 +1,788 @@
+mysql> create database practice;
+Query OK, 1 row affected (0.13 sec)
+
+mysql> use practice;
+Database changed
+mysql> create table student(sid int(10) primary key auto_increment, name varchar(200) not null, email varchar(200) not null unique, contact varchar(200) not null unique, age int(10) check(age) > 6, state varchar(200) default("Maharashtra"));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '> 6, state varchar(200) default("Maharashtra"))' at line 1
+mysql> create table student(sid int(10) primary key auto_increment, name varchar(200) not null, email varchar(200) not null unique, contact varchar(200) not null unique, age int(10) check(age>6), state varchar(200) default("Maharashtra"));
+Query OK, 0 rows affected, 2 warnings (0.23 sec)
+
+mysql> desc student;
++---------+--------------+------+-----+-----------------------+-------------------+
+| Field   | Type         | Null | Key | Default               | Extra             |
++---------+--------------+------+-----+-----------------------+-------------------+
+| sid     | int          | NO   | PRI | NULL                  | auto_increment    |
+| name    | varchar(200) | NO   |     | NULL                  |                   |
+| email   | varchar(200) | NO   | UNI | NULL                  |                   |
+| contact | varchar(200) | NO   | UNI | NULL                  |                   |
+| age     | int          | YES  |     | NULL                  |                   |
+| state   | varchar(200) | YES  |     | _cp850\'Maharashtra\' | DEFAULT_GENERATED |
++---------+--------------+------+-----+-----------------------+-------------------+
+6 rows in set (0.05 sec)
+
+mysql> insert into student values(1, "abc", "abc@gmail.com", "8439357483", 18);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into student (sid, name, email, contact, age) values (1, "abc", "abc@gmail.com", "8439357483", 18);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from student;
++-----+------+---------------+------------+------+-------------+
+| sid | name | email         | contact    | age  | state       |
++-----+------+---------------+------------+------+-------------+
+|   1 | abc  | abc@gmail.com | 8439357483 |   18 | Maharashtra |
++-----+------+---------------+------------+------+-------------+
+1 row in set (0.00 sec)
+
+mysql> insert into student (name, email, contact, age) values ("xyz", "xyz@gmail.com", "498593746985", 19), ("pqr", "pqr@gmail.com", "3485387593", 4);
+ERROR 3819 (HY000): Check constraint 'student_chk_1' is violated.
+mysql> insert into student (name, email, contact, age) values ("xyz", "xyz@gmail.com", "498593746985", 19), ("pqr", "pqr@gmail.com", "3485387593", 42);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++-----+------+---------------+--------------+------+-------------+
+| sid | name | email         | contact      | age  | state       |
++-----+------+---------------+--------------+------+-------------+
+|   1 | abc  | abc@gmail.com | 8439357483   |   18 | Maharashtra |
+|   4 | xyz  | xyz@gmail.com | 498593746985 |   19 | Maharashtra |
+|   5 | pqr  | pqr@gmail.com | 3485387593   |   42 | Maharashtra |
++-----+------+---------------+--------------+------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into student (name, email, contact, age) values ("rtu", "rtu@gmail.com", "4985933568985", 65), ("qwe", "qwe@gmail.com", "344543573", 26);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++-----+------+---------------+---------------+------+-------------+
+| sid | name | email         | contact       | age  | state       |
++-----+------+---------------+---------------+------+-------------+
+|   1 | abc  | abc@gmail.com | 8439357483    |   18 | Maharashtra |
+|   4 | xyz  | xyz@gmail.com | 498593746985  |   19 | Maharashtra |
+|   5 | pqr  | pqr@gmail.com | 3485387593    |   42 | Maharashtra |
+|   6 | rtu  | rtu@gmail.com | 4985933568985 |   65 | Maharashtra |
+|   7 | qwe  | qwe@gmail.com | 344543573     |   26 | Maharashtra |
++-----+------+---------------+---------------+------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> update student set name="Gokul" where sid=1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set name="Siddharth" where sid=2;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> select * from student;
++-----+-------+---------------+---------------+------+-------------+
+| sid | name  | email         | contact       | age  | state       |
++-----+-------+---------------+---------------+------+-------------+
+|   1 | Gokul | abc@gmail.com | 8439357483    |   18 | Maharashtra |
+|   4 | xyz   | xyz@gmail.com | 498593746985  |   19 | Maharashtra |
+|   5 | pqr   | pqr@gmail.com | 3485387593    |   42 | Maharashtra |
+|   6 | rtu   | rtu@gmail.com | 4985933568985 |   65 | Maharashtra |
+|   7 | qwe   | qwe@gmail.com | 344543573     |   26 | Maharashtra |
++-----+-------+---------------+---------------+------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> update student set sid = 2 where name = "xyz";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student;
++-----+-------+---------------+---------------+------+-------------+
+| sid | name  | email         | contact       | age  | state       |
++-----+-------+---------------+---------------+------+-------------+
+|   1 | Gokul | abc@gmail.com | 8439357483    |   18 | Maharashtra |
+|   2 | xyz   | xyz@gmail.com | 498593746985  |   19 | Maharashtra |
+|   5 | pqr   | pqr@gmail.com | 3485387593    |   42 | Maharashtra |
+|   6 | rtu   | rtu@gmail.com | 4985933568985 |   65 | Maharashtra |
+|   7 | qwe   | qwe@gmail.com | 344543573     |   26 | Maharashtra |
++-----+-------+---------------+---------------+------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> update student set sid = 3 where name = "pqr";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set sid = 4 where name = "rtu";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set sid = 5 where name = "qwe";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student;
++-----+-------+---------------+---------------+------+-------------+
+| sid | name  | email         | contact       | age  | state       |
++-----+-------+---------------+---------------+------+-------------+
+|   1 | Gokul | abc@gmail.com | 8439357483    |   18 | Maharashtra |
+|   2 | xyz   | xyz@gmail.com | 498593746985  |   19 | Maharashtra |
+|   3 | pqr   | pqr@gmail.com | 3485387593    |   42 | Maharashtra |
+|   4 | rtu   | rtu@gmail.com | 4985933568985 |   65 | Maharashtra |
+|   5 | qwe   | qwe@gmail.com | 344543573     |   26 | Maharashtra |
++-----+-------+---------------+---------------+------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> update student set name="Yadnyesh" where id =2;
+ERROR 1054 (42S22): Unknown column 'id' in 'where clause'
+mysql> update student set name="Yadnyesh" where sid =2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set name="Aniket" where sid =3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set name="Siddharth" where sid =4;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set name="Tahir" where sid =5;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student;
++-----+-----------+---------------+---------------+------+-------------+
+| sid | name      | email         | contact       | age  | state       |
++-----+-----------+---------------+---------------+------+-------------+
+|   1 | Gokul     | abc@gmail.com | 8439357483    |   18 | Maharashtra |
+|   2 | Yadnyesh  | xyz@gmail.com | 498593746985  |   19 | Maharashtra |
+|   3 | Aniket    | pqr@gmail.com | 3485387593    |   42 | Maharashtra |
+|   4 | Siddharth | rtu@gmail.com | 4985933568985 |   65 | Maharashtra |
+|   5 | Tahir     | qwe@gmail.com | 344543573     |   26 | Maharashtra |
++-----+-----------+---------------+---------------+------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into student values(6, "poi", "poi@gmail.com", "567685343", 13);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into student (sid, name, email, contact, age) values(6, "poi", "poi@gmail.com", "567685343", 13);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student;
++-----+-----------+---------------+---------------+------+-------------+
+| sid | name      | email         | contact       | age  | state       |
++-----+-----------+---------------+---------------+------+-------------+
+|   1 | Gokul     | abc@gmail.com | 8439357483    |   18 | Maharashtra |
+|   2 | Yadnyesh  | xyz@gmail.com | 498593746985  |   19 | Maharashtra |
+|   3 | Aniket    | pqr@gmail.com | 3485387593    |   42 | Maharashtra |
+|   4 | Siddharth | rtu@gmail.com | 4985933568985 |   65 | Maharashtra |
+|   5 | Tahir     | qwe@gmail.com | 344543573     |   26 | Maharashtra |
+|   6 | poi       | poi@gmail.com | 567685343     |   13 | Maharashtra |
++-----+-----------+---------------+---------------+------+-------------+
+6 rows in set (0.00 sec)
+
+mysql> delete from student where id=6;
+ERROR 1054 (42S22): Unknown column 'id' in 'where clause'
+mysql> delete from student where sid=6;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student;
++-----+-----------+---------------+---------------+------+-------------+
+| sid | name      | email         | contact       | age  | state       |
++-----+-----------+---------------+---------------+------+-------------+
+|   1 | Gokul     | abc@gmail.com | 8439357483    |   18 | Maharashtra |
+|   2 | Yadnyesh  | xyz@gmail.com | 498593746985  |   19 | Maharashtra |
+|   3 | Aniket    | pqr@gmail.com | 3485387593    |   42 | Maharashtra |
+|   4 | Siddharth | rtu@gmail.com | 4985933568985 |   65 | Maharashtra |
+|   5 | Tahir     | qwe@gmail.com | 344543573     |   26 | Maharashtra |
++-----+-----------+---------------+---------------+------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> update student set email="gokul@gmail.com", contact="4564869834" where sid = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set email="yd@gmail.com", contact="4567868654" where sid = 2;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set email="anu@gmail.com", contact="4736412654" where sid = 3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set email="sid@gmail.com", contact="4789673264" where sid = 4;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update student set email="tm@gmail.com", contact="4775956364" where sid = 5;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student;
++-----+-----------+-----------------+------------+------+-------------+
+| sid | name      | email           | contact    | age  | state       |
++-----+-----------+-----------------+------------+------+-------------+
+|   1 | Gokul     | gokul@gmail.com | 4564869834 |   18 | Maharashtra |
+|   2 | Yadnyesh  | yd@gmail.com    | 4567868654 |   19 | Maharashtra |
+|   3 | Aniket    | anu@gmail.com   | 4736412654 |   42 | Maharashtra |
+|   4 | Siddharth | sid@gmail.com   | 4789673264 |   65 | Maharashtra |
+|   5 | Tahir     | tm@gmail.com    | 4775956364 |   26 | Maharashtra |
++-----+-----------+-----------------+------------+------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select sid from student;
++-----+
+| sid |
++-----+
+|   3 |
+|   1 |
+|   4 |
+|   5 |
+|   2 |
++-----+
+5 rows in set (0.00 sec)
+
+mysql> select sid, name from student;
++-----+-----------+
+| sid | name      |
++-----+-----------+
+|   1 | Gokul     |
+|   2 | Yadnyesh  |
+|   3 | Aniket    |
+|   4 | Siddharth |
+|   5 | Tahir     |
++-----+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from student where sid=3;
++-----+--------+---------------+------------+------+-------------+
+| sid | name   | email         | contact    | age  | state       |
++-----+--------+---------------+------------+------+-------------+
+|   3 | Aniket | anu@gmail.com | 4736412654 |   42 | Maharashtra |
++-----+--------+---------------+------------+------+-------------+
+1 row in set (0.00 sec)
+
+mysql> create table company(cid int primary key auto_increment, name varchar(100) not null unique, contact varchar(100) not null unique, website varchar(100) not null unique);
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> desc company;
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| cid     | int          | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(100) | NO   | UNI | NULL    |                |
+| contact | varchar(100) | NO   | UNI | NULL    |                |
+| website | varchar(100) | NO   | UNI | NULL    |                |
++---------+--------------+------+-----+---------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> create tavle product (pid int primary key auto_increment, name varchar(100) not null);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'tavle product (pid int primary key auto_increment, name varchar(100) not null)' at line 1
+mysql> create table product (pid int primary key auto_increment, name varchar(100) not null, price varchar(100) not null, cid int, foreign key(cid) references company(cid) on delete cascade on update cascade);
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> desc product;
++-------+--------------+------+-----+---------+----------------+
+| Field | Type         | Null | Key | Default | Extra          |
++-------+--------------+------+-----+---------+----------------+
+| pid   | int          | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(100) | NO   |     | NULL    |                |
+| price | varchar(100) | NO   |     | NULL    |                |
+| cid   | int          | YES  | MUL | NULL    |                |
++-------+--------------+------+-----+---------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> create table employee(eid int primary key auto_increment, name varchar(100) not null, contact varchar(100) not null unique, salary varchar(100) not null);
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc employee;
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| eid     | int          | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(100) | NO   |     | NULL    |                |
+| contact | varchar(100) | NO   | UNI | NULL    |                |
+| salary  | varchar(100) | NO   |     | NULL    |                |
++---------+--------------+------+-----+---------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> insert into employee (eid, name, contact, salary) values (1, "abc", "5694039600", "23000.56");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from employee;
++-----+------+------------+----------+
+| eid | name | contact    | salary   |
++-----+------+------------+----------+
+|   1 | abc  | 5694039600 | 23000.56 |
++-----+------+------------+----------+
+1 row in set (0.00 sec)
+
+mysql> insert into employee (name, contact, salary) values ("qwe", "3543154584", "50000"),("9875663214", "6232546", "45000"),("lkg", "9898675342", "50000");
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++-----+------------+------------+----------+
+| eid | name       | contact    | salary   |
++-----+------------+------------+----------+
+|   1 | abc        | 5694039600 | 23000.56 |
+|   2 | qwe        | 3543154584 | 50000    |
+|   3 | 9875663214 | 6232546    | 45000    |
+|   4 | lkg        | 9898675342 | 50000    |
++-----+------------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> update employee set name ="fhd" where id=3;
+ERROR 1054 (42S22): Unknown column 'id' in 'where clause'
+mysql> update employee set name ="fhd" where eid=3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee;
++-----+------+------------+----------+
+| eid | name | contact    | salary   |
++-----+------+------------+----------+
+|   1 | abc  | 5694039600 | 23000.56 |
+|   2 | qwe  | 3543154584 | 50000    |
+|   3 | fhd  | 6232546    | 45000    |
+|   4 | lkg  | 9898675342 | 50000    |
++-----+------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> update employee set contact ="5739673396" where eid = 3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee;
++-----+------+------------+----------+
+| eid | name | contact    | salary   |
++-----+------+------------+----------+
+|   1 | abc  | 5694039600 | 23000.56 |
+|   2 | qwe  | 3543154584 | 50000    |
+|   3 | fhd  | 5739673396 | 45000    |
+|   4 | lkg  | 9898675342 | 50000    |
++-----+------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> insert into employee (name, contact, salary) values ("sgd", "9843154512", "2000.50"),("art", "9548265623", "45000.452"),("wrf", "9234512342", "30000");
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++-----+------+------------+-----------+
+| eid | name | contact    | salary    |
++-----+------+------------+-----------+
+|   1 | abc  | 5694039600 | 23000.56  |
+|   2 | qwe  | 3543154584 | 50000     |
+|   3 | fhd  | 5739673396 | 45000     |
+|   4 | lkg  | 9898675342 | 50000     |
+|   5 | sgd  | 9843154512 | 2000.50   |
+|   6 | art  | 9548265623 | 45000.452 |
+|   7 | wrf  | 9234512342 | 30000     |
++-----+------+------------+-----------+
+7 rows in set (0.00 sec)
+
+mysql> insert into employee (name, contact, salary) values ("tey", "9873544578", "54578.25"),("jhyu", "6232564589", "4000"),("kjh", "9898656754", "5000");
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++-----+------+------------+-----------+
+| eid | name | contact    | salary    |
++-----+------+------------+-----------+
+|   1 | abc  | 5694039600 | 23000.56  |
+|   2 | qwe  | 3543154584 | 50000     |
+|   3 | fhd  | 5739673396 | 45000     |
+|   4 | lkg  | 9898675342 | 50000     |
+|   5 | sgd  | 9843154512 | 2000.50   |
+|   6 | art  | 9548265623 | 45000.452 |
+|   7 | wrf  | 9234512342 | 30000     |
+|   8 | tey  | 9873544578 | 54578.25  |
+|   9 | jhyu | 6232564589 | 4000      |
+|  10 | kjh  | 9898656754 | 5000      |
++-----+------+------------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> select * from employee where salary > 5000 and salary < 20000;
+Empty set (0.01 sec)
+
+mysql> select * from employee where salary between 5000 and salary < 20000;
++-----+------+------------+-----------+
+| eid | name | contact    | salary    |
++-----+------+------------+-----------+
+|   1 | abc  | 5694039600 | 23000.56  |
+|   2 | qwe  | 3543154584 | 50000     |
+|   3 | fhd  | 5739673396 | 45000     |
+|   4 | lkg  | 9898675342 | 50000     |
+|   5 | sgd  | 9843154512 | 2000.50   |
+|   6 | art  | 9548265623 | 45000.452 |
+|   7 | wrf  | 9234512342 | 30000     |
+|   8 | tey  | 9873544578 | 54578.25  |
+|   9 | jhyu | 6232564589 | 4000      |
+|  10 | kjh  | 9898656754 | 5000      |
++-----+------+------------+-----------+
+10 rows in set (0.01 sec)
+
+mysql> select * from employee where salary between 5000 and 20000;
++-----+------+------------+--------+
+| eid | name | contact    | salary |
++-----+------+------------+--------+
+|  10 | kjh  | 9898656754 | 5000   |
++-----+------+------------+--------+
+1 row in set (0.00 sec)
+
+mysql> insert into employee (name, contact, salary) values ("dgg", "9867473356", 10000),("drt", "9844367222", 15000);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++-----+------+------------+-----------+
+| eid | name | contact    | salary    |
++-----+------+------------+-----------+
+|   1 | abc  | 5694039600 | 23000.56  |
+|   2 | qwe  | 3543154584 | 50000     |
+|   3 | fhd  | 5739673396 | 45000     |
+|   4 | lkg  | 9898675342 | 50000     |
+|   5 | sgd  | 9843154512 | 2000.50   |
+|   6 | art  | 9548265623 | 45000.452 |
+|   7 | wrf  | 9234512342 | 30000     |
+|   8 | tey  | 9873544578 | 54578.25  |
+|   9 | jhyu | 6232564589 | 4000      |
+|  10 | kjh  | 9898656754 | 5000      |
+|  11 | dgg  | 9867473356 | 10000     |
+|  12 | drt  | 9844367222 | 15000     |
++-----+------+------------+-----------+
+12 rows in set (0.00 sec)
+
+mysql> select * from employee where salary between 5000 and 20000;
++-----+------+------------+--------+
+| eid | name | contact    | salary |
++-----+------+------------+--------+
+|  10 | kjh  | 9898656754 | 5000   |
+|  11 | dgg  | 9867473356 | 10000  |
+|  12 | drt  | 9844367222 | 15000  |
++-----+------+------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee where salary > 5000 and salary < 20000;
++-----+------+------------+--------+
+| eid | name | contact    | salary |
++-----+------+------------+--------+
+|  11 | dgg  | 9867473356 | 10000  |
+|  12 | drt  | 9844367222 | 15000  |
++-----+------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee where salary between 5000 or 20000;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'or 20000' at line 1
+mysql> select * from employee where salary in (5000, 20000);
++-----+------+------------+--------+
+| eid | name | contact    | salary |
++-----+------+------------+--------+
+|  10 | kjh  | 9898656754 | 5000   |
++-----+------+------------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee where salary = 5000 or salary = 20000;
++-----+------+------------+--------+
+| eid | name | contact    | salary |
++-----+------+------------+--------+
+|  10 | kjh  | 9898656754 | 5000   |
++-----+------+------------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee where salary != 5000 and salary != 20000;
++-----+------+------------+-----------+
+| eid | name | contact    | salary    |
++-----+------+------------+-----------+
+|   1 | abc  | 5694039600 | 23000.56  |
+|   2 | qwe  | 3543154584 | 50000     |
+|   3 | fhd  | 5739673396 | 45000     |
+|   4 | lkg  | 9898675342 | 50000     |
+|   5 | sgd  | 9843154512 | 2000.50   |
+|   6 | art  | 9548265623 | 45000.452 |
+|   7 | wrf  | 9234512342 | 30000     |
+|   8 | tey  | 9873544578 | 54578.25  |
+|   9 | jhyu | 6232564589 | 4000      |
+|  11 | dgg  | 9867473356 | 10000     |
+|  12 | drt  | 9844367222 | 15000     |
++-----+------+------------+-----------+
+11 rows in set (0.00 sec)
+
+mysql> select * from employee where not salary = 5000 and not salary = 20000;
++-----+------+------------+-----------+
+| eid | name | contact    | salary    |
++-----+------+------------+-----------+
+|   1 | abc  | 5694039600 | 23000.56  |
+|   2 | qwe  | 3543154584 | 50000     |
+|   3 | fhd  | 5739673396 | 45000     |
+|   4 | lkg  | 9898675342 | 50000     |
+|   5 | sgd  | 9843154512 | 2000.50   |
+|   6 | art  | 9548265623 | 45000.452 |
+|   7 | wrf  | 9234512342 | 30000     |
+|   8 | tey  | 9873544578 | 54578.25  |
+|   9 | jhyu | 6232564589 | 4000      |
+|  11 | dgg  | 9867473356 | 10000     |
+|  12 | drt  | 9844367222 | 15000     |
++-----+------+------------+-----------+
+11 rows in set (0.00 sec)
+
+mysql> select * from employee order by salary asc;
++-----+------+------------+-----------+
+| eid | name | contact    | salary    |
++-----+------+------------+-----------+
+|  11 | dgg  | 9867473356 | 10000     |
+|  12 | drt  | 9844367222 | 15000     |
+|   5 | sgd  | 9843154512 | 2000.50   |
+|   1 | abc  | 5694039600 | 23000.56  |
+|   7 | wrf  | 9234512342 | 30000     |
+|   9 | jhyu | 6232564589 | 4000      |
+|   3 | fhd  | 5739673396 | 45000     |
+|   6 | art  | 9548265623 | 45000.452 |
+|  10 | kjh  | 9898656754 | 5000      |
+|   2 | qwe  | 3543154584 | 50000     |
+|   4 | lkg  | 9898675342 | 50000     |
+|   8 | tey  | 9873544578 | 54578.25  |
++-----+------+------------+-----------+
+12 rows in set (0.01 sec)
+
+mysql> select * from employee order by salary desc;
++-----+------+------------+-----------+
+| eid | name | contact    | salary    |
++-----+------+------------+-----------+
+|   8 | tey  | 9873544578 | 54578.25  |
+|   2 | qwe  | 3543154584 | 50000     |
+|   4 | lkg  | 9898675342 | 50000     |
+|  10 | kjh  | 9898656754 | 5000      |
+|   6 | art  | 9548265623 | 45000.452 |
+|   3 | fhd  | 5739673396 | 45000     |
+|   9 | jhyu | 6232564589 | 4000      |
+|   7 | wrf  | 9234512342 | 30000     |
+|   1 | abc  | 5694039600 | 23000.56  |
+|   5 | sgd  | 9843154512 | 2000.50   |
+|  12 | drt  | 9844367222 | 15000     |
+|  11 | dgg  | 9867473356 | 10000     |
++-----+------+------------+-----------+
+12 rows in set (0.00 sec)
+
+mysql> select * from employee where eid > 6 order by salary asc;
++-----+------+------------+----------+
+| eid | name | contact    | salary   |
++-----+------+------------+----------+
+|  11 | dgg  | 9867473356 | 10000    |
+|  12 | drt  | 9844367222 | 15000    |
+|   7 | wrf  | 9234512342 | 30000    |
+|   9 | jhyu | 6232564589 | 4000     |
+|  10 | kjh  | 9898656754 | 5000     |
+|   8 | tey  | 9873544578 | 54578.25 |
++-----+------+------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from employee where eid > 6 order by salary desc;
++-----+------+------------+----------+
+| eid | name | contact    | salary   |
++-----+------+------------+----------+
+|   8 | tey  | 9873544578 | 54578.25 |
+|  10 | kjh  | 9898656754 | 5000     |
+|   9 | jhyu | 6232564589 | 4000     |
+|   7 | wrf  | 9234512342 | 30000    |
+|  12 | drt  | 9844367222 | 15000    |
+|  11 | dgg  | 9867473356 | 10000    |
++-----+------+------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from employee where salary != 5000 order by salary asc;
++-----+------+------------+-----------+
+| eid | name | contact    | salary    |
++-----+------+------------+-----------+
+|  11 | dgg  | 9867473356 | 10000     |
+|  12 | drt  | 9844367222 | 15000     |
+|   5 | sgd  | 9843154512 | 2000.50   |
+|   1 | abc  | 5694039600 | 23000.56  |
+|   7 | wrf  | 9234512342 | 30000     |
+|   9 | jhyu | 6232564589 | 4000      |
+|   3 | fhd  | 5739673396 | 45000     |
+|   6 | art  | 9548265623 | 45000.452 |
+|   2 | qwe  | 3543154584 | 50000     |
+|   4 | lkg  | 9898675342 | 50000     |
+|   8 | tey  | 9873544578 | 54578.25  |
++-----+------+------------+-----------+
+11 rows in set (0.00 sec)
+
+mysql> select * from employee where salary between 3000 and 20000;
++-----+------+------------+--------+
+| eid | name | contact    | salary |
++-----+------+------------+--------+
+|   9 | jhyu | 6232564589 | 4000   |
+|  10 | kjh  | 9898656754 | 5000   |
+|  11 | dgg  | 9867473356 | 10000  |
+|  12 | drt  | 9844367222 | 15000  |
++-----+------+------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from employee where id = 1 or id = 5 or id = 9 or id = 11;
+ERROR 1054 (42S22): Unknown column 'id' in 'where clause'
+mysql> select * from employee where eid = 1 or eid = 5 or eid = 9 or eid = 11;
++-----+------+------------+----------+
+| eid | name | contact    | salary   |
++-----+------+------------+----------+
+|   1 | abc  | 5694039600 | 23000.56 |
+|   5 | sgd  | 9843154512 | 2000.50  |
+|   9 | jhyu | 6232564589 | 4000     |
+|  11 | dgg  | 9867473356 | 10000    |
++-----+------+------------+----------+
+4 rows in set (0.01 sec)
+
+mysql> create database team;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use team;
+Database changed
+mysql> create table player (pid int primary auto_increment, name varchar(100) not null, email varchar(100) not null, contact varchar(100) not null, state varchar(100) not null, run record int not null, salary int not null);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'auto_increment, name varchar(100) not null, email varchar(100) not null, contact' at line 1
+mysql> create table player (pid int primary key auto_increment, name varchar(100) not null, email varchar(100) not null, contact varchar(100) not null, state varchar(100) not null, run_record int not null, salary int not null);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> desc player;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| pid        | int          | NO   | PRI | NULL    | auto_increment |
+| name       | varchar(100) | NO   |     | NULL    |                |
+| email      | varchar(100) | NO   |     | NULL    |                |
+| contact    | varchar(100) | NO   |     | NULL    |                |
+| state      | varchar(100) | NO   |     | NULL    |                |
+| run_record | int          | NO   |     | NULL    |                |
+| salary     | int          | NO   |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+7 rows in set (0.01 sec)
+
+mysql> insert into player (pid, name, email, contact, state, run_record, salary, INSERT INTO team (name, email, contact, state, run_record, salary) VALUES)
+    -> ('Rohit', 'rohit@gmail.com', '9000000001', 'Maharashtra', 15000, 5000000),
+    -> ('Virat', 'virat@gmail.com', '9000000002', 'Delhi', 18000, 7000000),
+    -> ('Shubham', 'shubham@gmail.com', '9000000003', 'Punjab', 9000, 3000000),
+    -> ('Hardik', 'hardik@gmail.com', '9000000004', 'Gujarat', 8000, 4000000),
+    -> ('Ajinkya', 'ajinkya@gmail.com', '9000000005', 'Maharashtra', 6000, 3500000),
+    -> ('Ruturaj', 'ruturaj@gmail.com', '9000000006', 'Maharashtra', 2500, 2000000),
+    -> ('Prithvi', 'prithvi@gmail.com', '9000000007', 'Delhi', 3000, 2500000),
+    -> ('Ishan', 'ishan@gmail.com', '9000000008', 'Jharkhand', 4000, 2200000),
+    -> ('KL Rahul', 'kl@gmail.com', '9000000009', 'Karnataka', 12000, 6000000),
+    -> ('Shreyas', 'shreyas@gmail.com', '9000000010', 'Maharashtra', 7000, 4500000),
+    -> ('Gill', 'gill@gmail.com', '9000000011', 'Punjab', 10000, 4800000),
+    -> ('Pant', 'pant@gmail.com', '9000000012', 'Delhi', 5000, 3700000),
+    -> ('Surya', 'surya@gmail.com', '9000000013', 'Maharashtra', 11000, 5200000),
+    -> ('Jadeja', 'jadeja@gmail.com', '9000000014', 'Gujarat', 13000, 6500000),
+    -> ('Ashwin', 'ashwin@gmail.com', '9000000015', 'Tamil Nadu', 9000, 4200000),
+    -> ('Bumrah', 'bumrah@gmail.com', '9000000016', 'Gujarat', 14000, 6800000),
+    -> ('Rahane', 'rahane@gmail.com', '9000000017', 'Maharashtra', 2000, 1500000),
+    -> ('Arshdeep', 'arsh@gmail.com', '9000000018', 'Punjab', 3500, 2100000),
+    -> ('Kuldeep', 'kuldeep@gmail.com', '9000000019', 'UP', 4500, 2400000),
+    -> ('Dhawan', 'dhawan@gmail.com', '9000000020', 'Delhi', 16000, 7200000);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INSERT INTO team (name, email, contact, state, run_record, salary) VALUES)
+('Roh' at line 1
+mysql> INSERT INTO team (name, email, contact, state, run_record, salary) VALUES
+    -> ('Rohit', 'rohit@gmail.com', '9000000001', 'Maharashtra', 15000, 5000000),
+    -> ('Virat', 'virat@gmail.com', '9000000002', 'Delhi', 18000, 7000000),
+    -> ('Shubham', 'shubham@gmail.com', '9000000003', 'Punjab', 9000, 3000000),
+    -> ('Hardik', 'hardik@gmail.com', '9000000004', 'Gujarat', 8000, 4000000),
+    -> ('Ajinkya', 'ajinkya@gmail.com', '9000000005', 'Maharashtra', 6000, 3500000),
+    -> ('Ruturaj', 'ruturaj@gmail.com', '9000000006', 'Maharashtra', 2500, 2000000),
+    -> ('Prithvi', 'prithvi@gmail.com', '9000000007', 'Delhi', 3000, 2500000),
+    -> ('Ishan', 'ishan@gmail.com', '9000000008', 'Jharkhand', 4000, 2200000),
+    -> ('KL Rahul', 'kl@gmail.com', '9000000009', 'Karnataka', 12000, 6000000),
+    -> ('Shreyas', 'shreyas@gmail.com', '9000000010', 'Maharashtra', 7000, 4500000),
+    -> ('Gill', 'gill@gmail.com', '9000000011', 'Punjab', 10000, 4800000),
+    -> ('Pant', 'pant@gmail.com', '9000000012', 'Delhi', 5000, 3700000),
+    -> ('Surya', 'surya@gmail.com', '9000000013', 'Maharashtra', 11000, 5200000),
+    -> ('Jadeja', 'jadeja@gmail.com', '9000000014', 'Gujarat', 13000, 6500000),
+    -> ('Ashwin', 'ashwin@gmail.com', '9000000015', 'Tamil Nadu', 9000, 4200000),
+    -> ('Bumrah', 'bumrah@gmail.com', '9000000016', 'Gujarat', 14000, 6800000),
+    -> ('Rahane', 'rahane@gmail.com', '9000000017', 'Maharashtra', 2000, 1500000),
+    -> ('Arshdeep', 'arsh@gmail.com', '9000000018', 'Punjab', 3500, 2100000),
+    -> ('Kuldeep', 'kuldeep@gmail.com', '9000000019', 'UP', 4500, 2400000),
+    -> ^C
+mysql> INSERT INTO team (name, email, contact, state, run_record, salary)
+    -> VALUES ('Sachin', 'sachin@gmail.com', '9000000021', 'Maharashtra', 20000, 9000000);
+ERROR 1146 (42S02): Table 'team.team' doesn't exist
+mysql> INSERT INTO player (name, email, contact, state, run_record, salary) VALUES ('Sachin', 'sachin@gmail.com', '9000000021', 'Maharashtra', 20000, 9000000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from player;
++-----+--------+------------------+------------+-------------+------------+---------+
+| pid | name   | email            | contact    | state       | run_record | salary  |
++-----+--------+------------------+------------+-------------+------------+---------+
+|   1 | Sachin | sachin@gmail.com | 9000000021 | Maharashtra |      20000 | 9000000 |
++-----+--------+------------------+------------+-------------+------------+---------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO player (name, email, contact, state, run_record, salary) values ('Rohit', 'rohit@gmail.com', '9000000001', 'Maharashtra', 15000, 5000000), ('Virat', 'virat@gmail.com', '9000000002', 'Delhi', 18000, 7000000), ('Shubham', 'shubham@gmail.com', '9000000003', 'Punjab', 9000, 3000000), ('Hardik', 'hardik@gmail.com', '9000000004', 'Gujarat', 8000, 4000000), ('Ajinkya', 'ajinkya@gmail.com', '9000000005', 'Maharashtra', 6000, 3500000), ('Ruturaj', 'ruturaj@gmail.com', '9000000006', 'Maharashtra', 2500, 2000000), ('Prithvi', 'prithvi@gmail.com', '9000000007', 'Delhi', 3000, 2500000), ('Ishan', 'ishan@gmail.com', '9000000008', 'Jharkhand', 4000, 2200000), ('KL Rahul', 'kl@gmail.com', '9000000009', 'Karnataka', 12000, 6000000), ('Shreyas', 'shreyas@gmail.com', '9000000010', 'Maharashtra', 7000, 4500000), ('Gill', 'gill@gmail.com', '9000000011', 'Punjab', 10000, 4800000), ('Pant', 'pant@gmail.com', '9000000012', 'Delhi', 5000, 3700000), ('Surya', 'surya@gmail.com', '9000000013', 'Maharashtra', 11000, 5200000), ('Jadeja', 'jadeja@gmail.com', '9000000014', 'Gujarat', 13000, 6500000);
+Query OK, 14 rows affected (0.01 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+
+mysql> select * from player;
++-----+----------+-------------------+------------+-------------+------------+---------+
+| pid | name     | email             | contact    | state       | run_record | salary  |
++-----+----------+-------------------+------------+-------------+------------+---------+
+|   1 | Sachin   | sachin@gmail.com  | 9000000021 | Maharashtra |      20000 | 9000000 |
+|   2 | Rohit    | rohit@gmail.com   | 9000000001 | Maharashtra |      15000 | 5000000 |
+|   3 | Virat    | virat@gmail.com   | 9000000002 | Delhi       |      18000 | 7000000 |
+|   4 | Shubham  | shubham@gmail.com | 9000000003 | Punjab      |       9000 | 3000000 |
+|   5 | Hardik   | hardik@gmail.com  | 9000000004 | Gujarat     |       8000 | 4000000 |
+|   6 | Ajinkya  | ajinkya@gmail.com | 9000000005 | Maharashtra |       6000 | 3500000 |
+|   7 | Ruturaj  | ruturaj@gmail.com | 9000000006 | Maharashtra |       2500 | 2000000 |
+|   8 | Prithvi  | prithvi@gmail.com | 9000000007 | Delhi       |       3000 | 2500000 |
+|   9 | Ishan    | ishan@gmail.com   | 9000000008 | Jharkhand   |       4000 | 2200000 |
+|  10 | KL Rahul | kl@gmail.com      | 9000000009 | Karnataka   |      12000 | 6000000 |
+|  11 | Shreyas  | shreyas@gmail.com | 9000000010 | Maharashtra |       7000 | 4500000 |
+|  12 | Gill     | gill@gmail.com    | 9000000011 | Punjab      |      10000 | 4800000 |
+|  13 | Pant     | pant@gmail.com    | 9000000012 | Delhi       |       5000 | 3700000 |
+|  14 | Surya    | surya@gmail.com   | 9000000013 | Maharashtra |      11000 | 5200000 |
+|  15 | Jadeja   | jadeja@gmail.com  | 9000000014 | Gujarat     |      13000 | 6500000 |
++-----+----------+-------------------+------------+-------------+------------+---------+
+15 rows in set (0.00 sec)
+
+mysql> select * from player where state = "maharashtra";
++-----+---------+-------------------+------------+-------------+------------+---------+
+| pid | name    | email             | contact    | state       | run_record | salary  |
++-----+---------+-------------------+------------+-------------+------------+---------+
+|   1 | Sachin  | sachin@gmail.com  | 9000000021 | Maharashtra |      20000 | 9000000 |
+|   2 | Rohit   | rohit@gmail.com   | 9000000001 | Maharashtra |      15000 | 5000000 |
+|   6 | Ajinkya | ajinkya@gmail.com | 9000000005 | Maharashtra |       6000 | 3500000 |
+|   7 | Ruturaj | ruturaj@gmail.com | 9000000006 | Maharashtra |       2500 | 2000000 |
+|  11 | Shreyas | shreyas@gmail.com | 9000000010 | Maharashtra |       7000 | 4500000 |
+|  14 | Surya   | surya@gmail.com   | 9000000013 | Maharashtra |      11000 | 5200000 |
++-----+---------+-------------------+------------+-------------+------------+---------+
+6 rows in set (0.00 sec)
+
+mysql> alter table player rename column run_record to run record;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'record' at line 1
+mysql> alter table player rename column run_record to run;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc player;
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| pid     | int          | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(100) | NO   |     | NULL    |                |
+| email   | varchar(100) | NO   |     | NULL    |                |
+| contact | varchar(100) | NO   |     | NULL    |                |
+| state   | varchar(100) | NO   |     | NULL    |                |
+| run     | int          | NO   |     | NULL    |                |
+| salary  | int          | NO   |     | NULL    |                |
++---------+--------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> alter table player rename column run to `run record`;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc player;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| pid        | int          | NO   | PRI | NULL    | auto_increment |
+| name       | varchar(100) | NO   |     | NULL    |                |
+| email      | varchar(100) | NO   |     | NULL    |                |
+| contact    | varchar(100) | NO   |     | NULL    |                |
+| state      | varchar(100) | NO   |     | NULL    |                |
+| run record | int          | NO   |     | NULL    |                |
+| salary     | int          | NO   |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+mysql>
