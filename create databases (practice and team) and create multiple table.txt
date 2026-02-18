@@ -785,4 +785,140 @@ mysql> desc player;
 +------------+--------------+------+-----+---------+----------------+
 7 rows in set (0.00 sec)
 
+mysql> select * from where state in ("Maharashtra", "Panjab", "Gujarat", "Delhi");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where state in ("Maharashtra", "Panjab", "Gujarat", "Delhi")' at line 1
+mysql> select * from player where state in ("Maharashtra", "Panjab", "Gujarat", "Delhi");
++-----+---------+-------------------+------------+-------------+------------+---------+
+| pid | name    | email             | contact    | state       | run record | salary  |
++-----+---------+-------------------+------------+-------------+------------+---------+
+|   1 | Sachin  | sachin@gmail.com  | 9000000021 | Maharashtra |      20000 | 9000000 |
+|   2 | Rohit   | rohit@gmail.com   | 9000000001 | Maharashtra |      15000 | 5000000 |
+|   3 | Virat   | virat@gmail.com   | 9000000002 | Delhi       |      18000 | 7000000 |
+|   5 | Hardik  | hardik@gmail.com  | 9000000004 | Gujarat     |       8000 | 4000000 |
+|   6 | Ajinkya | ajinkya@gmail.com | 9000000005 | Maharashtra |       6000 | 3500000 |
+|   7 | Ruturaj | ruturaj@gmail.com | 9000000006 | Maharashtra |       2500 | 2000000 |
+|   8 | Prithvi | prithvi@gmail.com | 9000000007 | Delhi       |       3000 | 2500000 |
+|  11 | Shreyas | shreyas@gmail.com | 9000000010 | Maharashtra |       7000 | 4500000 |
+|  13 | Pant    | pant@gmail.com    | 9000000012 | Delhi       |       5000 | 3700000 |
+|  14 | Surya   | surya@gmail.com   | 9000000013 | Maharashtra |      11000 | 5200000 |
+|  15 | Jadeja  | jadeja@gmail.com  | 9000000014 | Gujarat     |      13000 | 6500000 |
++-----+---------+-------------------+------------+-------------+------------+---------+
+11 rows in set (0.00 sec)
+
+mysql> select * from player order by `run record` desc;
++-----+----------+-------------------+------------+-------------+------------+---------+
+| pid | name     | email             | contact    | state       | run record | salary  |
++-----+----------+-------------------+------------+-------------+------------+---------+
+|   1 | Sachin   | sachin@gmail.com  | 9000000021 | Maharashtra |      20000 | 9000000 |
+|   3 | Virat    | virat@gmail.com   | 9000000002 | Delhi       |      18000 | 7000000 |
+|   2 | Rohit    | rohit@gmail.com   | 9000000001 | Maharashtra |      15000 | 5000000 |
+|  15 | Jadeja   | jadeja@gmail.com  | 9000000014 | Gujarat     |      13000 | 6500000 |
+|  10 | KL Rahul | kl@gmail.com      | 9000000009 | Karnataka   |      12000 | 6000000 |
+|  14 | Surya    | surya@gmail.com   | 9000000013 | Maharashtra |      11000 | 5200000 |
+|  12 | Gill     | gill@gmail.com    | 9000000011 | Punjab      |      10000 | 4800000 |
+|   4 | Shubham  | shubham@gmail.com | 9000000003 | Punjab      |       9000 | 3000000 |
+|   5 | Hardik   | hardik@gmail.com  | 9000000004 | Gujarat     |       8000 | 4000000 |
+|  11 | Shreyas  | shreyas@gmail.com | 9000000010 | Maharashtra |       7000 | 4500000 |
+|   6 | Ajinkya  | ajinkya@gmail.com | 9000000005 | Maharashtra |       6000 | 3500000 |
+|  13 | Pant     | pant@gmail.com    | 9000000012 | Delhi       |       5000 | 3700000 |
+|   9 | Ishan    | ishan@gmail.com   | 9000000008 | Jharkhand   |       4000 | 2200000 |
+|   8 | Prithvi  | prithvi@gmail.com | 9000000007 | Delhi       |       3000 | 2500000 |
+|   7 | Ruturaj  | ruturaj@gmail.com | 9000000006 | Maharashtra |       2500 | 2000000 |
++-----+----------+-------------------+------------+-------------+------------+---------+
+15 rows in set (0.01 sec)
+
+mysql> select * from player where state = "Maharashtra" and `run record` > 2000;
++-----+---------+-------------------+------------+-------------+------------+---------+
+| pid | name    | email             | contact    | state       | run record | salary  |
++-----+---------+-------------------+------------+-------------+------------+---------+
+|   1 | Sachin  | sachin@gmail.com  | 9000000021 | Maharashtra |      20000 | 9000000 |
+|   2 | Rohit   | rohit@gmail.com   | 9000000001 | Maharashtra |      15000 | 5000000 |
+|   6 | Ajinkya | ajinkya@gmail.com | 9000000005 | Maharashtra |       6000 | 3500000 |
+|   7 | Ruturaj | ruturaj@gmail.com | 9000000006 | Maharashtra |       2500 | 2000000 |
+|  11 | Shreyas | shreyas@gmail.com | 9000000010 | Maharashtra |       7000 | 4500000 |
+|  14 | Surya   | surya@gmail.com   | 9000000013 | Maharashtra |      11000 | 5200000 |
++-----+---------+-------------------+------------+-------------+------------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select * from player where state = "Maharashtra" `run record` between 2000 to 20000 desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '`run record` between 2000 to 20000 desc' at line 1
+mysql> select * from player where state = "Maharashtra" and `run record` between 2000 and 20000 order by `run reocrd` desc;
+ERROR 1054 (42S22): Unknown column 'run reocrd' in 'order clause'
+mysql> select * from player where state = "Maharashtra" and `run record` between 2000 and 20000 order by `run record` desc;
++-----+---------+-------------------+------------+-------------+------------+---------+
+| pid | name    | email             | contact    | state       | run record | salary  |
++-----+---------+-------------------+------------+-------------+------------+---------+
+|   1 | Sachin  | sachin@gmail.com  | 9000000021 | Maharashtra |      20000 | 9000000 |
+|   2 | Rohit   | rohit@gmail.com   | 9000000001 | Maharashtra |      15000 | 5000000 |
+|  14 | Surya   | surya@gmail.com   | 9000000013 | Maharashtra |      11000 | 5200000 |
+|  11 | Shreyas | shreyas@gmail.com | 9000000010 | Maharashtra |       7000 | 4500000 |
+|   6 | Ajinkya | ajinkya@gmail.com | 9000000005 | Maharashtra |       6000 | 3500000 |
+|   7 | Ruturaj | ruturaj@gmail.com | 9000000006 | Maharashtra |       2500 | 2000000 |
++-----+---------+-------------------+------------+-------------+------------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select * from player where not state="Maharashtra";
++-----+----------+-------------------+------------+-----------+------------+---------+
+| pid | name     | email             | contact    | state     | run record | salary  |
++-----+----------+-------------------+------------+-----------+------------+---------+
+|   3 | Virat    | virat@gmail.com   | 9000000002 | Delhi     |      18000 | 7000000 |
+|   4 | Shubham  | shubham@gmail.com | 9000000003 | Punjab    |       9000 | 3000000 |
+|   5 | Hardik   | hardik@gmail.com  | 9000000004 | Gujarat   |       8000 | 4000000 |
+|   8 | Prithvi  | prithvi@gmail.com | 9000000007 | Delhi     |       3000 | 2500000 |
+|   9 | Ishan    | ishan@gmail.com   | 9000000008 | Jharkhand |       4000 | 2200000 |
+|  10 | KL Rahul | kl@gmail.com      | 9000000009 | Karnataka |      12000 | 6000000 |
+|  12 | Gill     | gill@gmail.com    | 9000000011 | Punjab    |      10000 | 4800000 |
+|  13 | Pant     | pant@gmail.com    | 9000000012 | Delhi     |       5000 | 3700000 |
+|  15 | Jadeja   | jadeja@gmail.com  | 9000000014 | Gujarat   |      13000 | 6500000 |
++-----+----------+-------------------+------------+-----------+------------+---------+
+9 rows in set (0.00 sec)
+
+mysql> select * from player where state in ("Maharashtra", "Punjab", "Delhi");
++-----+---------+-------------------+------------+-------------+------------+---------+
+| pid | name    | email             | contact    | state       | run record | salary  |
++-----+---------+-------------------+------------+-------------+------------+---------+
+|   1 | Sachin  | sachin@gmail.com  | 9000000021 | Maharashtra |      20000 | 9000000 |
+|   2 | Rohit   | rohit@gmail.com   | 9000000001 | Maharashtra |      15000 | 5000000 |
+|   3 | Virat   | virat@gmail.com   | 9000000002 | Delhi       |      18000 | 7000000 |
+|   4 | Shubham | shubham@gmail.com | 9000000003 | Punjab      |       9000 | 3000000 |
+|   6 | Ajinkya | ajinkya@gmail.com | 9000000005 | Maharashtra |       6000 | 3500000 |
+|   7 | Ruturaj | ruturaj@gmail.com | 9000000006 | Maharashtra |       2500 | 2000000 |
+|   8 | Prithvi | prithvi@gmail.com | 9000000007 | Delhi       |       3000 | 2500000 |
+|  11 | Shreyas | shreyas@gmail.com | 9000000010 | Maharashtra |       7000 | 4500000 |
+|  12 | Gill    | gill@gmail.com    | 9000000011 | Punjab      |      10000 | 4800000 |
+|  13 | Pant    | pant@gmail.com    | 9000000012 | Delhi       |       5000 | 3700000 |
+|  14 | Surya   | surya@gmail.com   | 9000000013 | Maharashtra |      11000 | 5200000 |
++-----+---------+-------------------+------------+-------------+------------+---------+
+11 rows in set (0.00 sec)
+
+mysql> select * from player where state in  not ("Maharashtra", "Punjab", "Delhi");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'not ("Maharashtra", "Punjab", "Delhi")' at line 1
+mysql> select * from player where state not in ("Maharashtra", "Punjab", "Delhi");
++-----+----------+------------------+------------+-----------+------------+---------+
+| pid | name     | email            | contact    | state     | run record | salary  |
++-----+----------+------------------+------------+-----------+------------+---------+
+|   5 | Hardik   | hardik@gmail.com | 9000000004 | Gujarat   |       8000 | 4000000 |
+|   9 | Ishan    | ishan@gmail.com  | 9000000008 | Jharkhand |       4000 | 2200000 |
+|  10 | KL Rahul | kl@gmail.com     | 9000000009 | Karnataka |      12000 | 6000000 |
+|  15 | Jadeja   | jadeja@gmail.com | 9000000014 | Gujarat   |      13000 | 6500000 |
++-----+----------+------------------+------------+-----------+------------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from player where `run record` and salary order by desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc' at line 1
+mysql> select * from player where `run record`>5000 and salary>4000000 order by `run record` desc;
++-----+----------+-------------------+------------+-------------+------------+---------+
+| pid | name     | email             | contact    | state       | run record | salary  |
++-----+----------+-------------------+------------+-------------+------------+---------+
+|   1 | Sachin   | sachin@gmail.com  | 9000000021 | Maharashtra |      20000 | 9000000 |
+|   3 | Virat    | virat@gmail.com   | 9000000002 | Delhi       |      18000 | 7000000 |
+|   2 | Rohit    | rohit@gmail.com   | 9000000001 | Maharashtra |      15000 | 5000000 |
+|  15 | Jadeja   | jadeja@gmail.com  | 9000000014 | Gujarat     |      13000 | 6500000 |
+|  10 | KL Rahul | kl@gmail.com      | 9000000009 | Karnataka   |      12000 | 6000000 |
+|  14 | Surya    | surya@gmail.com   | 9000000013 | Maharashtra |      11000 | 5200000 |
+|  12 | Gill     | gill@gmail.com    | 9000000011 | Punjab      |      10000 | 4800000 |
+|  11 | Shreyas  | shreyas@gmail.com | 9000000010 | Maharashtra |       7000 | 4500000 |
++-----+----------+-------------------+------------+-------------+------------+---------+
+8 rows in set (0.00 sec)
+
 mysql>
