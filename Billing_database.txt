@@ -1,0 +1,427 @@
+mysql> show databases;
++--------------------------------+
+| Database                       |
++--------------------------------+
+| information_schema             |
+| library_database               |
+| mysql                          |
+| mysql_practice_and_training    |
+| performance_schema             |
+| practice                       |
+| practice_aggregate_function    |
+| praticing_all_queries_commands |
+| sys                            |
+| team                           |
++--------------------------------+
+10 rows in set (0.05 sec)
+
+mysql> create database billing;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> show databases;
++--------------------------------+
+| Database                       |
++--------------------------------+
+| billing                        |
+| information_schema             |
+| library_database               |
+| mysql                          |
+| mysql_practice_and_training    |
+| performance_schema             |
+| practice                       |
+| practice_aggregate_function    |
+| praticing_all_queries_commands |
+| sys                            |
+| team                           |
++--------------------------------+
+11 rows in set (0.00 sec)
+
+mysql> use billing;
+Database changed
+mysql> show tables;
+Empty set (0.02 sec)
+
+mysql> create table product(id int primary key auto_increment, name varchar(100) not null, price int not null check(price > 0), brand varchar(100) not null, dec varchar(255) not null);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'dec varchar(255) not null)' at line 1
+mysql> CREATE TABLE Product (
+    ->     Id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     Name VARCHAR(100) NOT NULL,
+    ->     Price INT NOT NULL CHECK (Price > 0),
+    ->     Brand VARCHAR(100) NOT NULL,
+    ->     Des VARCHAR(255) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> show tables;
++-------------------+
+| Tables_in_billing |
++-------------------+
+| product           |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> desc Product;
++-------+--------------+------+-----+---------+----------------+
+| Field | Type         | Null | Key | Default | Extra          |
++-------+--------------+------+-----+---------+----------------+
+| Id    | int          | NO   | PRI | NULL    | auto_increment |
+| Name  | varchar(100) | NO   |     | NULL    |                |
+| Price | int          | NO   |     | NULL    |                |
+| Brand | varchar(100) | NO   |     | NULL    |                |
+| Des   | varchar(255) | NO   |     | NULL    |                |
++-------+--------------+------+-----+---------+----------------+
+5 rows in set (0.01 sec)
+
+mysql> desc Product;INSERT INTO Product (Name, Price, Brand, Des) VALUES
++-------+--------------+------+-----+---------+----------------+
+| Field | Type         | Null | Key | Default | Extra          |
++-------+--------------+------+-----+---------+----------------+
+| Id    | int          | NO   | PRI | NULL    | auto_increment |
+| Name  | varchar(100) | NO   |     | NULL    |                |
+| Price | int          | NO   |     | NULL    |                |
+| Brand | varchar(100) | NO   |     | NULL    |                |
+| Des   | varchar(255) | NO   |     | NULL    |                |
++-------+--------------+------+-----+---------+----------------+
+5 rows in set (0.01 sec)
+
+    -> ('Pen', 10, 'TATA', 'Blue ink smooth writing'),
+    -> ('Pencil', 5, 'TATA', 'HB graphite pencil'),
+    -> ('Notebook', 50, 'Reliance', '200 pages notebook'),
+    -> ('Eraser', 3, 'Apsara', 'Soft eraser'),
+    -> ('Sharpener', 8, 'Nataraj', 'Steel blade sharpener'),
+    -> ('Marker', 25, 'Camlin', 'Permanent black marker'),
+    -> ('Phone', 15000, 'Reliance', 'Smartphone 6GB RAM'),
+    -> ('Laptop', 55000, 'TATA', 'Business laptop'),
+    -> ('Printer', 8000, 'HP', 'Laser printer'),
+    -> ^C
+mysql> INSERT INTO Product (Name, Price, Brand, Des) VALUES
+    -> ('Pen', 10, 'TATA', 'Blue ink smooth writing'),
+    -> ('Pencil', 5, 'TATA', 'HB graphite pencil'),
+    -> ('Notebook', 50, 'Reliance', '200 pages notebook'),
+    -> ('Eraser', 3, 'Apsara', 'Soft eraser'),
+    -> ('Sharpener', 8, 'Nataraj', 'Steel blade sharpener'),
+    -> ('Marker', 25, 'Camlin', 'Permanent black marker'),
+    -> ('Phone', 15000, 'Reliance', 'Smartphone 6GB RAM'),
+    -> ('Laptop', 55000, 'TATA', 'Business laptop'),
+    -> ('Printer', 8000, 'HP', 'Laser printer'),
+    -> ('Bag', 1200, 'Skybags', 'Travel backpack');
+Query OK, 10 rows affected (0.02 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from Product;
++----+-----------+-------+----------+-------------------------+
+| Id | Name      | Price | Brand    | Des                     |
++----+-----------+-------+----------+-------------------------+
+|  1 | Pen       |    10 | TATA     | Blue ink smooth writing |
+|  2 | Pencil    |     5 | TATA     | HB graphite pencil      |
+|  3 | Notebook  |    50 | Reliance | 200 pages notebook      |
+|  4 | Eraser    |     3 | Apsara   | Soft eraser             |
+|  5 | Sharpener |     8 | Nataraj  | Steel blade sharpener   |
+|  6 | Marker    |    25 | Camlin   | Permanent black marker  |
+|  7 | Phone     | 15000 | Reliance | Smartphone 6GB RAM      |
+|  8 | Laptop    | 55000 | TATA     | Business laptop         |
+|  9 | Printer   |  8000 | HP       | Laser printer           |
+| 10 | Bag       |  1200 | Skybags  | Travel backpack         |
++----+-----------+-------+----------+-------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from product where name like '%b%';
++----+----------+-------+----------+--------------------+
+| Id | Name     | Price | Brand    | Des                |
++----+----------+-------+----------+--------------------+
+|  3 | Notebook |    50 | Reliance | 200 pages notebook |
+| 10 | Bag      |  1200 | Skybags  | Travel backpack    |
++----+----------+-------+----------+--------------------+
+2 rows in set (0.01 sec)
+
+mysql> select * from product where name like '%nia' and price > 10;
+Empty set (0.00 sec)
+
+mysql> INSERT INTO Product (Name, Price, Brand, Des) VALUES
+    -> ('RubberBand', 15, 'TATA', 'Office elastic rubber band'),
+    -> ('Register', 75, 'Reliance', 'School register book'),
+    -> ('Ruler', 12, 'TATA', 'Plastic measuring ruler'),
+    -> ('Bluetooth', 999, 'Boat', 'Electronic wireless speaker'),
+    -> ('Television', 25000, 'Reliance', 'Electronic smart TV'),
+    -> ('Camera', 18000, 'Canon', 'Electronic DSLR camera'),
+    -> ('PrinterPro', 12000, 'TATA', 'Electronic office printer'),
+    -> ('Mouse', 450, 'HP', 'Electronic optical mouse'),
+    -> ('Keyboard', 700, 'Logitech', 'Electronic USB keyboard'),
+    -> ('Monitor', 9500, 'Dell', 'Electronic LED monitor'),
+    -> ('Router', 2200, 'TPLink', 'Electronic WiFi router'),
+    -> ('BagPack', 1500, 'Skybags', 'Travel school bag'),
+    -> ('Bottle', 120, 'Milton', 'Plastic water bottle'),
+    -> ('Remote', 600, 'Reliance', 'Electronic TV remote'),
+    -> ('PenDrive', 800, 'HP', 'Electronic storage device'),
+    -> ('RajasthanDiary', 60, 'TATA', 'Paper notebook'),
+    -> ('RomaniaGuide', 40, 'Reliance', 'Travel book'),
+    -> ('Pouch', 20, 'TATA', 'Stationery pouch'),
+    -> ('PaperClip', 5, 'Nataraj', 'Office stationery clip'),
+    -> ('Rack', 3000, 'IKEA', 'Furniture storage rack');
+Query OK, 20 rows affected (0.01 sec)
+Records: 20  Duplicates: 0  Warnings: 0
+
+mysql> select * from product;
++----+----------------+-------+----------+-----------------------------+
+| Id | Name           | Price | Brand    | Des                         |
++----+----------------+-------+----------+-----------------------------+
+|  1 | Pen            |    10 | TATA     | Blue ink smooth writing     |
+|  2 | Pencil         |     5 | TATA     | HB graphite pencil          |
+|  3 | Notebook       |    50 | Reliance | 200 pages notebook          |
+|  4 | Eraser         |     3 | Apsara   | Soft eraser                 |
+|  5 | Sharpener      |     8 | Nataraj  | Steel blade sharpener       |
+|  6 | Marker         |    25 | Camlin   | Permanent black marker      |
+|  7 | Phone          | 15000 | Reliance | Smartphone 6GB RAM          |
+|  8 | Laptop         | 55000 | TATA     | Business laptop             |
+|  9 | Printer        |  8000 | HP       | Laser printer               |
+| 10 | Bag            |  1200 | Skybags  | Travel backpack             |
+| 11 | RubberBand     |    15 | TATA     | Office elastic rubber band  |
+| 12 | Register       |    75 | Reliance | School register book        |
+| 13 | Ruler          |    12 | TATA     | Plastic measuring ruler     |
+| 14 | Bluetooth      |   999 | Boat     | Electronic wireless speaker |
+| 15 | Television     | 25000 | Reliance | Electronic smart TV         |
+| 16 | Camera         | 18000 | Canon    | Electronic DSLR camera      |
+| 17 | PrinterPro     | 12000 | TATA     | Electronic office printer   |
+| 18 | Mouse          |   450 | HP       | Electronic optical mouse    |
+| 19 | Keyboard       |   700 | Logitech | Electronic USB keyboard     |
+| 20 | Monitor        |  9500 | Dell     | Electronic LED monitor      |
+| 21 | Router         |  2200 | TPLink   | Electronic WiFi router      |
+| 22 | BagPack        |  1500 | Skybags  | Travel school bag           |
+| 23 | Bottle         |   120 | Milton   | Plastic water bottle        |
+| 24 | Remote         |   600 | Reliance | Electronic TV remote        |
+| 25 | PenDrive       |   800 | HP       | Electronic storage device   |
+| 26 | RajasthanDiary |    60 | TATA     | Paper notebook              |
+| 27 | RomaniaGuide   |    40 | Reliance | Travel book                 |
+| 28 | Pouch          |    20 | TATA     | Stationery pouch            |
+| 29 | PaperClip      |     5 | Nataraj  | Office stationery clip      |
+| 30 | Rack           |  3000 | IKEA     | Furniture storage rack      |
++----+----------------+-------+----------+-----------------------------+
+30 rows in set (0.00 sec)
+
+mysql> select * from product where name like '%nia' and price > 10;
+Empty set (0.00 sec)
+
+mysql> INSERT INTO Product (Name, Price, Brand, Des) VALUES
+    -> ('Insomnia', 350, 'TATA', 'Sleep care wellness product'),
+    -> ('HarmonyNia', 1200, 'Reliance', 'Premium audio device'),
+    -> ('TechNia', 8000, 'HP', 'Electronic smart gadget'),
+    -> ('FashNia', 2200, 'Zara', 'Fashion lifestyle product'),
+    -> ('GlowNia', 450, 'Lakme', 'Beauty care product'),
+    -> ('SoundNia', 1500, 'Boat', 'Wireless sound system'),
+    -> ('CookNia', 1800, 'Prestige', 'Kitchen appliance'),
+    -> ('PrintNia', 9500, 'Canon', 'Office printer machine'),
+    -> ('LightNia', 600, 'Philips', 'LED lighting device'),
+    -> ('EduNia', 300, 'TATA', 'Educational learning kit');
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from product;
++----+----------------+-------+----------+-----------------------------+
+| Id | Name           | Price | Brand    | Des                         |
++----+----------------+-------+----------+-----------------------------+
+|  1 | Pen            |    10 | TATA     | Blue ink smooth writing     |
+|  2 | Pencil         |     5 | TATA     | HB graphite pencil          |
+|  3 | Notebook       |    50 | Reliance | 200 pages notebook          |
+|  4 | Eraser         |     3 | Apsara   | Soft eraser                 |
+|  5 | Sharpener      |     8 | Nataraj  | Steel blade sharpener       |
+|  6 | Marker         |    25 | Camlin   | Permanent black marker      |
+|  7 | Phone          | 15000 | Reliance | Smartphone 6GB RAM          |
+|  8 | Laptop         | 55000 | TATA     | Business laptop             |
+|  9 | Printer        |  8000 | HP       | Laser printer               |
+| 10 | Bag            |  1200 | Skybags  | Travel backpack             |
+| 11 | RubberBand     |    15 | TATA     | Office elastic rubber band  |
+| 12 | Register       |    75 | Reliance | School register book        |
+| 13 | Ruler          |    12 | TATA     | Plastic measuring ruler     |
+| 14 | Bluetooth      |   999 | Boat     | Electronic wireless speaker |
+| 15 | Television     | 25000 | Reliance | Electronic smart TV         |
+| 16 | Camera         | 18000 | Canon    | Electronic DSLR camera      |
+| 17 | PrinterPro     | 12000 | TATA     | Electronic office printer   |
+| 18 | Mouse          |   450 | HP       | Electronic optical mouse    |
+| 19 | Keyboard       |   700 | Logitech | Electronic USB keyboard     |
+| 20 | Monitor        |  9500 | Dell     | Electronic LED monitor      |
+| 21 | Router         |  2200 | TPLink   | Electronic WiFi router      |
+| 22 | BagPack        |  1500 | Skybags  | Travel school bag           |
+| 23 | Bottle         |   120 | Milton   | Plastic water bottle        |
+| 24 | Remote         |   600 | Reliance | Electronic TV remote        |
+| 25 | PenDrive       |   800 | HP       | Electronic storage device   |
+| 26 | RajasthanDiary |    60 | TATA     | Paper notebook              |
+| 27 | RomaniaGuide   |    40 | Reliance | Travel book                 |
+| 28 | Pouch          |    20 | TATA     | Stationery pouch            |
+| 29 | PaperClip      |     5 | Nataraj  | Office stationery clip      |
+| 30 | Rack           |  3000 | IKEA     | Furniture storage rack      |
+| 31 | Insomnia       |   350 | TATA     | Sleep care wellness product |
+| 32 | HarmonyNia     |  1200 | Reliance | Premium audio device        |
+| 33 | TechNia        |  8000 | HP       | Electronic smart gadget     |
+| 34 | FashNia        |  2200 | Zara     | Fashion lifestyle product   |
+| 35 | GlowNia        |   450 | Lakme    | Beauty care product         |
+| 36 | SoundNia       |  1500 | Boat     | Wireless sound system       |
+| 37 | CookNia        |  1800 | Prestige | Kitchen appliance           |
+| 38 | PrintNia       |  9500 | Canon    | Office printer machine      |
+| 39 | LightNia       |   600 | Philips  | LED lighting device         |
+| 40 | EduNia         |   300 | TATA     | Educational learning kit    |
++----+----------------+-------+----------+-----------------------------+
+40 rows in set (0.00 sec)
+
+mysql> select * from product where name like '%nia' and price > 10;
++----+------------+-------+----------+-----------------------------+
+| Id | Name       | Price | Brand    | Des                         |
++----+------------+-------+----------+-----------------------------+
+| 31 | Insomnia   |   350 | TATA     | Sleep care wellness product |
+| 32 | HarmonyNia |  1200 | Reliance | Premium audio device        |
+| 33 | TechNia    |  8000 | HP       | Electronic smart gadget     |
+| 34 | FashNia    |  2200 | Zara     | Fashion lifestyle product   |
+| 35 | GlowNia    |   450 | Lakme    | Beauty care product         |
+| 36 | SoundNia   |  1500 | Boat     | Wireless sound system       |
+| 37 | CookNia    |  1800 | Prestige | Kitchen appliance           |
+| 38 | PrintNia   |  9500 | Canon    | Office printer machine      |
+| 39 | LightNia   |   600 | Philips  | LED lighting device         |
+| 40 | EduNia     |   300 | TATA     | Educational learning kit    |
++----+------------+-------+----------+-----------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from product where name like 'p%' and price between 5 and 20;
++----+-----------+-------+---------+-------------------------+
+| Id | Name      | Price | Brand   | Des                     |
++----+-----------+-------+---------+-------------------------+
+|  1 | Pen       |    10 | TATA    | Blue ink smooth writing |
+|  2 | Pencil    |     5 | TATA    | HB graphite pencil      |
+| 28 | Pouch     |    20 | TATA    | Stationery pouch        |
+| 29 | PaperClip |     5 | Nataraj | Office stationery clip  |
++----+-----------+-------+---------+-------------------------+
+4 rows in set (0.00 sec)
+
+mysql> select count(id) from product where brand = "TATA";
++-----------+
+| count(id) |
++-----------+
+|        10 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select count(id) from product where price > 10 and price < 100 and name like 'r%';
++-----------+
+| count(id) |
++-----------+
+|         5 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select sum(price) from product;
++------------+
+| sum(price) |
++------------+
+|     180297 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(price) from product;
++------------+
+| avg(price) |
++------------+
+|  4507.4250 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select min(price) and max(price) from product;
++---------------------------+
+| min(price) and max(price) |
++---------------------------+
+|                         1 |
++---------------------------+
+1 row in set (0.00 sec)
+
+mysql> select min(price), max(price) from product;
++------------+------------+
+| min(price) | max(price) |
++------------+------------+
+|          3 |      55000 |
++------------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from product where brand = 'Reliance' and brand ='TATA';
+Empty set (0.00 sec)
+
+mysql> select * from product where brand = "Reliance" and brand ="TATA";
+Empty set (0.00 sec)
+
+mysql> select * from product where brand = "Reliance" or brand ="TATA";
++----+----------------+-------+----------+-----------------------------+
+| Id | Name           | Price | Brand    | Des                         |
++----+----------------+-------+----------+-----------------------------+
+|  1 | Pen            |    10 | TATA     | Blue ink smooth writing     |
+|  2 | Pencil         |     5 | TATA     | HB graphite pencil          |
+|  3 | Notebook       |    50 | Reliance | 200 pages notebook          |
+|  7 | Phone          | 15000 | Reliance | Smartphone 6GB RAM          |
+|  8 | Laptop         | 55000 | TATA     | Business laptop             |
+| 11 | RubberBand     |    15 | TATA     | Office elastic rubber band  |
+| 12 | Register       |    75 | Reliance | School register book        |
+| 13 | Ruler          |    12 | TATA     | Plastic measuring ruler     |
+| 15 | Television     | 25000 | Reliance | Electronic smart TV         |
+| 17 | PrinterPro     | 12000 | TATA     | Electronic office printer   |
+| 24 | Remote         |   600 | Reliance | Electronic TV remote        |
+| 26 | RajasthanDiary |    60 | TATA     | Paper notebook              |
+| 27 | RomaniaGuide   |    40 | Reliance | Travel book                 |
+| 28 | Pouch          |    20 | TATA     | Stationery pouch            |
+| 31 | Insomnia       |   350 | TATA     | Sleep care wellness product |
+| 32 | HarmonyNia     |  1200 | Reliance | Premium audio device        |
+| 40 | EduNia         |   300 | TATA     | Educational learning kit    |
++----+----------------+-------+----------+-----------------------------+
+17 rows in set (0.00 sec)
+
+mysql> select * from product where des like '%electronic%';
++----+------------+-------+----------+-----------------------------+
+| Id | Name       | Price | Brand    | Des                         |
++----+------------+-------+----------+-----------------------------+
+| 14 | Bluetooth  |   999 | Boat     | Electronic wireless speaker |
+| 15 | Television | 25000 | Reliance | Electronic smart TV         |
+| 16 | Camera     | 18000 | Canon    | Electronic DSLR camera      |
+| 17 | PrinterPro | 12000 | TATA     | Electronic office printer   |
+| 18 | Mouse      |   450 | HP       | Electronic optical mouse    |
+| 19 | Keyboard   |   700 | Logitech | Electronic USB keyboard     |
+| 20 | Monitor    |  9500 | Dell     | Electronic LED monitor      |
+| 21 | Router     |  2200 | TPLink   | Electronic WiFi router      |
+| 24 | Remote     |   600 | Reliance | Electronic TV remote        |
+| 25 | PenDrive   |   800 | HP       | Electronic storage device   |
+| 33 | TechNia    |  8000 | HP       | Electronic smart gadget     |
++----+------------+-------+----------+-----------------------------+
+11 rows in set (0.00 sec)
+
+mysql> select * from product where price not between 10 and 100;
++----+------------+-------+----------+-----------------------------+
+| Id | Name       | Price | Brand    | Des                         |
++----+------------+-------+----------+-----------------------------+
+|  2 | Pencil     |     5 | TATA     | HB graphite pencil          |
+|  4 | Eraser     |     3 | Apsara   | Soft eraser                 |
+|  5 | Sharpener  |     8 | Nataraj  | Steel blade sharpener       |
+|  7 | Phone      | 15000 | Reliance | Smartphone 6GB RAM          |
+|  8 | Laptop     | 55000 | TATA     | Business laptop             |
+|  9 | Printer    |  8000 | HP       | Laser printer               |
+| 10 | Bag        |  1200 | Skybags  | Travel backpack             |
+| 14 | Bluetooth  |   999 | Boat     | Electronic wireless speaker |
+| 15 | Television | 25000 | Reliance | Electronic smart TV         |
+| 16 | Camera     | 18000 | Canon    | Electronic DSLR camera      |
+| 17 | PrinterPro | 12000 | TATA     | Electronic office printer   |
+| 18 | Mouse      |   450 | HP       | Electronic optical mouse    |
+| 19 | Keyboard   |   700 | Logitech | Electronic USB keyboard     |
+| 20 | Monitor    |  9500 | Dell     | Electronic LED monitor      |
+| 21 | Router     |  2200 | TPLink   | Electronic WiFi router      |
+| 22 | BagPack    |  1500 | Skybags  | Travel school bag           |
+| 23 | Bottle     |   120 | Milton   | Plastic water bottle        |
+| 24 | Remote     |   600 | Reliance | Electronic TV remote        |
+| 25 | PenDrive   |   800 | HP       | Electronic storage device   |
+| 29 | PaperClip  |     5 | Nataraj  | Office stationery clip      |
+| 30 | Rack       |  3000 | IKEA     | Furniture storage rack      |
+| 31 | Insomnia   |   350 | TATA     | Sleep care wellness product |
+| 32 | HarmonyNia |  1200 | Reliance | Premium audio device        |
+| 33 | TechNia    |  8000 | HP       | Electronic smart gadget     |
+| 34 | FashNia    |  2200 | Zara     | Fashion lifestyle product   |
+| 35 | GlowNia    |   450 | Lakme    | Beauty care product         |
+| 36 | SoundNia   |  1500 | Boat     | Wireless sound system       |
+| 37 | CookNia    |  1800 | Prestige | Kitchen appliance           |
+| 38 | PrintNia   |  9500 | Canon    | Office printer machine      |
+| 39 | LightNia   |   600 | Philips  | LED lighting device         |
+| 40 | EduNia     |   300 | TATA     | Educational learning kit    |
++----+------------+-------+----------+-----------------------------+
+31 rows in set (0.00 sec)
+
+mysql>
