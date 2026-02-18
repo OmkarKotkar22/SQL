@@ -1,0 +1,147 @@
+mysql> show databases;
++--------------------------------+
+| Database                       |
++--------------------------------+
+| information_schema             |
+| library_database               |
+| mysql                          |
+| mysql_practice_and_training    |
+| performance_schema             |
+| practice                       |
+| practice_aggregate_function    |
+| praticing_all_queries_commands |
+| sys                            |
+| team                           |
++--------------------------------+
+10 rows in set (0.01 sec)
+
+mysql> use practice_aggregate_function;
+Database changed
+mysql> show tables;
+Empty set (0.00 sec)
+
+mysql> create table employee(emp_id int primary key auto_increment, emp_name varchar(100) not null, salary int not null check (salary > 0), department varchar(100) default "General");
+Query OK, 0 rows affected (0.34 sec)
+
+mysql> desc employee;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| emp_id     | int          | NO   | PRI | NULL    | auto_increment |
+| emp_name   | varchar(100) | NO   |     | NULL    |                |
+| salary     | int          | NO   |     | NULL    |                |
+| department | varchar(100) | YES  |     | General |                |
++------------+--------------+------+-----+---------+----------------+
+4 rows in set (0.06 sec)
+
+mysql> insert into employee (emp_name, salary, department) values ('Ram', 2500, 'HR'),
+    -> ('Rupali', 15000, 'IT'),
+    -> ('Dinesh', 22000, 'Finance'),
+    -> ('Rajesh', 18000, 'IT'),
+    -> ('Amit', 5000, 'HR'),
+    -> ('Neha', 12000, 'Finance'),
+    -> ('Kiran', 30000, 'Management'),
+    -> ('Suresh', 7000, 'IT');
+Query OK, 8 rows affected (0.02 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++--------+----------+--------+------------+
+| emp_id | emp_name | salary | department |
++--------+----------+--------+------------+
+|      1 | Ram      |   2500 | HR         |
+|      2 | Rupali   |  15000 | IT         |
+|      3 | Dinesh   |  22000 | Finance    |
+|      4 | Rajesh   |  18000 | IT         |
+|      5 | Amit     |   5000 | HR         |
+|      6 | Neha     |  12000 | Finance    |
+|      7 | Kiran    |  30000 | Management |
+|      8 | Suresh   |   7000 | IT         |
++--------+----------+--------+------------+
+8 rows in set (0.01 sec)
+
+mysql> select count(*) as total_employees from employee;
++-----------------+
+| total_employees |
++-----------------+
+|               8 |
++-----------------+
+1 row in set (0.05 sec)
+
+mysql> select count(id) from employee;
+ERROR 1054 (42S22): Unknown column 'id' in 'field list'
+mysql> select count(emp_id) from employee;
++---------------+
+| count(emp_id) |
++---------------+
+|             8 |
++---------------+
+1 row in set (0.01 sec)
+
+mysql> select count(emp_id) from employee salary between 3000 and 20000;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'between 3000 and 20000' at line 1
+mysql> select count(emp_id) from employee where salary between 3000 and 20000;
++---------------+
+| count(emp_id) |
++---------------+
+|             5 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select count(emp_id) from employee where salary > 3000 and salary < 20000 and emp_name not in ("Ram", "Rupali");
++---------------+
+| count(emp_id) |
++---------------+
+|             4 |
++---------------+
+1 row in set (0.01 sec)
+
+mysql> select sum(salary) from employee;
++-------------+
+| sum(salary) |
++-------------+
+|      111500 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(salary) from employee where emp_name not in ("Dinesh", "Rajesh");
++-------------+
+| sum(salary) |
++-------------+
+|       71500 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select min(salary) from employee;
++-------------+
+| min(salary) |
++-------------+
+|        2500 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select max(salary) from employee;
++-------------+
+| max(salary) |
++-------------+
+|       30000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(salary) from employee;
++-------------+
+| avg(salary) |
++-------------+
+|  13937.5000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(salary)/count(emp_id) from employee;
++---------------------------+
+| sum(salary)/count(emp_id) |
++---------------------------+
+|                13937.5000 |
++---------------------------+
+1 row in set (0.01 sec)
+
+mysql>
