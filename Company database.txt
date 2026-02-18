@@ -1,0 +1,978 @@
+mysql> show databases;
++--------------------------------+
+| Database                       |
++--------------------------------+
+| billing                        |
+| company                        |
+| information_schema             |
+| library_database               |
+| mysql                          |
+| mysql_practice_and_training    |
+| performance_schema             |
+| practice                       |
+| practice_aggregate_function    |
+| praticing_all_queries_commands |
+| sys                            |
+| team                           |
++--------------------------------+
+12 rows in set (0.00 sec)
+
+mysql> use company;
+Database changed
+mysql> show tables;
+Empty set (0.00 sec)
+
+mysql> create table Employee(emp_id int primary key, emp_name varchar(50) not null, department varchar(50), salary decimal(10,2), join_date date);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc employee;
++------------+---------------+------+-----+---------+-------+
+| Field      | Type          | Null | Key | Default | Extra |
++------------+---------------+------+-----+---------+-------+
+| emp_id     | int           | NO   | PRI | NULL    |       |
+| emp_name   | varchar(50)   | NO   |     | NULL    |       |
+| department | varchar(50)   | YES  |     | NULL    |       |
+| salary     | decimal(10,2) | YES  |     | NULL    |       |
+| join_date  | date          | YES  |     | NULL    |       |
++------------+---------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> INSERT INTO Employee VALUES
+    -> (1, 'Amit', 'IT', 28000, '2021-03-15'),
+    -> (2, 'Priya', 'HR', 25000, '2020-07-10'),
+    -> (3, 'Rahul', 'Finance', 45000, '2022-01-12'),
+    -> (4, 'Neha', 'Marketing', 22000, '2019-11-05'),
+    -> (5, 'Pooja', 'IT', 50000, '2023-04-18'),
+    -> (6, 'Rohan', 'IT', 30000, '2024-02-01'),
+    -> (7, 'Sneha', 'HR', 26000, '2023-11-10'),
+    -> (8, 'Vikram', 'Finance', 38000, '2022-08-18'),
+    -> (9, 'Anjali', 'Marketing', 42000, '2024-01-10'),
+    -> (10, 'Kiran', 'HR', 55000, '2020-02-25'),
+    -> (11, 'Rahul', 'IT', 35000, '2023-06-25'),
+    -> (12, 'Meena', 'Finance', 27000, '2021-09-09'),
+    -> (13, 'Sagar', 'IT', 15000, '2023-12-01'),
+    -> (14, 'Pritam', 'HR', 60000, '2018-05-20'),
+    -> (15, 'Lata', 'Finance', 32000, '2021-01-01'),
+    -> (16, 'Arun', 'IT', 47000, '2017-03-11'),
+    -> (17, 'Nina', 'Marketing', 29000, '2022-06-30'),
+    -> (18, 'Tina', 'HR', 31000, '2023-03-17'),
+    -> (19, 'Paul', 'IT', 40000, '2021-08-21'),
+    -> (20, 'John', 'Finance', 20000, '2019-12-12'),
+    -> (21, 'Ravi', 'IT', 52000, '2020-10-10'),
+    -> (22, 'Alok', 'HR', 23000, '2018-09-09'),
+    -> (23, 'Gita', 'Marketing', 36000, '2022-04-14'),
+    -> (24, 'Mona', 'Finance', 30000, '2023-02-02'),
+    -> (25, 'Asha', 'IT', 25000, '2021-05-05');
+Query OK, 25 rows affected (0.02 sec)
+Records: 25  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 28000.00 | 2021-03-15 |
+|      2 | Priya    | HR         | 25000.00 | 2020-07-10 |
+|      3 | Rahul    | Finance    | 45000.00 | 2022-01-12 |
+|      4 | Neha     | Marketing  | 22000.00 | 2019-11-05 |
+|      5 | Pooja    | IT         | 50000.00 | 2023-04-18 |
+|      6 | Rohan    | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 26000.00 | 2023-11-10 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|      9 | Anjali   | Marketing  | 42000.00 | 2024-01-10 |
+|     10 | Kiran    | HR         | 55000.00 | 2020-02-25 |
+|     11 | Rahul    | IT         | 35000.00 | 2023-06-25 |
+|     12 | Meena    | Finance    | 27000.00 | 2021-09-09 |
+|     13 | Sagar    | IT         | 15000.00 | 2023-12-01 |
+|     14 | Pritam   | HR         | 60000.00 | 2018-05-20 |
+|     15 | Lata     | Finance    | 32000.00 | 2021-01-01 |
+|     16 | Arun     | IT         | 47000.00 | 2017-03-11 |
+|     17 | Nina     | Marketing  | 29000.00 | 2022-06-30 |
+|     18 | Tina     | HR         | 31000.00 | 2023-03-17 |
+|     19 | Paul     | IT         | 40000.00 | 2021-08-21 |
+|     20 | John     | Finance    | 20000.00 | 2019-12-12 |
+|     21 | Ravi     | IT         | 52000.00 | 2020-10-10 |
+|     22 | Alok     | HR         | 23000.00 | 2018-09-09 |
+|     23 | Gita     | Marketing  | 36000.00 | 2022-04-14 |
+|     24 | Mona     | Finance    | 30000.00 | 2023-02-02 |
+|     25 | Asha     | IT         | 25000.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+25 rows in set (0.00 sec)
+
+mysql> select emp_name, salary from employee;
++----------+----------+
+| emp_name | salary   |
++----------+----------+
+| Amit     | 28000.00 |
+| Priya    | 25000.00 |
+| Rahul    | 45000.00 |
+| Neha     | 22000.00 |
+| Pooja    | 50000.00 |
+| Rohan    | 30000.00 |
+| Sneha    | 26000.00 |
+| Vikram   | 38000.00 |
+| Anjali   | 42000.00 |
+| Kiran    | 55000.00 |
+| Rahul    | 35000.00 |
+| Meena    | 27000.00 |
+| Sagar    | 15000.00 |
+| Pritam   | 60000.00 |
+| Lata     | 32000.00 |
+| Arun     | 47000.00 |
+| Nina     | 29000.00 |
+| Tina     | 31000.00 |
+| Paul     | 40000.00 |
+| John     | 20000.00 |
+| Ravi     | 52000.00 |
+| Alok     | 23000.00 |
+| Gita     | 36000.00 |
+| Mona     | 30000.00 |
+| Asha     | 25000.00 |
++----------+----------+
+25 rows in set (0.00 sec)
+
+mysql> select emp_name form employee where department = "IT";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'employee where department = "IT"' at line 1
+mysql> select * form employee where department = "IT";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'form employee where department = "IT"' at line 1
+mysql> select * from employee where department = "IT";
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 28000.00 | 2021-03-15 |
+|      5 | Pooja    | IT         | 50000.00 | 2023-04-18 |
+|      6 | Rohan    | IT         | 30000.00 | 2024-02-01 |
+|     11 | Rahul    | IT         | 35000.00 | 2023-06-25 |
+|     13 | Sagar    | IT         | 15000.00 | 2023-12-01 |
+|     16 | Arun     | IT         | 47000.00 | 2017-03-11 |
+|     19 | Paul     | IT         | 40000.00 | 2021-08-21 |
+|     21 | Ravi     | IT         | 52000.00 | 2020-10-10 |
+|     25 | Asha     | IT         | 25000.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+9 rows in set (0.00 sec)
+
+mysql> select * from employee where salary < 30000;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 28000.00 | 2021-03-15 |
+|      2 | Priya    | HR         | 25000.00 | 2020-07-10 |
+|      4 | Neha     | Marketing  | 22000.00 | 2019-11-05 |
+|      7 | Sneha    | HR         | 26000.00 | 2023-11-10 |
+|     12 | Meena    | Finance    | 27000.00 | 2021-09-09 |
+|     13 | Sagar    | IT         | 15000.00 | 2023-12-01 |
+|     17 | Nina     | Marketing  | 29000.00 | 2022-06-30 |
+|     20 | John     | Finance    | 20000.00 | 2019-12-12 |
+|     22 | Alok     | HR         | 23000.00 | 2018-09-09 |
+|     25 | Asha     | IT         | 25000.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+10 rows in set (0.01 sec)
+
+mysql> select * from employee where salary > 30000;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      3 | Rahul    | Finance    | 45000.00 | 2022-01-12 |
+|      5 | Pooja    | IT         | 50000.00 | 2023-04-18 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|      9 | Anjali   | Marketing  | 42000.00 | 2024-01-10 |
+|     10 | Kiran    | HR         | 55000.00 | 2020-02-25 |
+|     11 | Rahul    | IT         | 35000.00 | 2023-06-25 |
+|     14 | Pritam   | HR         | 60000.00 | 2018-05-20 |
+|     15 | Lata     | Finance    | 32000.00 | 2021-01-01 |
+|     16 | Arun     | IT         | 47000.00 | 2017-03-11 |
+|     18 | Tina     | HR         | 31000.00 | 2023-03-17 |
+|     19 | Paul     | IT         | 40000.00 | 2021-08-21 |
+|     21 | Ravi     | IT         | 52000.00 | 2020-10-10 |
+|     23 | Gita     | Marketing  | 36000.00 | 2022-04-14 |
++--------+----------+------------+----------+------------+
+13 rows in set (0.00 sec)
+
+mysql> select * from employee where join_date > 2022-01-01;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 28000.00 | 2021-03-15 |
+|      2 | Priya    | HR         | 25000.00 | 2020-07-10 |
+|      3 | Rahul    | Finance    | 45000.00 | 2022-01-12 |
+|      4 | Neha     | Marketing  | 22000.00 | 2019-11-05 |
+|      5 | Pooja    | IT         | 50000.00 | 2023-04-18 |
+|      6 | Rohan    | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 26000.00 | 2023-11-10 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|      9 | Anjali   | Marketing  | 42000.00 | 2024-01-10 |
+|     10 | Kiran    | HR         | 55000.00 | 2020-02-25 |
+|     11 | Rahul    | IT         | 35000.00 | 2023-06-25 |
+|     12 | Meena    | Finance    | 27000.00 | 2021-09-09 |
+|     13 | Sagar    | IT         | 15000.00 | 2023-12-01 |
+|     14 | Pritam   | HR         | 60000.00 | 2018-05-20 |
+|     15 | Lata     | Finance    | 32000.00 | 2021-01-01 |
+|     16 | Arun     | IT         | 47000.00 | 2017-03-11 |
+|     17 | Nina     | Marketing  | 29000.00 | 2022-06-30 |
+|     18 | Tina     | HR         | 31000.00 | 2023-03-17 |
+|     19 | Paul     | IT         | 40000.00 | 2021-08-21 |
+|     20 | John     | Finance    | 20000.00 | 2019-12-12 |
+|     21 | Ravi     | IT         | 52000.00 | 2020-10-10 |
+|     22 | Alok     | HR         | 23000.00 | 2018-09-09 |
+|     23 | Gita     | Marketing  | 36000.00 | 2022-04-14 |
+|     24 | Mona     | Finance    | 30000.00 | 2023-02-02 |
+|     25 | Asha     | IT         | 25000.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+25 rows in set, 1 warning (0.01 sec)
+
+mysql> select * from employee where join_date > '2022-01-01';
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      3 | Rahul    | Finance    | 45000.00 | 2022-01-12 |
+|      5 | Pooja    | IT         | 50000.00 | 2023-04-18 |
+|      6 | Rohan    | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 26000.00 | 2023-11-10 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|      9 | Anjali   | Marketing  | 42000.00 | 2024-01-10 |
+|     11 | Rahul    | IT         | 35000.00 | 2023-06-25 |
+|     13 | Sagar    | IT         | 15000.00 | 2023-12-01 |
+|     17 | Nina     | Marketing  | 29000.00 | 2022-06-30 |
+|     18 | Tina     | HR         | 31000.00 | 2023-03-17 |
+|     23 | Gita     | Marketing  | 36000.00 | 2022-04-14 |
+|     24 | Mona     | Finance    | 30000.00 | 2023-02-02 |
++--------+----------+------------+----------+------------+
+12 rows in set (0.01 sec)
+
+mysql> select distinct(department) from employee;
++------------+
+| department |
++------------+
+| IT         |
+| HR         |
+| Finance    |
+| Marketing  |
++------------+
+4 rows in set (0.01 sec)
+
+mysql> select * from employee where salary between 25000 and 40000;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 28000.00 | 2021-03-15 |
+|      2 | Priya    | HR         | 25000.00 | 2020-07-10 |
+|      6 | Rohan    | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 26000.00 | 2023-11-10 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|     11 | Rahul    | IT         | 35000.00 | 2023-06-25 |
+|     12 | Meena    | Finance    | 27000.00 | 2021-09-09 |
+|     15 | Lata     | Finance    | 32000.00 | 2021-01-01 |
+|     17 | Nina     | Marketing  | 29000.00 | 2022-06-30 |
+|     18 | Tina     | HR         | 31000.00 | 2023-03-17 |
+|     19 | Paul     | IT         | 40000.00 | 2021-08-21 |
+|     23 | Gita     | Marketing  | 36000.00 | 2022-04-14 |
+|     24 | Mona     | Finance    | 30000.00 | 2023-02-02 |
+|     25 | Asha     | IT         | 25000.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+14 rows in set (0.01 sec)
+
+mysql> select * from employee where salary not 35000;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '35000' at line 1
+mysql> select * from employee where salary not equal 35000;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'equal 35000' at line 1
+mysql> select * from employee where not salary=35000;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 28000.00 | 2021-03-15 |
+|      2 | Priya    | HR         | 25000.00 | 2020-07-10 |
+|      3 | Rahul    | Finance    | 45000.00 | 2022-01-12 |
+|      4 | Neha     | Marketing  | 22000.00 | 2019-11-05 |
+|      5 | Pooja    | IT         | 50000.00 | 2023-04-18 |
+|      6 | Rohan    | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 26000.00 | 2023-11-10 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|      9 | Anjali   | Marketing  | 42000.00 | 2024-01-10 |
+|     10 | Kiran    | HR         | 55000.00 | 2020-02-25 |
+|     12 | Meena    | Finance    | 27000.00 | 2021-09-09 |
+|     13 | Sagar    | IT         | 15000.00 | 2023-12-01 |
+|     14 | Pritam   | HR         | 60000.00 | 2018-05-20 |
+|     15 | Lata     | Finance    | 32000.00 | 2021-01-01 |
+|     16 | Arun     | IT         | 47000.00 | 2017-03-11 |
+|     17 | Nina     | Marketing  | 29000.00 | 2022-06-30 |
+|     18 | Tina     | HR         | 31000.00 | 2023-03-17 |
+|     19 | Paul     | IT         | 40000.00 | 2021-08-21 |
+|     20 | John     | Finance    | 20000.00 | 2019-12-12 |
+|     21 | Ravi     | IT         | 52000.00 | 2020-10-10 |
+|     22 | Alok     | HR         | 23000.00 | 2018-09-09 |
+|     23 | Gita     | Marketing  | 36000.00 | 2022-04-14 |
+|     24 | Mona     | Finance    | 30000.00 | 2023-02-02 |
+|     25 | Asha     | IT         | 25000.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+24 rows in set (0.00 sec)
+
+mysql> select * from employee where department = 'HR' or department = 'IT';
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 28000.00 | 2021-03-15 |
+|      2 | Priya    | HR         | 25000.00 | 2020-07-10 |
+|      5 | Pooja    | IT         | 50000.00 | 2023-04-18 |
+|      6 | Rohan    | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 26000.00 | 2023-11-10 |
+|     10 | Kiran    | HR         | 55000.00 | 2020-02-25 |
+|     11 | Rahul    | IT         | 35000.00 | 2023-06-25 |
+|     13 | Sagar    | IT         | 15000.00 | 2023-12-01 |
+|     14 | Pritam   | HR         | 60000.00 | 2018-05-20 |
+|     16 | Arun     | IT         | 47000.00 | 2017-03-11 |
+|     18 | Tina     | HR         | 31000.00 | 2023-03-17 |
+|     19 | Paul     | IT         | 40000.00 | 2021-08-21 |
+|     21 | Ravi     | IT         | 52000.00 | 2020-10-10 |
+|     22 | Alok     | HR         | 23000.00 | 2018-09-09 |
+|     25 | Asha     | IT         | 25000.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+15 rows in set (0.00 sec)
+
+mysql> select * from employee where emp_name like 'P%';
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      2 | Priya    | HR         | 25000.00 | 2020-07-10 |
+|      5 | Pooja    | IT         | 50000.00 | 2023-04-18 |
+|     14 | Pritam   | HR         | 60000.00 | 2018-05-20 |
+|     19 | Paul     | IT         | 40000.00 | 2021-08-21 |
++--------+----------+------------+----------+------------+
+4 rows in set (0.01 sec)
+
+mysql> select * from employee where salary >= 30000 and department = 'IT';
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      5 | Pooja    | IT         | 50000.00 | 2023-04-18 |
+|      6 | Rohan    | IT         | 30000.00 | 2024-02-01 |
+|     11 | Rahul    | IT         | 35000.00 | 2023-06-25 |
+|     16 | Arun     | IT         | 47000.00 | 2017-03-11 |
+|     19 | Paul     | IT         | 40000.00 | 2021-08-21 |
+|     21 | Ravi     | IT         | 52000.00 | 2020-10-10 |
++--------+----------+------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from employee where salary <= 30000 and department = 'Finance';
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|     12 | Meena    | Finance    | 27000.00 | 2021-09-09 |
+|     20 | John     | Finance    | 20000.00 | 2019-12-12 |
+|     24 | Mona     | Finance    | 30000.00 | 2023-02-02 |
++--------+----------+------------+----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee where salary < 30000 and department = 'Finance';
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|     12 | Meena    | Finance    | 27000.00 | 2021-09-09 |
+|     20 | John     | Finance    | 20000.00 | 2019-12-12 |
++--------+----------+------------+----------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee where name like '%a%';
+ERROR 1054 (42S22): Unknown column 'name' in 'where clause'
+mysql> select * from employee where emp_name like '%a%';
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 28000.00 | 2021-03-15 |
+|      2 | Priya    | HR         | 25000.00 | 2020-07-10 |
+|      3 | Rahul    | Finance    | 45000.00 | 2022-01-12 |
+|      4 | Neha     | Marketing  | 22000.00 | 2019-11-05 |
+|      5 | Pooja    | IT         | 50000.00 | 2023-04-18 |
+|      6 | Rohan    | IT         | 30000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 26000.00 | 2023-11-10 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|      9 | Anjali   | Marketing  | 42000.00 | 2024-01-10 |
+|     10 | Kiran    | HR         | 55000.00 | 2020-02-25 |
+|     11 | Rahul    | IT         | 35000.00 | 2023-06-25 |
+|     12 | Meena    | Finance    | 27000.00 | 2021-09-09 |
+|     13 | Sagar    | IT         | 15000.00 | 2023-12-01 |
+|     14 | Pritam   | HR         | 60000.00 | 2018-05-20 |
+|     15 | Lata     | Finance    | 32000.00 | 2021-01-01 |
+|     16 | Arun     | IT         | 47000.00 | 2017-03-11 |
+|     17 | Nina     | Marketing  | 29000.00 | 2022-06-30 |
+|     18 | Tina     | HR         | 31000.00 | 2023-03-17 |
+|     19 | Paul     | IT         | 40000.00 | 2021-08-21 |
+|     21 | Ravi     | IT         | 52000.00 | 2020-10-10 |
+|     22 | Alok     | HR         | 23000.00 | 2018-09-09 |
+|     23 | Gita     | Marketing  | 36000.00 | 2022-04-14 |
+|     24 | Mona     | Finance    | 30000.00 | 2023-02-02 |
+|     25 | Asha     | IT         | 25000.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+24 rows in set (0.00 sec)
+
+mysql> update employee set salary = salary + 2000 where department='IT';
+Query OK, 9 rows affected (0.01 sec)
+Rows matched: 9  Changed: 9  Warnings: 0
+
+mysql> select * from employee where department = 'IT';
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 30000.00 | 2021-03-15 |
+|      5 | Pooja    | IT         | 52000.00 | 2023-04-18 |
+|      6 | Rohan    | IT         | 32000.00 | 2024-02-01 |
+|     11 | Rahul    | IT         | 37000.00 | 2023-06-25 |
+|     13 | Sagar    | IT         | 17000.00 | 2023-12-01 |
+|     16 | Arun     | IT         | 49000.00 | 2017-03-11 |
+|     19 | Paul     | IT         | 42000.00 | 2021-08-21 |
+|     21 | Ravi     | IT         | 54000.00 | 2020-10-10 |
+|     25 | Asha     | IT         | 27000.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+9 rows in set (0.00 sec)
+
+mysql> update employee set department="HR" where emp_id = 3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee where emp_id=3;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      3 | Rahul    | HR         | 45000.00 | 2022-01-12 |
++--------+----------+------------+----------+------------+
+1 row in set (0.00 sec)
+
+mysql> update employee set salary = 30000 where emp_name = "Amit";
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> select
+    -> select * from employee where emp_name = "Amit";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select * from employee where emp_name = "Amit"' at line 2
+mysql>
+mysql> select * from employee where emp_name = "Amit";
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 30000.00 | 2021-03-15 |
++--------+----------+------------+----------+------------+
+1 row in set (0.00 sec)
+
+mysql> update employee set join_date = 2024-01-01 where emp_id=5;
+ERROR 1292 (22007): Incorrect date value: '2022' for column 'join_date' at row 1
+mysql> update employee set join_date = '2024-01-01' where emp_id=5;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee where emp_id=5;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      5 | Pooja    | IT         | 52000.00 | 2024-01-01 |
++--------+----------+------------+----------+------------+
+1 row in set (0.00 sec)
+
+mysql> update employee set salary = salary * 1.10 where department = "HR";
+Query OK, 7 rows affected (0.01 sec)
+Rows matched: 7  Changed: 7  Warnings: 0
+
+mysql> select * from employee where department= "HR";
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      2 | Priya    | HR         | 27500.00 | 2020-07-10 |
+|      3 | Rahul    | HR         | 49500.00 | 2022-01-12 |
+|      7 | Sneha    | HR         | 28600.00 | 2023-11-10 |
+|     10 | Kiran    | HR         | 60500.00 | 2020-02-25 |
+|     14 | Pritam   | HR         | 66000.00 | 2018-05-20 |
+|     18 | Tina     | HR         | 34100.00 | 2023-03-17 |
+|     22 | Alok     | HR         | 25300.00 | 2018-09-09 |
++--------+----------+------------+----------+------------+
+7 rows in set (0.00 sec)
+
+mysql> delete from employee where emp_id=2;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from employee;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 30000.00 | 2021-03-15 |
+|      3 | Rahul    | HR         | 49500.00 | 2022-01-12 |
+|      4 | Neha     | Marketing  | 22000.00 | 2019-11-05 |
+|      5 | Pooja    | IT         | 52000.00 | 2024-01-01 |
+|      6 | Rohan    | IT         | 32000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 28600.00 | 2023-11-10 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|      9 | Anjali   | Marketing  | 42000.00 | 2024-01-10 |
+|     10 | Kiran    | HR         | 60500.00 | 2020-02-25 |
+|     11 | Rahul    | IT         | 37000.00 | 2023-06-25 |
+|     12 | Meena    | Finance    | 27000.00 | 2021-09-09 |
+|     13 | Sagar    | IT         | 17000.00 | 2023-12-01 |
+|     14 | Pritam   | HR         | 66000.00 | 2018-05-20 |
+|     15 | Lata     | Finance    | 32000.00 | 2021-01-01 |
+|     16 | Arun     | IT         | 49000.00 | 2017-03-11 |
+|     17 | Nina     | Marketing  | 29000.00 | 2022-06-30 |
+|     18 | Tina     | HR         | 34100.00 | 2023-03-17 |
+|     19 | Paul     | IT         | 42000.00 | 2021-08-21 |
+|     20 | John     | Finance    | 20000.00 | 2019-12-12 |
+|     21 | Ravi     | IT         | 54000.00 | 2020-10-10 |
+|     22 | Alok     | HR         | 25300.00 | 2018-09-09 |
+|     23 | Gita     | Marketing  | 36000.00 | 2022-04-14 |
+|     24 | Mona     | Finance    | 30000.00 | 2023-02-02 |
+|     25 | Asha     | IT         | 27000.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+24 rows in set (0.00 sec)
+
+mysql> delete from employee where department = "Marketing";
+Query OK, 4 rows affected (0.01 sec)
+
+mysql> select * from employee;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 30000.00 | 2021-03-15 |
+|      3 | Rahul    | HR         | 49500.00 | 2022-01-12 |
+|      5 | Pooja    | IT         | 52000.00 | 2024-01-01 |
+|      6 | Rohan    | IT         | 32000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 28600.00 | 2023-11-10 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|     10 | Kiran    | HR         | 60500.00 | 2020-02-25 |
+|     11 | Rahul    | IT         | 37000.00 | 2023-06-25 |
+|     12 | Meena    | Finance    | 27000.00 | 2021-09-09 |
+|     13 | Sagar    | IT         | 17000.00 | 2023-12-01 |
+|     14 | Pritam   | HR         | 66000.00 | 2018-05-20 |
+|     15 | Lata     | Finance    | 32000.00 | 2021-01-01 |
+|     16 | Arun     | IT         | 49000.00 | 2017-03-11 |
+|     18 | Tina     | HR         | 34100.00 | 2023-03-17 |
+|     19 | Paul     | IT         | 42000.00 | 2021-08-21 |
+|     20 | John     | Finance    | 20000.00 | 2019-12-12 |
+|     21 | Ravi     | IT         | 54000.00 | 2020-10-10 |
+|     22 | Alok     | HR         | 25300.00 | 2018-09-09 |
+|     24 | Mona     | Finance    | 30000.00 | 2023-02-02 |
+|     25 | Asha     | IT         | 27000.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+20 rows in set (0.00 sec)
+
+mysql> delete from employee where salary < 25000;
+Query OK, 2 rows affected (0.01 sec)
+
+mysql> select * from employee;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 30000.00 | 2021-03-15 |
+|      3 | Rahul    | HR         | 49500.00 | 2022-01-12 |
+|      5 | Pooja    | IT         | 52000.00 | 2024-01-01 |
+|      6 | Rohan    | IT         | 32000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 28600.00 | 2023-11-10 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|     10 | Kiran    | HR         | 60500.00 | 2020-02-25 |
+|     11 | Rahul    | IT         | 37000.00 | 2023-06-25 |
+|     12 | Meena    | Finance    | 27000.00 | 2021-09-09 |
+|     14 | Pritam   | HR         | 66000.00 | 2018-05-20 |
+|     15 | Lata     | Finance    | 32000.00 | 2021-01-01 |
+|     16 | Arun     | IT         | 49000.00 | 2017-03-11 |
+|     18 | Tina     | HR         | 34100.00 | 2023-03-17 |
+|     19 | Paul     | IT         | 42000.00 | 2021-08-21 |
+|     21 | Ravi     | IT         | 54000.00 | 2020-10-10 |
+|     22 | Alok     | HR         | 25300.00 | 2018-09-09 |
+|     24 | Mona     | Finance    | 30000.00 | 2023-02-02 |
+|     25 | Asha     | IT         | 27000.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+18 rows in set (0.00 sec)
+
+mysql> select sum(salary) from employee;
++-------------+
+| sum(salary) |
++-------------+
+|   714000.00 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> selct avg(salary) from employee where department="IT";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selct avg(salary) from employee where department="IT"' at line 1
+mysql> select avg(salary) from employee where department="IT";
++--------------+
+| avg(salary)  |
++--------------+
+| 40375.000000 |
++--------------+
+1 row in set (0.01 sec)
+
+mysql> select max(salary), min(salary) from employee;
++-------------+-------------+
+| max(salary) | min(salary) |
++-------------+-------------+
+|    66000.00 |    25300.00 |
++-------------+-------------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee where salary order by desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc' at line 1
+mysql> select * from employee where order by salary desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order by salary desc' at line 1
+mysql> select * from employee order by salary desc;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|     14 | Pritam   | HR         | 66000.00 | 2018-05-20 |
+|     10 | Kiran    | HR         | 60500.00 | 2020-02-25 |
+|     21 | Ravi     | IT         | 54000.00 | 2020-10-10 |
+|      5 | Pooja    | IT         | 52000.00 | 2024-01-01 |
+|      3 | Rahul    | HR         | 49500.00 | 2022-01-12 |
+|     16 | Arun     | IT         | 49000.00 | 2017-03-11 |
+|     19 | Paul     | IT         | 42000.00 | 2021-08-21 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|     11 | Rahul    | IT         | 37000.00 | 2023-06-25 |
+|     18 | Tina     | HR         | 34100.00 | 2023-03-17 |
+|      6 | Rohan    | IT         | 32000.00 | 2024-02-01 |
+|     15 | Lata     | Finance    | 32000.00 | 2021-01-01 |
+|      1 | Amit     | IT         | 30000.00 | 2021-03-15 |
+|     24 | Mona     | Finance    | 30000.00 | 2023-02-02 |
+|      7 | Sneha    | HR         | 28600.00 | 2023-11-10 |
+|     12 | Meena    | Finance    | 27000.00 | 2021-09-09 |
+|     25 | Asha     | IT         | 27000.00 | 2021-05-05 |
+|     22 | Alok     | HR         | 25300.00 | 2018-09-09 |
++--------+----------+------------+----------+------------+
+18 rows in set (0.00 sec)
+
+mysql> select * from employee salary < 30000 and salary >= 50000 order by asc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '< 30000 and salary >= 50000 order by asc' at line 1
+mysql> select * from employee salary < 30000 and salary >= 50000 order by salary asc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '< 30000 and salary >= 50000 order by salary asc' at line 1
+mysql> select * from employee where salary < 30000 and salary >= 50000 order by salary asc;
+Empty set (0.00 sec)
+
+mysql> select * from employee where salary > 30000 and salary <= 50000 order by salary asc;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      6 | Rohan    | IT         | 32000.00 | 2024-02-01 |
+|     15 | Lata     | Finance    | 32000.00 | 2021-01-01 |
+|     18 | Tina     | HR         | 34100.00 | 2023-03-17 |
+|     11 | Rahul    | IT         | 37000.00 | 2023-06-25 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|     19 | Paul     | IT         | 42000.00 | 2021-08-21 |
+|     16 | Arun     | IT         | 49000.00 | 2017-03-11 |
+|      3 | Rahul    | HR         | 49500.00 | 2022-01-12 |
++--------+----------+------------+----------+------------+
+8 rows in set (0.01 sec)
+
+mysql> select * from employee where not department="HR" and salary > 25000;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 30000.00 | 2021-03-15 |
+|      5 | Pooja    | IT         | 52000.00 | 2024-01-01 |
+|      6 | Rohan    | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|     11 | Rahul    | IT         | 37000.00 | 2023-06-25 |
+|     12 | Meena    | Finance    | 27000.00 | 2021-09-09 |
+|     15 | Lata     | Finance    | 32000.00 | 2021-01-01 |
+|     16 | Arun     | IT         | 49000.00 | 2017-03-11 |
+|     19 | Paul     | IT         | 42000.00 | 2021-08-21 |
+|     21 | Ravi     | IT         | 54000.00 | 2020-10-10 |
+|     24 | Mona     | Finance    | 30000.00 | 2023-02-02 |
+|     25 | Asha     | IT         | 27000.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+12 rows in set (0.00 sec)
+
+mysql> select * from employee where not emp_name="A%" and salary > 30000;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      3 | Rahul    | HR         | 49500.00 | 2022-01-12 |
+|      5 | Pooja    | IT         | 52000.00 | 2024-01-01 |
+|      6 | Rohan    | IT         | 32000.00 | 2024-02-01 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|     10 | Kiran    | HR         | 60500.00 | 2020-02-25 |
+|     11 | Rahul    | IT         | 37000.00 | 2023-06-25 |
+|     14 | Pritam   | HR         | 66000.00 | 2018-05-20 |
+|     15 | Lata     | Finance    | 32000.00 | 2021-01-01 |
+|     16 | Arun     | IT         | 49000.00 | 2017-03-11 |
+|     18 | Tina     | HR         | 34100.00 | 2023-03-17 |
+|     19 | Paul     | IT         | 42000.00 | 2021-08-21 |
+|     21 | Ravi     | IT         | 54000.00 | 2020-10-10 |
++--------+----------+------------+----------+------------+
+12 rows in set (0.00 sec)
+
+mysql> select * from employee where between join_date = "2021-01-01" and join_daye="2023-12-31" order by join_date desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'between join_date = "2021-01-01" and join_daye="2023-12-31" order by join_date d' at line 1
+mysql> select * from employee where join_date between "2021-01-01" and "2023-12-31" order by join_date desc;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      7 | Sneha    | HR         | 28600.00 | 2023-11-10 |
+|     11 | Rahul    | IT         | 37000.00 | 2023-06-25 |
+|     18 | Tina     | HR         | 34100.00 | 2023-03-17 |
+|     24 | Mona     | Finance    | 30000.00 | 2023-02-02 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|      3 | Rahul    | HR         | 49500.00 | 2022-01-12 |
+|     12 | Meena    | Finance    | 27000.00 | 2021-09-09 |
+|     19 | Paul     | IT         | 42000.00 | 2021-08-21 |
+|     25 | Asha     | IT         | 27000.00 | 2021-05-05 |
+|      1 | Amit     | IT         | 30000.00 | 2021-03-15 |
+|     15 | Lata     | Finance    | 32000.00 | 2021-01-01 |
++--------+----------+------------+----------+------------+
+11 rows in set (0.00 sec)
+
+mysql> select * from employee where salary%5000;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      3 | Rahul    | HR         | 49500.00 | 2022-01-12 |
+|      5 | Pooja    | IT         | 52000.00 | 2024-01-01 |
+|      6 | Rohan    | IT         | 32000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 28600.00 | 2023-11-10 |
+|      8 | Vikram   | Finance    | 38000.00 | 2022-08-18 |
+|     10 | Kiran    | HR         | 60500.00 | 2020-02-25 |
+|     11 | Rahul    | IT         | 37000.00 | 2023-06-25 |
+|     12 | Meena    | Finance    | 27000.00 | 2021-09-09 |
+|     14 | Pritam   | HR         | 66000.00 | 2018-05-20 |
+|     15 | Lata     | Finance    | 32000.00 | 2021-01-01 |
+|     16 | Arun     | IT         | 49000.00 | 2017-03-11 |
+|     18 | Tina     | HR         | 34100.00 | 2023-03-17 |
+|     19 | Paul     | IT         | 42000.00 | 2021-08-21 |
+|     21 | Ravi     | IT         | 54000.00 | 2020-10-10 |
+|     22 | Alok     | HR         | 25300.00 | 2018-09-09 |
+|     25 | Asha     | IT         | 27000.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+16 rows in set (0.01 sec)
+
+mysql> update employee set salary = salary * 1.15 where join_date < 2022-01-01;
+ERROR 1292 (22007): Incorrect date value: '2020' for column 'join_date' at row 1
+mysql> update employee set salary = salary * 1.15 where join_date < '2022-01-01';
+Query OK, 10 rows affected (0.01 sec)
+Rows matched: 10  Changed: 10  Warnings: 0
+
+mysql> select * from employee where join_date < '2022-01-01';
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 34500.00 | 2021-03-15 |
+|     10 | Kiran    | HR         | 69575.00 | 2020-02-25 |
+|     12 | Meena    | Finance    | 31050.00 | 2021-09-09 |
+|     14 | Pritam   | HR         | 75900.00 | 2018-05-20 |
+|     15 | Lata     | Finance    | 36800.00 | 2021-01-01 |
+|     16 | Arun     | IT         | 56350.00 | 2017-03-11 |
+|     19 | Paul     | IT         | 48300.00 | 2021-08-21 |
+|     21 | Ravi     | IT         | 62100.00 | 2020-10-10 |
+|     22 | Alok     | HR         | 29095.00 | 2018-09-09 |
+|     25 | Asha     | IT         | 31050.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+10 rows in set (0.00 sec)
+
+mysql> update employee set salary = salary * 0.95 where department = "Finance";
+Query OK, 4 rows affected (0.01 sec)
+Rows matched: 4  Changed: 4  Warnings: 0
+
+mysql> select * from employee where department = "finance";
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      8 | Vikram   | Finance    | 36100.00 | 2022-08-18 |
+|     12 | Meena    | Finance    | 29497.50 | 2021-09-09 |
+|     15 | Lata     | Finance    | 34960.00 | 2021-01-01 |
+|     24 | Mona     | Finance    | 28500.00 | 2023-02-02 |
++--------+----------+------------+----------+------------+
+4 rows in set (0.00 sec)
+
+mysql> update employee set department="Senior IT" where salary >= 45000;
+Query OK, 7 rows affected (0.01 sec)
+Rows matched: 7  Changed: 7  Warnings: 0
+
+mysql> select * from employee where department = "Senior IT";
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      3 | Rahul    | Senior IT  | 49500.00 | 2022-01-12 |
+|      5 | Pooja    | Senior IT  | 52000.00 | 2024-01-01 |
+|     10 | Kiran    | Senior IT  | 69575.00 | 2020-02-25 |
+|     14 | Pritam   | Senior IT  | 75900.00 | 2018-05-20 |
+|     16 | Arun     | Senior IT  | 56350.00 | 2017-03-11 |
+|     19 | Paul     | Senior IT  | 48300.00 | 2021-08-21 |
+|     21 | Ravi     | Senior IT  | 62100.00 | 2020-10-10 |
++--------+----------+------------+----------+------------+
+7 rows in set (0.01 sec)
+
+mysql> select * from employee;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 34500.00 | 2021-03-15 |
+|      3 | Rahul    | Senior IT  | 49500.00 | 2022-01-12 |
+|      5 | Pooja    | Senior IT  | 52000.00 | 2024-01-01 |
+|      6 | Rohan    | IT         | 32000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 28600.00 | 2023-11-10 |
+|      8 | Vikram   | Finance    | 36100.00 | 2022-08-18 |
+|     10 | Kiran    | Senior IT  | 69575.00 | 2020-02-25 |
+|     11 | Rahul    | IT         | 37000.00 | 2023-06-25 |
+|     12 | Meena    | Finance    | 29497.50 | 2021-09-09 |
+|     14 | Pritam   | Senior IT  | 75900.00 | 2018-05-20 |
+|     15 | Lata     | Finance    | 34960.00 | 2021-01-01 |
+|     16 | Arun     | Senior IT  | 56350.00 | 2017-03-11 |
+|     18 | Tina     | HR         | 34100.00 | 2023-03-17 |
+|     19 | Paul     | Senior IT  | 48300.00 | 2021-08-21 |
+|     21 | Ravi     | Senior IT  | 62100.00 | 2020-10-10 |
+|     22 | Alok     | HR         | 29095.00 | 2018-09-09 |
+|     24 | Mona     | Finance    | 28500.00 | 2023-02-02 |
+|     25 | Asha     | IT         | 31050.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+18 rows in set (0.00 sec)
+
+mysql> update employee set salary = 30000 where salary < 25000;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> DELETE FROM Employee
+    -> WHERE join_date < '2021-01-01';
+Query OK, 5 rows affected (0.01 sec)
+
+mysql> select * from employee;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 34500.00 | 2021-03-15 |
+|      3 | Rahul    | Senior IT  | 49500.00 | 2022-01-12 |
+|      5 | Pooja    | Senior IT  | 52000.00 | 2024-01-01 |
+|      6 | Rohan    | IT         | 32000.00 | 2024-02-01 |
+|      7 | Sneha    | HR         | 28600.00 | 2023-11-10 |
+|      8 | Vikram   | Finance    | 36100.00 | 2022-08-18 |
+|     11 | Rahul    | IT         | 37000.00 | 2023-06-25 |
+|     12 | Meena    | Finance    | 29497.50 | 2021-09-09 |
+|     15 | Lata     | Finance    | 34960.00 | 2021-01-01 |
+|     18 | Tina     | HR         | 34100.00 | 2023-03-17 |
+|     19 | Paul     | Senior IT  | 48300.00 | 2021-08-21 |
+|     24 | Mona     | Finance    | 28500.00 | 2023-02-02 |
+|     25 | Asha     | IT         | 31050.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+13 rows in set (0.00 sec)
+
+mysql> select department, sum(salary) from employee group by department;
++------------+-------------+
+| department | sum(salary) |
++------------+-------------+
+| IT         |   134550.00 |
+| Senior IT  |   149800.00 |
+| HR         |    62700.00 |
+| Finance    |   129057.50 |
++------------+-------------+
+4 rows in set (0.01 sec)
+
+mysql> select department, avg(salary) from employee group by department desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc' at line 1
+mysql> select department, avg(salary) from employee order by department desc;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'company.employee.department'; this is incompatible with sql_mode=only_full_group_by
+mysql> select department, avg(salary) as avg from employee group by department oder by avg desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'oder by avg desc' at line 1
+mysql> select department, avg(salary) as avgsal from employee group by department order by avgsal desc;
++------------+--------------+
+| department | avgsal       |
++------------+--------------+
+| Senior IT  | 49933.333333 |
+| IT         | 33637.500000 |
+| Finance    | 32264.375000 |
+| HR         | 31350.000000 |
++------------+--------------+
+4 rows in set (0.01 sec)
+
+mysql> select department, count(*) as emp_count from employee group by department;
++------------+-----------+
+| department | emp_count |
++------------+-----------+
+| IT         |         4 |
+| Senior IT  |         3 |
+| HR         |         2 |
+| Finance    |         4 |
++------------+-----------+
+4 rows in set (0.01 sec)
+
+mysql> select department, count(employee) from employee group by department;
+ERROR 1054 (42S22): Unknown column 'employee' in 'field list'
+mysql> select department, count(*) as emp_count from employee group by department;
++------------+-----------+
+| department | emp_count |
++------------+-----------+
+| IT         |         4 |
+| Senior IT  |         3 |
+| HR         |         2 |
+| Finance    |         4 |
++------------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from employee where department having count(emp_name) > 2 group by department;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'group by department' at line 1
+mysql> select department, count(emp_name) as emp_count from employee group by department having count(emp_name) > 2;
++------------+-----------+
+| department | emp_count |
++------------+-----------+
+| IT         |         4 |
+| Senior IT  |         3 |
+| Finance    |         4 |
++------------+-----------+
+3 rows in set (0.01 sec)
+
+mysql> select department, max(salary) as maxsal from employee group ny department;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ny department' at line 1
+mysql> select department, max(salary) as maxsal from employee group by department;
++------------+----------+
+| department | maxsal   |
++------------+----------+
+| IT         | 37000.00 |
+| Senior IT  | 52000.00 |
+| HR         | 34100.00 |
+| Finance    | 36100.00 |
++------------+----------+
+4 rows in set (0.01 sec)
+
+mysql> select department, min(salary) as minsal from employee group by department having minsal > 30000;
++------------+----------+
+| department | minsal   |
++------------+----------+
+| IT         | 31050.00 |
+| Senior IT  | 48300.00 |
++------------+----------+
+2 rows in set (0.01 sec)
+
+mysql> select * from employee where emp_name like "____";
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      1 | Amit     | IT         | 34500.00 | 2021-03-15 |
+|     15 | Lata     | Finance    | 34960.00 | 2021-01-01 |
+|     18 | Tina     | HR         | 34100.00 | 2023-03-17 |
+|     19 | Paul     | Senior IT  | 48300.00 | 2021-08-21 |
+|     24 | Mona     | Finance    | 28500.00 | 2023-02-02 |
+|     25 | Asha     | IT         | 31050.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+6 rows in set (0.01 sec)
+
+mysql> select * from employee where emp_name like "%a";
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      5 | Pooja    | Senior IT  | 52000.00 | 2024-01-01 |
+|      7 | Sneha    | HR         | 28600.00 | 2023-11-10 |
+|     12 | Meena    | Finance    | 29497.50 | 2021-09-09 |
+|     15 | Lata     | Finance    | 34960.00 | 2021-01-01 |
+|     18 | Tina     | HR         | 34100.00 | 2023-03-17 |
+|     24 | Mona     | Finance    | 28500.00 | 2023-02-02 |
+|     25 | Asha     | IT         | 31050.00 | 2021-05-05 |
++--------+----------+------------+----------+------------+
+7 rows in set (0.00 sec)
+
+mysql> select * from employee order by department asc & salary desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '& salary desc' at line 1
+mysql> select * from employee order by department asc , salary desc;
++--------+----------+------------+----------+------------+
+| emp_id | emp_name | department | salary   | join_date  |
++--------+----------+------------+----------+------------+
+|      8 | Vikram   | Finance    | 36100.00 | 2022-08-18 |
+|     15 | Lata     | Finance    | 34960.00 | 2021-01-01 |
+|     12 | Meena    | Finance    | 29497.50 | 2021-09-09 |
+|     24 | Mona     | Finance    | 28500.00 | 2023-02-02 |
+|     18 | Tina     | HR         | 34100.00 | 2023-03-17 |
+|      7 | Sneha    | HR         | 28600.00 | 2023-11-10 |
+|     11 | Rahul    | IT         | 37000.00 | 2023-06-25 |
+|      1 | Amit     | IT         | 34500.00 | 2021-03-15 |
+|      6 | Rohan    | IT         | 32000.00 | 2024-02-01 |
+|     25 | Asha     | IT         | 31050.00 | 2021-05-05 |
+|      5 | Pooja    | Senior IT  | 52000.00 | 2024-01-01 |
+|      3 | Rahul    | Senior IT  | 49500.00 | 2022-01-12 |
+|     19 | Paul     | Senior IT  | 48300.00 | 2021-08-21 |
++--------+----------+------------+----------+------------+
+13 rows in set (0.01 sec)
