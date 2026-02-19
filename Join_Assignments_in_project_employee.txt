@@ -683,3 +683,379 @@ mysql> select * from employee where project_id is not null;
 |    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |
 +--------+----------+--------------------+-----------+------------+------------+
 32 rows in set (0.01 sec)
+
+mysql> select * from project, employee;
++------------+-----------------+-----------+------------+--------+----------+--------------------+-----------+------------+------------+
+| project_id | project_name    | location  | budget     | emp_id | emp_name | designation        | salary    | manager_id | project_id |
++------------+-----------------+-----------+------------+--------+----------+--------------------+-----------+------------+------------+
+|          8 | Blockchain      | Noida     | 1300000.00 |    101 | Amit     | Project Manager    |  90000.00 |       NULL |          1 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    101 | Amit     | Project Manager    |  90000.00 |       NULL |          1 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    101 | Amit     | Project Manager    |  90000.00 |       NULL |          1 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    101 | Amit     | Project Manager    |  90000.00 |       NULL |          1 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    101 | Amit     | Project Manager    |  90000.00 |       NULL |          1 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    101 | Amit     | Project Manager    |  90000.00 |       NULL |          1 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    101 | Amit     | Project Manager    |  90000.00 |       NULL |          1 |
+|          1 | AI Development  | Pune      | 1500000.00 |    101 | Amit     | Project Manager    |  90000.00 |       NULL |          1 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    102 | Rahul    | Developer          |  60000.00 |        101 |          1 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    102 | Rahul    | Developer          |  60000.00 |        101 |          1 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    102 | Rahul    | Developer          |  60000.00 |        101 |          1 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    102 | Rahul    | Developer          |  60000.00 |        101 |          1 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    102 | Rahul    | Developer          |  60000.00 |        101 |          1 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    102 | Rahul    | Developer          |  60000.00 |        101 |          1 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    102 | Rahul    | Developer          |  60000.00 |        101 |          1 |
+|          1 | AI Development  | Pune      | 1500000.00 |    102 | Rahul    | Developer          |  60000.00 |        101 |          1 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    103 | Neha     | Tester             |  45000.00 |        101 |          1 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    103 | Neha     | Tester             |  45000.00 |        101 |          1 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    103 | Neha     | Tester             |  45000.00 |        101 |          1 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    103 | Neha     | Tester             |  45000.00 |        101 |          1 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    103 | Neha     | Tester             |  45000.00 |        101 |          1 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    103 | Neha     | Tester             |  45000.00 |        101 |          1 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    103 | Neha     | Tester             |  45000.00 |        101 |          1 |
+|          1 | AI Development  | Pune      | 1500000.00 |    103 | Neha     | Tester             |  45000.00 |        101 |          1 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    104 | Kiran    | Developer          |  58000.00 |        101 |          1 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    104 | Kiran    | Developer          |  58000.00 |        101 |          1 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    104 | Kiran    | Developer          |  58000.00 |        101 |          1 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    104 | Kiran    | Developer          |  58000.00 |        101 |          1 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    104 | Kiran    | Developer          |  58000.00 |        101 |          1 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    104 | Kiran    | Developer          |  58000.00 |        101 |          1 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    104 | Kiran    | Developer          |  58000.00 |        101 |          1 |
+|          1 | AI Development  | Pune      | 1500000.00 |    104 | Kiran    | Developer          |  58000.00 |        101 |          1 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    105 | Priya    | Project Manager    |  95000.00 |       NULL |          2 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    105 | Priya    | Project Manager    |  95000.00 |       NULL |          2 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    105 | Priya    | Project Manager    |  95000.00 |       NULL |          2 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    105 | Priya    | Project Manager    |  95000.00 |       NULL |          2 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    105 | Priya    | Project Manager    |  95000.00 |       NULL |          2 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    105 | Priya    | Project Manager    |  95000.00 |       NULL |          2 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    105 | Priya    | Project Manager    |  95000.00 |       NULL |          2 |
+|          1 | AI Development  | Pune      | 1500000.00 |    105 | Priya    | Project Manager    |  95000.00 |       NULL |          2 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    106 | Arjun    | Developer          |  62000.00 |        105 |          2 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    106 | Arjun    | Developer          |  62000.00 |        105 |          2 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    106 | Arjun    | Developer          |  62000.00 |        105 |          2 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    106 | Arjun    | Developer          |  62000.00 |        105 |          2 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    106 | Arjun    | Developer          |  62000.00 |        105 |          2 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    106 | Arjun    | Developer          |  62000.00 |        105 |          2 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    106 | Arjun    | Developer          |  62000.00 |        105 |          2 |
+|          1 | AI Development  | Pune      | 1500000.00 |    106 | Arjun    | Developer          |  62000.00 |        105 |          2 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    107 | Sneha    | Designer           |  50000.00 |        105 |          2 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    107 | Sneha    | Designer           |  50000.00 |        105 |          2 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    107 | Sneha    | Designer           |  50000.00 |        105 |          2 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    107 | Sneha    | Designer           |  50000.00 |        105 |          2 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    107 | Sneha    | Designer           |  50000.00 |        105 |          2 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    107 | Sneha    | Designer           |  50000.00 |        105 |          2 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    107 | Sneha    | Designer           |  50000.00 |        105 |          2 |
+|          1 | AI Development  | Pune      | 1500000.00 |    107 | Sneha    | Designer           |  50000.00 |        105 |          2 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    108 | Rohit    | Tester             |  47000.00 |        105 |          2 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    108 | Rohit    | Tester             |  47000.00 |        105 |          2 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    108 | Rohit    | Tester             |  47000.00 |        105 |          2 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    108 | Rohit    | Tester             |  47000.00 |        105 |          2 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    108 | Rohit    | Tester             |  47000.00 |        105 |          2 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    108 | Rohit    | Tester             |  47000.00 |        105 |          2 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    108 | Rohit    | Tester             |  47000.00 |        105 |          2 |
+|          1 | AI Development  | Pune      | 1500000.00 |    108 | Rohit    | Tester             |  47000.00 |        105 |          2 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    109 | Vikas    | Project Manager    |  98000.00 |       NULL |          3 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    109 | Vikas    | Project Manager    |  98000.00 |       NULL |          3 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    109 | Vikas    | Project Manager    |  98000.00 |       NULL |          3 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    109 | Vikas    | Project Manager    |  98000.00 |       NULL |          3 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    109 | Vikas    | Project Manager    |  98000.00 |       NULL |          3 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    109 | Vikas    | Project Manager    |  98000.00 |       NULL |          3 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    109 | Vikas    | Project Manager    |  98000.00 |       NULL |          3 |
+|          1 | AI Development  | Pune      | 1500000.00 |    109 | Vikas    | Project Manager    |  98000.00 |       NULL |          3 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    110 | Meena    | Developer          |  65000.00 |        109 |          3 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    110 | Meena    | Developer          |  65000.00 |        109 |          3 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    110 | Meena    | Developer          |  65000.00 |        109 |          3 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    110 | Meena    | Developer          |  65000.00 |        109 |          3 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    110 | Meena    | Developer          |  65000.00 |        109 |          3 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    110 | Meena    | Developer          |  65000.00 |        109 |          3 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    110 | Meena    | Developer          |  65000.00 |        109 |          3 |
+|          1 | AI Development  | Pune      | 1500000.00 |    110 | Meena    | Developer          |  65000.00 |        109 |          3 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    111 | Anjali   | Tester             |  48000.00 |        109 |          3 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    111 | Anjali   | Tester             |  48000.00 |        109 |          3 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    111 | Anjali   | Tester             |  48000.00 |        109 |          3 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    111 | Anjali   | Tester             |  48000.00 |        109 |          3 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    111 | Anjali   | Tester             |  48000.00 |        109 |          3 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    111 | Anjali   | Tester             |  48000.00 |        109 |          3 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    111 | Anjali   | Tester             |  48000.00 |        109 |          3 |
+|          1 | AI Development  | Pune      | 1500000.00 |    111 | Anjali   | Tester             |  48000.00 |        109 |          3 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    112 | Suresh   | Developer          |  63000.00 |        109 |          3 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    112 | Suresh   | Developer          |  63000.00 |        109 |          3 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    112 | Suresh   | Developer          |  63000.00 |        109 |          3 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    112 | Suresh   | Developer          |  63000.00 |        109 |          3 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    112 | Suresh   | Developer          |  63000.00 |        109 |          3 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    112 | Suresh   | Developer          |  63000.00 |        109 |          3 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    112 | Suresh   | Developer          |  63000.00 |        109 |          3 |
+|          1 | AI Development  | Pune      | 1500000.00 |    112 | Suresh   | Developer          |  63000.00 |        109 |          3 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    113 | Deepak   | Project Manager    | 100000.00 |       NULL |          4 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    113 | Deepak   | Project Manager    | 100000.00 |       NULL |          4 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    113 | Deepak   | Project Manager    | 100000.00 |       NULL |          4 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    113 | Deepak   | Project Manager    | 100000.00 |       NULL |          4 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    113 | Deepak   | Project Manager    | 100000.00 |       NULL |          4 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    113 | Deepak   | Project Manager    | 100000.00 |       NULL |          4 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    113 | Deepak   | Project Manager    | 100000.00 |       NULL |          4 |
+|          1 | AI Development  | Pune      | 1500000.00 |    113 | Deepak   | Project Manager    | 100000.00 |       NULL |          4 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |          4 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |          4 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |          4 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |          4 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |          4 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |          4 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |          4 |
+|          1 | AI Development  | Pune      | 1500000.00 |    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |          4 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    115 | Varun    | Security Analyst   |  70000.00 |        113 |          4 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    115 | Varun    | Security Analyst   |  70000.00 |        113 |          4 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    115 | Varun    | Security Analyst   |  70000.00 |        113 |          4 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    115 | Varun    | Security Analyst   |  70000.00 |        113 |          4 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    115 | Varun    | Security Analyst   |  70000.00 |        113 |          4 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    115 | Varun    | Security Analyst   |  70000.00 |        113 |          4 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    115 | Varun    | Security Analyst   |  70000.00 |        113 |          4 |
+|          1 | AI Development  | Pune      | 1500000.00 |    115 | Varun    | Security Analyst   |  70000.00 |        113 |          4 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |          4 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |          4 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |          4 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |          4 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |          4 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |          4 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |          4 |
+|          1 | AI Development  | Pune      | 1500000.00 |    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |          4 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    117 | Manoj    | Project Manager    |  92000.00 |       NULL |          5 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    117 | Manoj    | Project Manager    |  92000.00 |       NULL |          5 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    117 | Manoj    | Project Manager    |  92000.00 |       NULL |          5 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    117 | Manoj    | Project Manager    |  92000.00 |       NULL |          5 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    117 | Manoj    | Project Manager    |  92000.00 |       NULL |          5 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    117 | Manoj    | Project Manager    |  92000.00 |       NULL |          5 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    117 | Manoj    | Project Manager    |  92000.00 |       NULL |          5 |
+|          1 | AI Development  | Pune      | 1500000.00 |    117 | Manoj    | Project Manager    |  92000.00 |       NULL |          5 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    118 | Ritika   | Security Analyst   |  68000.00 |        117 |          5 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    118 | Ritika   | Security Analyst   |  68000.00 |        117 |          5 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    118 | Ritika   | Security Analyst   |  68000.00 |        117 |          5 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    118 | Ritika   | Security Analyst   |  68000.00 |        117 |          5 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    118 | Ritika   | Security Analyst   |  68000.00 |        117 |          5 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    118 | Ritika   | Security Analyst   |  68000.00 |        117 |          5 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    118 | Ritika   | Security Analyst   |  68000.00 |        117 |          5 |
+|          1 | AI Development  | Pune      | 1500000.00 |    118 | Ritika   | Security Analyst   |  68000.00 |        117 |          5 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    119 | Harsh    | Developer          |  64000.00 |        117 |          5 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    119 | Harsh    | Developer          |  64000.00 |        117 |          5 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    119 | Harsh    | Developer          |  64000.00 |        117 |          5 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    119 | Harsh    | Developer          |  64000.00 |        117 |          5 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    119 | Harsh    | Developer          |  64000.00 |        117 |          5 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    119 | Harsh    | Developer          |  64000.00 |        117 |          5 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    119 | Harsh    | Developer          |  64000.00 |        117 |          5 |
+|          1 | AI Development  | Pune      | 1500000.00 |    119 | Harsh    | Developer          |  64000.00 |        117 |          5 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    120 | Komal    | Tester             |  46000.00 |        117 |          5 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    120 | Komal    | Tester             |  46000.00 |        117 |          5 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    120 | Komal    | Tester             |  46000.00 |        117 |          5 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    120 | Komal    | Tester             |  46000.00 |        117 |          5 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    120 | Komal    | Tester             |  46000.00 |        117 |          5 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    120 | Komal    | Tester             |  46000.00 |        117 |          5 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    120 | Komal    | Tester             |  46000.00 |        117 |          5 |
+|          1 | AI Development  | Pune      | 1500000.00 |    120 | Komal    | Tester             |  46000.00 |        117 |          5 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    121 | Ajay     | Project Manager    |  97000.00 |       NULL |          6 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    121 | Ajay     | Project Manager    |  97000.00 |       NULL |          6 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    121 | Ajay     | Project Manager    |  97000.00 |       NULL |          6 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    121 | Ajay     | Project Manager    |  97000.00 |       NULL |          6 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    121 | Ajay     | Project Manager    |  97000.00 |       NULL |          6 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    121 | Ajay     | Project Manager    |  97000.00 |       NULL |          6 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    121 | Ajay     | Project Manager    |  97000.00 |       NULL |          6 |
+|          1 | AI Development  | Pune      | 1500000.00 |    121 | Ajay     | Project Manager    |  97000.00 |       NULL |          6 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    122 | Tina     | Data Analyst       |  69000.00 |        121 |          6 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    122 | Tina     | Data Analyst       |  69000.00 |        121 |          6 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    122 | Tina     | Data Analyst       |  69000.00 |        121 |          6 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    122 | Tina     | Data Analyst       |  69000.00 |        121 |          6 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    122 | Tina     | Data Analyst       |  69000.00 |        121 |          6 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    122 | Tina     | Data Analyst       |  69000.00 |        121 |          6 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    122 | Tina     | Data Analyst       |  69000.00 |        121 |          6 |
+|          1 | AI Development  | Pune      | 1500000.00 |    122 | Tina     | Data Analyst       |  69000.00 |        121 |          6 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    123 | Ravi     | Data Engineer      |  71000.00 |        121 |          6 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    123 | Ravi     | Data Engineer      |  71000.00 |        121 |          6 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    123 | Ravi     | Data Engineer      |  71000.00 |        121 |          6 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    123 | Ravi     | Data Engineer      |  71000.00 |        121 |          6 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    123 | Ravi     | Data Engineer      |  71000.00 |        121 |          6 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    123 | Ravi     | Data Engineer      |  71000.00 |        121 |          6 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    123 | Ravi     | Data Engineer      |  71000.00 |        121 |          6 |
+|          1 | AI Development  | Pune      | 1500000.00 |    123 | Ravi     | Data Engineer      |  71000.00 |        121 |          6 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    124 | Pooja    | BI Developer       |  66000.00 |        121 |          6 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    124 | Pooja    | BI Developer       |  66000.00 |        121 |          6 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    124 | Pooja    | BI Developer       |  66000.00 |        121 |          6 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    124 | Pooja    | BI Developer       |  66000.00 |        121 |          6 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    124 | Pooja    | BI Developer       |  66000.00 |        121 |          6 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    124 | Pooja    | BI Developer       |  66000.00 |        121 |          6 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    124 | Pooja    | BI Developer       |  66000.00 |        121 |          6 |
+|          1 | AI Development  | Pune      | 1500000.00 |    124 | Pooja    | BI Developer       |  66000.00 |        121 |          6 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |          7 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |          7 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |          7 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |          7 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |          7 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |          7 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |          7 |
+|          1 | AI Development  | Pune      | 1500000.00 |    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |          7 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    126 | Kavita   | ERP Developer      |  62000.00 |        125 |          7 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    126 | Kavita   | ERP Developer      |  62000.00 |        125 |          7 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    126 | Kavita   | ERP Developer      |  62000.00 |        125 |          7 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    126 | Kavita   | ERP Developer      |  62000.00 |        125 |          7 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    126 | Kavita   | ERP Developer      |  62000.00 |        125 |          7 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    126 | Kavita   | ERP Developer      |  62000.00 |        125 |          7 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    126 | Kavita   | ERP Developer      |  62000.00 |        125 |          7 |
+|          1 | AI Development  | Pune      | 1500000.00 |    126 | Kavita   | ERP Developer      |  62000.00 |        125 |          7 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    127 | Yogesh   | Tester             |  45000.00 |        125 |          7 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    127 | Yogesh   | Tester             |  45000.00 |        125 |          7 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    127 | Yogesh   | Tester             |  45000.00 |        125 |          7 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    127 | Yogesh   | Tester             |  45000.00 |        125 |          7 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    127 | Yogesh   | Tester             |  45000.00 |        125 |          7 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    127 | Yogesh   | Tester             |  45000.00 |        125 |          7 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    127 | Yogesh   | Tester             |  45000.00 |        125 |          7 |
+|          1 | AI Development  | Pune      | 1500000.00 |    127 | Yogesh   | Tester             |  45000.00 |        125 |          7 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    128 | Divya    | Support Engineer   |  48000.00 |        125 |          7 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    128 | Divya    | Support Engineer   |  48000.00 |        125 |          7 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    128 | Divya    | Support Engineer   |  48000.00 |        125 |          7 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    128 | Divya    | Support Engineer   |  48000.00 |        125 |          7 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    128 | Divya    | Support Engineer   |  48000.00 |        125 |          7 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    128 | Divya    | Support Engineer   |  48000.00 |        125 |          7 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    128 | Divya    | Support Engineer   |  48000.00 |        125 |          7 |
+|          1 | AI Development  | Pune      | 1500000.00 |    128 | Divya    | Support Engineer   |  48000.00 |        125 |          7 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    129 | Ashok    | Project Manager    |  96000.00 |       NULL |          8 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    129 | Ashok    | Project Manager    |  96000.00 |       NULL |          8 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    129 | Ashok    | Project Manager    |  96000.00 |       NULL |          8 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    129 | Ashok    | Project Manager    |  96000.00 |       NULL |          8 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    129 | Ashok    | Project Manager    |  96000.00 |       NULL |          8 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    129 | Ashok    | Project Manager    |  96000.00 |       NULL |          8 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    129 | Ashok    | Project Manager    |  96000.00 |       NULL |          8 |
+|          1 | AI Development  | Pune      | 1500000.00 |    129 | Ashok    | Project Manager    |  96000.00 |       NULL |          8 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |          8 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |          8 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |          8 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |          8 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |          8 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |          8 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |          8 |
+|          1 | AI Development  | Pune      | 1500000.00 |    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |          8 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |          8 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |          8 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |          8 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |          8 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |          8 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |          8 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |          8 |
+|          1 | AI Development  | Pune      | 1500000.00 |    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |          8 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |
+|          1 | AI Development  | Pune      | 1500000.00 |    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    133 | Gaurav   | Developer          |  55000.00 |        101 |       NULL |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    133 | Gaurav   | Developer          |  55000.00 |        101 |       NULL |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    133 | Gaurav   | Developer          |  55000.00 |        101 |       NULL |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    133 | Gaurav   | Developer          |  55000.00 |        101 |       NULL |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    133 | Gaurav   | Developer          |  55000.00 |        101 |       NULL |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    133 | Gaurav   | Developer          |  55000.00 |        101 |       NULL |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    133 | Gaurav   | Developer          |  55000.00 |        101 |       NULL |
+|          1 | AI Development  | Pune      | 1500000.00 |    133 | Gaurav   | Developer          |  55000.00 |        101 |       NULL |
+|          8 | Blockchain      | Noida     | 1300000.00 |    134 | Nidhi    | Tester             |  42000.00 |        105 |       NULL |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    134 | Nidhi    | Tester             |  42000.00 |        105 |       NULL |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    134 | Nidhi    | Tester             |  42000.00 |        105 |       NULL |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    134 | Nidhi    | Tester             |  42000.00 |        105 |       NULL |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    134 | Nidhi    | Tester             |  42000.00 |        105 |       NULL |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    134 | Nidhi    | Tester             |  42000.00 |        105 |       NULL |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    134 | Nidhi    | Tester             |  42000.00 |        105 |       NULL |
+|          1 | AI Development  | Pune      | 1500000.00 |    134 | Nidhi    | Tester             |  42000.00 |        105 |       NULL |
+|          8 | Blockchain      | Noida     | 1300000.00 |    135 | Prakash  | Designer           |  50000.00 |        109 |       NULL |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    135 | Prakash  | Designer           |  50000.00 |        109 |       NULL |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    135 | Prakash  | Designer           |  50000.00 |        109 |       NULL |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    135 | Prakash  | Designer           |  50000.00 |        109 |       NULL |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    135 | Prakash  | Designer           |  50000.00 |        109 |       NULL |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    135 | Prakash  | Designer           |  50000.00 |        109 |       NULL |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    135 | Prakash  | Designer           |  50000.00 |        109 |       NULL |
+|          1 | AI Development  | Pune      | 1500000.00 |    135 | Prakash  | Designer           |  50000.00 |        109 |       NULL |
+|          8 | Blockchain      | Noida     | 1300000.00 |    136 | Alok     | DevOps Engineer    |  70000.00 |        113 |       NULL |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    136 | Alok     | DevOps Engineer    |  70000.00 |        113 |       NULL |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    136 | Alok     | DevOps Engineer    |  70000.00 |        113 |       NULL |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    136 | Alok     | DevOps Engineer    |  70000.00 |        113 |       NULL |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    136 | Alok     | DevOps Engineer    |  70000.00 |        113 |       NULL |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    136 | Alok     | DevOps Engineer    |  70000.00 |        113 |       NULL |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    136 | Alok     | DevOps Engineer    |  70000.00 |        113 |       NULL |
+|          1 | AI Development  | Pune      | 1500000.00 |    136 | Alok     | DevOps Engineer    |  70000.00 |        113 |       NULL |
+|          8 | Blockchain      | Noida     | 1300000.00 |    137 | Shruti   | Data Analyst       |  65000.00 |        121 |       NULL |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    137 | Shruti   | Data Analyst       |  65000.00 |        121 |       NULL |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    137 | Shruti   | Data Analyst       |  65000.00 |        121 |       NULL |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    137 | Shruti   | Data Analyst       |  65000.00 |        121 |       NULL |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    137 | Shruti   | Data Analyst       |  65000.00 |        121 |       NULL |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    137 | Shruti   | Data Analyst       |  65000.00 |        121 |       NULL |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    137 | Shruti   | Data Analyst       |  65000.00 |        121 |       NULL |
+|          1 | AI Development  | Pune      | 1500000.00 |    137 | Shruti   | Data Analyst       |  65000.00 |        121 |       NULL |
+|          8 | Blockchain      | Noida     | 1300000.00 |    138 | Ramesh   | Support            |  48000.00 |        125 |       NULL |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    138 | Ramesh   | Support            |  48000.00 |        125 |       NULL |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    138 | Ramesh   | Support            |  48000.00 |        125 |       NULL |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    138 | Ramesh   | Support            |  48000.00 |        125 |       NULL |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    138 | Ramesh   | Support            |  48000.00 |        125 |       NULL |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    138 | Ramesh   | Support            |  48000.00 |        125 |       NULL |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    138 | Ramesh   | Support            |  48000.00 |        125 |       NULL |
+|          1 | AI Development  | Pune      | 1500000.00 |    138 | Ramesh   | Support            |  48000.00 |        125 |       NULL |
+|          8 | Blockchain      | Noida     | 1300000.00 |    139 | Payal    | HR Executive       |  45000.00 |       NULL |       NULL |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    139 | Payal    | HR Executive       |  45000.00 |       NULL |       NULL |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    139 | Payal    | HR Executive       |  45000.00 |       NULL |       NULL |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    139 | Payal    | HR Executive       |  45000.00 |       NULL |       NULL |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    139 | Payal    | HR Executive       |  45000.00 |       NULL |       NULL |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    139 | Payal    | HR Executive       |  45000.00 |       NULL |       NULL |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    139 | Payal    | HR Executive       |  45000.00 |       NULL |       NULL |
+|          1 | AI Development  | Pune      | 1500000.00 |    139 | Payal    | HR Executive       |  45000.00 |       NULL |       NULL |
+|          8 | Blockchain      | Noida     | 1300000.00 |    140 | Omkar    | Intern             |  25000.00 |        101 |       NULL |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    140 | Omkar    | Intern             |  25000.00 |        101 |       NULL |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    140 | Omkar    | Intern             |  25000.00 |        101 |       NULL |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    140 | Omkar    | Intern             |  25000.00 |        101 |       NULL |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    140 | Omkar    | Intern             |  25000.00 |        101 |       NULL |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    140 | Omkar    | Intern             |  25000.00 |        101 |       NULL |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    140 | Omkar    | Intern             |  25000.00 |        101 |       NULL |
+|          1 | AI Development  | Pune      | 1500000.00 |    140 | Omkar    | Intern             |  25000.00 |        101 |       NULL |
++------------+-----------------+-----------+------------+--------+----------+--------------------+-----------+------------+------------+
+320 rows in set (0.02 sec)
+
+mysql> select count(*) from project, employee;
++----------+
+| count(*) |
++----------+
+|      320 |
++----------+
+1 row in set (0.06 sec)
+
+mysql> select * from employee e, project p where e.project_id = p.project_id;
++--------+----------+--------------------+-----------+------------+------------+------------+-----------------+-----------+------------+
+| emp_id | emp_name | designation        | salary    | manager_id | project_id | project_id | project_name    | location  | budget     |
++--------+----------+--------------------+-----------+------------+------------+------------+-----------------+-----------+------------+
+|    101 | Amit     | Project Manager    |  90000.00 |       NULL |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    102 | Rahul    | Developer          |  60000.00 |        101 |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    103 | Neha     | Tester             |  45000.00 |        101 |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    104 | Kiran    | Developer          |  58000.00 |        101 |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    105 | Priya    | Project Manager    |  95000.00 |       NULL |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    106 | Arjun    | Developer          |  62000.00 |        105 |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    107 | Sneha    | Designer           |  50000.00 |        105 |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    108 | Rohit    | Tester             |  47000.00 |        105 |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    109 | Vikas    | Project Manager    |  98000.00 |       NULL |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    110 | Meena    | Developer          |  65000.00 |        109 |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    111 | Anjali   | Tester             |  48000.00 |        109 |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    112 | Suresh   | Developer          |  63000.00 |        109 |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    113 | Deepak   | Project Manager    | 100000.00 |       NULL |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    115 | Varun    | Security Analyst   |  70000.00 |        113 |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    117 | Manoj    | Project Manager    |  92000.00 |       NULL |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    118 | Ritika   | Security Analyst   |  68000.00 |        117 |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    119 | Harsh    | Developer          |  64000.00 |        117 |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    120 | Komal    | Tester             |  46000.00 |        117 |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    121 | Ajay     | Project Manager    |  97000.00 |       NULL |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    122 | Tina     | Data Analyst       |  69000.00 |        121 |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    123 | Ravi     | Data Engineer      |  71000.00 |        121 |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    124 | Pooja    | BI Developer       |  66000.00 |        121 |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    126 | Kavita   | ERP Developer      |  62000.00 |        125 |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    127 | Yogesh   | Tester             |  45000.00 |        125 |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    128 | Divya    | Support Engineer   |  48000.00 |        125 |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    129 | Ashok    | Project Manager    |  96000.00 |       NULL |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
+|    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
+|    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
+|    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
++--------+----------+--------------------+-----------+------------+------------+------------+-----------------+-----------+------------+
+32 rows in set (0.01 sec)
+
+mysql>
