@@ -1,0 +1,389 @@
+mysql> show databases;
++--------------------------------+
+| Database                       |
++--------------------------------+
+| billing                        |
+| company                        |
+| information_schema             |
+| library_database               |
+| mysql                          |
+| mysql_practice_and_training    |
+| perform_join_comp_assignment   |
+| performance_schema             |
+| practice                       |
+| practice_aggregate_function    |
+| praticing_all_queries_commands |
+| sys                            |
+| team                           |
++--------------------------------+
+13 rows in set (0.16 sec)
+
+mysql> use library_database;
+Database changed
+mysql> show tables;
++----------------------------+
+| Tables_in_library_database |
++----------------------------+
+| books                      |
+| borrow                     |
+| members                    |
++----------------------------+
+3 rows in set (0.05 sec)
+
+mysql> desc books;
++------------------+--------------+------+-----+---------+----------------+
+| Field            | Type         | Null | Key | Default | Extra          |
++------------------+--------------+------+-----+---------+----------------+
+| book_id          | int          | NO   | PRI | NULL    | auto_increment |
+| title            | varchar(200) | NO   |     | NULL    |                |
+| author           | varchar(100) | NO   |     | NULL    |                |
+| price            | decimal(8,2) | YES  |     | NULL    |                |
+| available_copies | int          | YES  |     | 1       |                |
++------------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.08 sec)
+
+mysql> desc borrow;
++-------------+------+------+-----+---------+----------------+
+| Field       | Type | Null | Key | Default | Extra          |
++-------------+------+------+-----+---------+----------------+
+| borrow_id   | int  | NO   | PRI | NULL    | auto_increment |
+| member_id   | int  | YES  | MUL | NULL    |                |
+| book_id     | int  | YES  | MUL | NULL    |                |
+| borrow_date | date | NO   |     | NULL    |                |
+| return_date | date | YES  |     | NULL    |                |
++-------------+------+------+-----+---------+----------------+
+5 rows in set (0.01 sec)
+
+mysql> desc members;
++-----------------+--------------+------+-----+---------+----------------+
+| Field           | Type         | Null | Key | Default | Extra          |
++-----------------+--------------+------+-----+---------+----------------+
+| member_id       | int          | NO   | PRI | NULL    | auto_increment |
+| name            | varchar(100) | NO   |     | NULL    |                |
+| email           | varchar(100) | NO   | UNI | NULL    |                |
+| phone           | varchar(15)  | NO   | UNI | NULL    |                |
+| membership_type | varchar(20)  | YES  |     | General |                |
+| age             | int          | YES  |     | NULL    |                |
++-----------------+--------------+------+-----+---------+----------------+
+6 rows in set (0.01 sec)
+
+mysql> select * from books;
+Empty set (0.05 sec)
+
+mysql> alter table books add column category varchar(50);
+Query OK, 0 rows affected (0.32 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc books;
++------------------+--------------+------+-----+---------+----------------+
+| Field            | Type         | Null | Key | Default | Extra          |
++------------------+--------------+------+-----+---------+----------------+
+| book_id          | int          | NO   | PRI | NULL    | auto_increment |
+| title            | varchar(200) | NO   |     | NULL    |                |
+| author           | varchar(100) | NO   |     | NULL    |                |
+| price            | decimal(8,2) | YES  |     | NULL    |                |
+| available_copies | int          | YES  |     | 1       |                |
+| category         | varchar(50)  | YES  |     | NULL    |                |
++------------------+--------------+------+-----+---------+----------------+
+6 rows in set (0.01 sec)
+
+mysql> alter table members modify phone varchar(20);
+Query OK, 0 rows affected (0.15 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc members;
++-----------------+--------------+------+-----+---------+----------------+
+| Field           | Type         | Null | Key | Default | Extra          |
++-----------------+--------------+------+-----+---------+----------------+
+| member_id       | int          | NO   | PRI | NULL    | auto_increment |
+| name            | varchar(100) | NO   |     | NULL    |                |
+| email           | varchar(100) | NO   | UNI | NULL    |                |
+| phone           | varchar(20)  | YES  | UNI | NULL    |                |
+| membership_type | varchar(20)  | YES  |     | General |                |
+| age             | int          | YES  |     | NULL    |                |
++-----------------+--------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> drop table borrow;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> show tables;
++----------------------------+
+| Tables_in_library_database |
++----------------------------+
+| books                      |
+| members                    |
++----------------------------+
+2 rows in set (0.01 sec)
+
+mysql> insert into members (name, email, phone, membership_type, age) values ('Rahul sharma', 'rahul@gmail.com', '9876567896', 'premium', 25);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from members;
++-----------+--------------+-----------------+------------+-----------------+------+
+| member_id | name         | email           | phone      | membership_type | age  |
++-----------+--------------+-----------------+------------+-----------------+------+
+|         1 | Rahul sharma | rahul@gmail.com | 9876567896 | premium         |   25 |
++-----------+--------------+-----------------+------------+-----------------+------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO books (title, author, price, available_copies, category)
+    -> VALUES
+    -> ('Database Systems', 'Korth', 550.00, 5, 'Education'),
+    -> ('Java Programming', 'James Gosling', 650.00, 3, 'Programming'),
+    -> ('Data Science Basics', 'John Smith', 700.00, 4, 'Technology');
+Query OK, 3 rows affected (0.02 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from books;
++---------+---------------------+---------------+--------+------------------+-------------+
+| book_id | title               | author        | price  | available_copies | category    |
++---------+---------------------+---------------+--------+------------------+-------------+
+|       1 | Database Systems    | Korth         | 550.00 |                5 | Education   |
+|       2 | Java Programming    | James Gosling | 650.00 |                3 | Programming |
+|       3 | Data Science Basics | John Smith    | 700.00 |                4 | Technology  |
++---------+---------------------+---------------+--------+------------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> update books set price = 750.00 where title = 'Data Science Basics';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from books where title = 'Data Science Basics';
++---------+---------------------+------------+--------+------------------+------------+
+| book_id | title               | author     | price  | available_copies | category   |
++---------+---------------------+------------+--------+------------------+------------+
+|       3 | Data Science Basics | John Smith | 750.00 |                4 | Technology |
++---------+---------------------+------------+--------+------------------+------------+
+1 row in set (0.00 sec)
+
+mysql> delete from members where member_id = 3;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from books where category = "Programming";
++---------+------------------+---------------+--------+------------------+-------------+
+| book_id | title            | author        | price  | available_copies | category    |
++---------+------------------+---------------+--------+------------------+-------------+
+|       2 | Java Programming | James Gosling | 650.00 |                3 | Programming |
++---------+------------------+---------------+--------+------------------+-------------+
+1 row in set (0.00 sec)
+
+mysql> select * from books where category = "Education" and price > 500;
++---------+------------------+--------+--------+------------------+-----------+
+| book_id | title            | author | price  | available_copies | category  |
++---------+------------------+--------+--------+------------------+-----------+
+|       1 | Database Systems | Korth  | 550.00 |                5 | Education |
++---------+------------------+--------+--------+------------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> select * from books where category = "education" or category = "Technology";
++---------+---------------------+------------+--------+------------------+------------+
+| book_id | title               | author     | price  | available_copies | category   |
++---------+---------------------+------------+--------+------------------+------------+
+|       1 | Database Systems    | Korth      | 550.00 |                5 | Education  |
+|       3 | Data Science Basics | John Smith | 750.00 |                4 | Technology |
++---------+---------------------+------------+--------+------------------+------------+
+2 rows in set (0.01 sec)
+
+mysql> select * from books where price between 500 and 800;
++---------+---------------------+---------------+--------+------------------+-------------+
+| book_id | title               | author        | price  | available_copies | category    |
++---------+---------------------+---------------+--------+------------------+-------------+
+|       1 | Database Systems    | Korth         | 550.00 |                5 | Education   |
+|       2 | Java Programming    | James Gosling | 650.00 |                3 | Programming |
+|       3 | Data Science Basics | John Smith    | 750.00 |                4 | Technology  |
++---------+---------------------+---------------+--------+------------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from books where category in ("Programming", "Technology");
++---------+---------------------+---------------+--------+------------------+-------------+
+| book_id | title               | author        | price  | available_copies | category    |
++---------+---------------------+---------------+--------+------------------+-------------+
+|       2 | Java Programming    | James Gosling | 650.00 |                3 | Programming |
+|       3 | Data Science Basics | John Smith    | 750.00 |                4 | Technology  |
++---------+---------------------+---------------+--------+------------------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from books where category not in ("Education");
++---------+---------------------+---------------+--------+------------------+-------------+
+| book_id | title               | author        | price  | available_copies | category    |
++---------+---------------------+---------------+--------+------------------+-------------+
+|       2 | Java Programming    | James Gosling | 650.00 |                3 | Programming |
+|       3 | Data Science Basics | John Smith    | 750.00 |                4 | Technology  |
++---------+---------------------+---------------+--------+------------------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from books where category in ("Education");
++---------+------------------+--------+--------+------------------+-----------+
+| book_id | title            | author | price  | available_copies | category  |
++---------+------------------+--------+--------+------------------+-----------+
+|       1 | Database Systems | Korth  | 550.00 |                5 | Education |
++---------+------------------+--------+--------+------------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> select * from books order by price desc;
++---------+---------------------+---------------+--------+------------------+-------------+
+| book_id | title               | author        | price  | available_copies | category    |
++---------+---------------------+---------------+--------+------------------+-------------+
+|       3 | Data Science Basics | John Smith    | 750.00 |                4 | Technology  |
+|       2 | Java Programming    | James Gosling | 650.00 |                3 | Programming |
+|       1 | Database Systems    | Korth         | 550.00 |                5 | Education   |
++---------+---------------------+---------------+--------+------------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from books order by price asc;
++---------+---------------------+---------------+--------+------------------+-------------+
+| book_id | title               | author        | price  | available_copies | category    |
++---------+---------------------+---------------+--------+------------------+-------------+
+|       1 | Database Systems    | Korth         | 550.00 |                5 | Education   |
+|       2 | Java Programming    | James Gosling | 650.00 |                3 | Programming |
+|       3 | Data Science Basics | John Smith    | 750.00 |                4 | Technology  |
++---------+---------------------+---------------+--------+------------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select category, count(*) as total_books from books group by category having count(*) > 1;
+Empty set (0.01 sec)
+
+mysql> SELECT category, COUNT(*) AS total_books
+    -> FROM books
+    -> GROUP BY category
+    -> HAVING COUNT(*) > 1;
+Empty set (0.00 sec)
+
+mysql> select count(*) from books;
++----------+
+| count(*) |
++----------+
+|        3 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> select count(*) as Total_books from books;
++-------------+
+| Total_books |
++-------------+
+|           3 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> select sum(price) from books;
++------------+
+| sum(price) |
++------------+
+|    1950.00 |
++------------+
+1 row in set (0.01 sec)
+
+mysql> select avg(price) from books;
++------------+
+| avg(price) |
++------------+
+| 650.000000 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select max(price) from books;
++------------+
+| max(price) |
++------------+
+|     750.00 |
++------------+
+1 row in set (0.01 sec)
+
+mysql> select min(price) from books;
++------------+
+| min(price) |
++------------+
+|     550.00 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update books set price = price+1000 where book_id = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from books;
++---------+---------------------+---------------+---------+------------------+-------------+
+| book_id | title               | author        | price   | available_copies | category    |
++---------+---------------------+---------------+---------+------------------+-------------+
+|       1 | Database Systems    | Korth         | 2050.00 |                5 | Education   |
+|       2 | Java Programming    | James Gosling |  650.00 |                3 | Programming |
+|       3 | Data Science Basics | John Smith    |  750.00 |                4 | Technology  |
++---------+---------------------+---------------+---------+------------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> savepoint before_update;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update books set price = price+2000 where book_id = 2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from books;
++---------+---------------------+---------------+---------+------------------+-------------+
+| book_id | title               | author        | price   | available_copies | category    |
++---------+---------------------+---------------+---------+------------------+-------------+
+|       1 | Database Systems    | Korth         | 2050.00 |                5 | Education   |
+|       2 | Java Programming    | James Gosling | 2650.00 |                3 | Programming |
+|       3 | Data Science Basics | John Smith    |  750.00 |                4 | Technology  |
++---------+---------------------+---------------+---------+------------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> rollback to before_update;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from books;
++---------+---------------------+---------------+---------+------------------+-------------+
+| book_id | title               | author        | price   | available_copies | category    |
++---------+---------------------+---------------+---------+------------------+-------------+
+|       1 | Database Systems    | Korth         | 2050.00 |                5 | Education   |
+|       2 | Java Programming    | James Gosling |  650.00 |                3 | Programming |
+|       3 | Data Science Basics | John Smith    |  750.00 |                4 | Technology  |
++---------+---------------------+---------------+---------+------------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from books where book_id in(1,2);
++---------+------------------+---------------+---------+------------------+-------------+
+| book_id | title            | author        | price   | available_copies | category    |
++---------+------------------+---------------+---------+------------------+-------------+
+|       1 | Database Systems | Korth         | 2050.00 |                5 | Education   |
+|       2 | Java Programming | James Gosling |  650.00 |                3 | Programming |
++---------+------------------+---------------+---------+------------------+-------------+
+2 rows in set (0.01 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from books;
++---------+---------------------+---------------+---------+------------------+-------------+
+| book_id | title               | author        | price   | available_copies | category    |
++---------+---------------------+---------------+---------+------------------+-------------+
+|       1 | Database Systems    | Korth         | 2050.00 |                5 | Education   |
+|       2 | Java Programming    | James Gosling |  650.00 |                3 | Programming |
+|       3 | Data Science Basics | John Smith    |  750.00 |                4 | Technology  |
++---------+---------------------+---------------+---------+------------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql>CREATE USER 'librarian'@'localhost' IDENTIFIED BY 'lib123';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>SHOW GRANTS FOR 'librarian'@'localhost';
+Query OK, 0 rows affected (0.02 sec)
+
+ mysql>grant select, insert, update on library_database.* to 'librarian'@'localhost';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>SHOW GRANTS FOR 'librarian'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON `library_db`.* TO 'librarian'@'localhost'
+
+mysql> revoke delete on library_database.* from 'librarian'@'localhost';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>SHOW GRANTS FOR 'librarian'@'localhost';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>DELETE FROM books WHERE book_id = 1;
+ERROR 1142 (42000): DELETE command denied
