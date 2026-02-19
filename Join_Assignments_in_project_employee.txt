@@ -1,0 +1,685 @@
+mysql> show databases;
++--------------------------------+
+| Database                       |
++--------------------------------+
+| billing                        |
+| company                        |
+| information_schema             |
+| library_database               |
+| mysql                          |
+| mysql_practice_and_training    |
+| performance_schema             |
+| practice                       |
+| practice_aggregate_function    |
+| praticing_all_queries_commands |
+| sys                            |
+| team                           |
++--------------------------------+
+12 rows in set (0.13 sec)
+
+mysql> create database perform_join_comp_assignment
+    -> ;
+Query OK, 1 row affected (0.07 sec)
+
+mysql> show databases;
++--------------------------------+
+| Database                       |
++--------------------------------+
+| billing                        |
+| company                        |
+| information_schema             |
+| library_database               |
+| mysql                          |
+| mysql_practice_and_training    |
+| perform_join_comp_assignment   |
+| performance_schema             |
+| practice                       |
+| practice_aggregate_function    |
+| praticing_all_queries_commands |
+| sys                            |
+| team                           |
++--------------------------------+
+13 rows in set (0.01 sec)
+
+mysql> use perform_join_comp_assignment;
+Database changed
+mysql> CREATE TABLE project (
+    ->     project_id INT PRIMARY KEY,
+    ->     project_name VARCHAR(100),
+    ->     location VARCHAR(100),
+    ->     budget DECIMAL(12,2)
+    -> );
+Query OK, 0 rows affected (0.18 sec)
+
+mysql> desc project;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| project_id   | int           | NO   | PRI | NULL    |       |
+| project_name | varchar(100)  | YES  |     | NULL    |       |
+| location     | varchar(100)  | YES  |     | NULL    |       |
+| budget       | decimal(12,2) | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+4 rows in set (0.02 sec)
+
+mysql> CREATE TABLE employee (
+    ->     emp_id INT PRIMARY KEY,
+    ->     emp_name VARCHAR(100),
+    ->     designation VARCHAR(100),
+    ->     salary DECIMAL(10,2),
+    ->     manager_id INT,
+    ->     project_id INT,
+    ->     FOREIGN KEY (project_id) REFERENCES project(project_id));
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> desc employee;
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| emp_id      | int           | NO   | PRI | NULL    |       |
+| emp_name    | varchar(100)  | YES  |     | NULL    |       |
+| designation | varchar(100)  | YES  |     | NULL    |       |
+| salary      | decimal(10,2) | YES  |     | NULL    |       |
+| manager_id  | int           | YES  |     | NULL    |       |
+| project_id  | int           | YES  | MUL | NULL    |       |
++-------------+---------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql> show tables;
++----------------------------------------+
+| Tables_in_perform_join_comp_assignment |
++----------------------------------------+
+| employee                               |
+| project                                |
++----------------------------------------+
+2 rows in set (0.02 sec)
+
+mysql> INSERT INTO project VALUES
+    -> (1, 'AI Development', 'Pune', 1500000.00),
+    -> (2, 'Web Portal', 'Mumbai', 900000.00),
+    -> (3, 'Mobile App', 'Bangalore', 1200000.00),
+    -> (4, 'Cloud Migration', 'Hyderabad', 2000000.00),
+    -> (5, 'Cyber Security', 'Chennai', 1800000.00),
+    -> (6, 'Data Analytics', 'Delhi', 1600000.00),
+    -> (7, 'ERP System', 'Kolkata', 1100000.00),
+    -> (8, 'Blockchain', 'Noida', 1300000.00);
+Query OK, 8 rows affected (0.04 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select * from project;
++------------+-----------------+-----------+------------+
+| project_id | project_name    | location  | budget     |
++------------+-----------------+-----------+------------+
+|          1 | AI Development  | Pune      | 1500000.00 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |
+|          8 | Blockchain      | Noida     | 1300000.00 |
++------------+-----------------+-----------+------------+
+8 rows in set (0.01 sec)
+
+mysql> INSERT INTO employee VALUES
+    -> (101,'Amit','Project Manager',90000,NULL,1),
+    -> (102,'Rahul','Developer',60000,101,1),
+    -> (103,'Neha','Tester',45000,101,1),
+    -> (104,'Kiran','Developer',58000,101,1),
+    ->
+    -> (105,'Priya','Project Manager',95000,NULL,2),
+    -> (106,'Arjun','Developer',62000,105,2),
+    -> (107,'Sneha','Designer',50000,105,2),
+    -> (108,'Rohit','Tester',47000,105,2),
+    ->
+    -> (109,'Vikas','Project Manager',98000,NULL,3),
+    -> (110,'Meena','Developer',65000,109,3),
+    -> (111,'Anjali','Tester',48000,109,3),
+    -> (112,'Suresh','Developer',63000,109,3),
+    ->
+    -> (113,'Deepak','Project Manager',100000,NULL,4),
+    -> (114,'Nikita','Cloud Engineer',75000,113,4),
+    -> (115,'Varun','Security Analyst',70000,113,4),
+    -> (116,'Isha','DevOps Engineer',72000,113,4),
+    ->
+    -> (117,'Manoj','Project Manager',92000,NULL,5),
+    -> (118,'Ritika','Security Analyst',68000,117,5),
+    -> (119,'Harsh','Developer',64000,117,5),
+    -> (120,'Komal','Tester',46000,117,5),
+    ->
+    -> (121,'Ajay','Project Manager',97000,NULL,6),
+    -> (122,'Tina','Data Analyst',69000,121,6),
+    -> (123,'Ravi','Data Engineer',71000,121,6),
+    -> (124,'Pooja','BI Developer',66000,121,6),
+    ->
+    -> (125,'Sanjay','Project Manager',94000,NULL,7),
+    -> (126,'Kavita','ERP Developer',62000,125,7),
+    -> (127,'Yogesh','Tester',45000,125,7),
+    -> (128,'Divya','Support Engineer',48000,125,7),
+    ->
+    -> (129,'Ashok','Project Manager',96000,NULL,8),
+    -> (130,'Seema','Blockchain Dev',73000,129,8),
+    -> (131,'Mahesh','Smart Contract Dev',74000,129,8),
+    -> (132,'Rekha','Tester',49000,129,8),
+    ->
+    -> -- Unassigned Employees
+    -> (133,'Gaurav','Developer',55000,101,NULL),
+    -> (134,'Nidhi','Tester',42000,105,NULL),
+    -> (135,'Prakash','Designer',50000,109,NULL),
+    -> (136,'Alok','DevOps Engineer',70000,113,NULL),
+    -> (137,'Shruti','Data Analyst',65000,121,NULL),
+    -> (138,'Ramesh','Support',48000,125,NULL),
+    -> (139,'Payal','HR Executive',45000,NULL,NULL),
+    -> (140,'Omkar','Intern',25000,101,NULL);
+Query OK, 40 rows affected (0.02 sec)
+Records: 40  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++--------+----------+--------------------+-----------+------------+------------+
+| emp_id | emp_name | designation        | salary    | manager_id | project_id |
++--------+----------+--------------------+-----------+------------+------------+
+|    101 | Amit     | Project Manager    |  90000.00 |       NULL |          1 |
+|    102 | Rahul    | Developer          |  60000.00 |        101 |          1 |
+|    103 | Neha     | Tester             |  45000.00 |        101 |          1 |
+|    104 | Kiran    | Developer          |  58000.00 |        101 |          1 |
+|    105 | Priya    | Project Manager    |  95000.00 |       NULL |          2 |
+|    106 | Arjun    | Developer          |  62000.00 |        105 |          2 |
+|    107 | Sneha    | Designer           |  50000.00 |        105 |          2 |
+|    108 | Rohit    | Tester             |  47000.00 |        105 |          2 |
+|    109 | Vikas    | Project Manager    |  98000.00 |       NULL |          3 |
+|    110 | Meena    | Developer          |  65000.00 |        109 |          3 |
+|    111 | Anjali   | Tester             |  48000.00 |        109 |          3 |
+|    112 | Suresh   | Developer          |  63000.00 |        109 |          3 |
+|    113 | Deepak   | Project Manager    | 100000.00 |       NULL |          4 |
+|    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |          4 |
+|    115 | Varun    | Security Analyst   |  70000.00 |        113 |          4 |
+|    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |          4 |
+|    117 | Manoj    | Project Manager    |  92000.00 |       NULL |          5 |
+|    118 | Ritika   | Security Analyst   |  68000.00 |        117 |          5 |
+|    119 | Harsh    | Developer          |  64000.00 |        117 |          5 |
+|    120 | Komal    | Tester             |  46000.00 |        117 |          5 |
+|    121 | Ajay     | Project Manager    |  97000.00 |       NULL |          6 |
+|    122 | Tina     | Data Analyst       |  69000.00 |        121 |          6 |
+|    123 | Ravi     | Data Engineer      |  71000.00 |        121 |          6 |
+|    124 | Pooja    | BI Developer       |  66000.00 |        121 |          6 |
+|    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |          7 |
+|    126 | Kavita   | ERP Developer      |  62000.00 |        125 |          7 |
+|    127 | Yogesh   | Tester             |  45000.00 |        125 |          7 |
+|    128 | Divya    | Support Engineer   |  48000.00 |        125 |          7 |
+|    129 | Ashok    | Project Manager    |  96000.00 |       NULL |          8 |
+|    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |          8 |
+|    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |          8 |
+|    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |
+|    133 | Gaurav   | Developer          |  55000.00 |        101 |       NULL |
+|    134 | Nidhi    | Tester             |  42000.00 |        105 |       NULL |
+|    135 | Prakash  | Designer           |  50000.00 |        109 |       NULL |
+|    136 | Alok     | DevOps Engineer    |  70000.00 |        113 |       NULL |
+|    137 | Shruti   | Data Analyst       |  65000.00 |        121 |       NULL |
+|    138 | Ramesh   | Support            |  48000.00 |        125 |       NULL |
+|    139 | Payal    | HR Executive       |  45000.00 |       NULL |       NULL |
+|    140 | Omkar    | Intern             |  25000.00 |        101 |       NULL |
++--------+----------+--------------------+-----------+------------+------------+
+40 rows in set (0.00 sec)
+
+mysql> select e.*, p.* from employee e left join project p on e.project_id = p.project_id;
++--------+----------+--------------------+-----------+------------+------------+------------+-----------------+-----------+------------+
+| emp_id | emp_name | designation        | salary    | manager_id | project_id | project_id | project_name    | location  | budget     |
++--------+----------+--------------------+-----------+------------+------------+------------+-----------------+-----------+------------+
+|    101 | Amit     | Project Manager    |  90000.00 |       NULL |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    102 | Rahul    | Developer          |  60000.00 |        101 |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    103 | Neha     | Tester             |  45000.00 |        101 |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    104 | Kiran    | Developer          |  58000.00 |        101 |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    105 | Priya    | Project Manager    |  95000.00 |       NULL |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    106 | Arjun    | Developer          |  62000.00 |        105 |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    107 | Sneha    | Designer           |  50000.00 |        105 |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    108 | Rohit    | Tester             |  47000.00 |        105 |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    109 | Vikas    | Project Manager    |  98000.00 |       NULL |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    110 | Meena    | Developer          |  65000.00 |        109 |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    111 | Anjali   | Tester             |  48000.00 |        109 |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    112 | Suresh   | Developer          |  63000.00 |        109 |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    113 | Deepak   | Project Manager    | 100000.00 |       NULL |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    115 | Varun    | Security Analyst   |  70000.00 |        113 |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    117 | Manoj    | Project Manager    |  92000.00 |       NULL |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    118 | Ritika   | Security Analyst   |  68000.00 |        117 |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    119 | Harsh    | Developer          |  64000.00 |        117 |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    120 | Komal    | Tester             |  46000.00 |        117 |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    121 | Ajay     | Project Manager    |  97000.00 |       NULL |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    122 | Tina     | Data Analyst       |  69000.00 |        121 |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    123 | Ravi     | Data Engineer      |  71000.00 |        121 |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    124 | Pooja    | BI Developer       |  66000.00 |        121 |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    126 | Kavita   | ERP Developer      |  62000.00 |        125 |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    127 | Yogesh   | Tester             |  45000.00 |        125 |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    128 | Divya    | Support Engineer   |  48000.00 |        125 |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    129 | Ashok    | Project Manager    |  96000.00 |       NULL |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
+|    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
+|    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
+|    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
+|    133 | Gaurav   | Developer          |  55000.00 |        101 |       NULL |       NULL | NULL            | NULL      |       NULL |
+|    134 | Nidhi    | Tester             |  42000.00 |        105 |       NULL |       NULL | NULL            | NULL      |       NULL |
+|    135 | Prakash  | Designer           |  50000.00 |        109 |       NULL |       NULL | NULL            | NULL      |       NULL |
+|    136 | Alok     | DevOps Engineer    |  70000.00 |        113 |       NULL |       NULL | NULL            | NULL      |       NULL |
+|    137 | Shruti   | Data Analyst       |  65000.00 |        121 |       NULL |       NULL | NULL            | NULL      |       NULL |
+|    138 | Ramesh   | Support            |  48000.00 |        125 |       NULL |       NULL | NULL            | NULL      |       NULL |
+|    139 | Payal    | HR Executive       |  45000.00 |       NULL |       NULL |       NULL | NULL            | NULL      |       NULL |
+|    140 | Omkar    | Intern             |  25000.00 |        101 |       NULL |       NULL | NULL            | NULL      |       NULL |
++--------+----------+--------------------+-----------+------------+------------+------------+-----------------+-----------+------------+
+40 rows in set (0.01 sec)
+
+mysql> select * from employee where project_id is null;
++--------+----------+-----------------+----------+------------+------------+
+| emp_id | emp_name | designation     | salary   | manager_id | project_id |
++--------+----------+-----------------+----------+------------+------------+
+|    133 | Gaurav   | Developer       | 55000.00 |        101 |       NULL |
+|    134 | Nidhi    | Tester          | 42000.00 |        105 |       NULL |
+|    135 | Prakash  | Designer        | 50000.00 |        109 |       NULL |
+|    136 | Alok     | DevOps Engineer | 70000.00 |        113 |       NULL |
+|    137 | Shruti   | Data Analyst    | 65000.00 |        121 |       NULL |
+|    138 | Ramesh   | Support         | 48000.00 |        125 |       NULL |
+|    139 | Payal    | HR Executive    | 45000.00 |       NULL |       NULL |
+|    140 | Omkar    | Intern          | 25000.00 |        101 |       NULL |
++--------+----------+-----------------+----------+------------+------------+
+8 rows in set (0.01 sec)
+
+mysql> select e.*, p.* from employee e inner join project p on e.project_id = p.project_id;
++--------+----------+--------------------+-----------+------------+------------+------------+-----------------+-----------+------------+
+| emp_id | emp_name | designation        | salary    | manager_id | project_id | project_id | project_name    | location  | budget     |
++--------+----------+--------------------+-----------+------------+------------+------------+-----------------+-----------+------------+
+|    101 | Amit     | Project Manager    |  90000.00 |       NULL |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    102 | Rahul    | Developer          |  60000.00 |        101 |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    103 | Neha     | Tester             |  45000.00 |        101 |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    104 | Kiran    | Developer          |  58000.00 |        101 |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    105 | Priya    | Project Manager    |  95000.00 |       NULL |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    106 | Arjun    | Developer          |  62000.00 |        105 |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    107 | Sneha    | Designer           |  50000.00 |        105 |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    108 | Rohit    | Tester             |  47000.00 |        105 |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    109 | Vikas    | Project Manager    |  98000.00 |       NULL |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    110 | Meena    | Developer          |  65000.00 |        109 |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    111 | Anjali   | Tester             |  48000.00 |        109 |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    112 | Suresh   | Developer          |  63000.00 |        109 |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    113 | Deepak   | Project Manager    | 100000.00 |       NULL |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    115 | Varun    | Security Analyst   |  70000.00 |        113 |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    117 | Manoj    | Project Manager    |  92000.00 |       NULL |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    118 | Ritika   | Security Analyst   |  68000.00 |        117 |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    119 | Harsh    | Developer          |  64000.00 |        117 |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    120 | Komal    | Tester             |  46000.00 |        117 |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    121 | Ajay     | Project Manager    |  97000.00 |       NULL |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    122 | Tina     | Data Analyst       |  69000.00 |        121 |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    123 | Ravi     | Data Engineer      |  71000.00 |        121 |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    124 | Pooja    | BI Developer       |  66000.00 |        121 |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    126 | Kavita   | ERP Developer      |  62000.00 |        125 |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    127 | Yogesh   | Tester             |  45000.00 |        125 |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    128 | Divya    | Support Engineer   |  48000.00 |        125 |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    129 | Ashok    | Project Manager    |  96000.00 |       NULL |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
+|    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
+|    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
+|    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
++--------+----------+--------------------+-----------+------------+------------+------------+-----------------+-----------+------------+
+32 rows in set (0.00 sec)
+
+mysql> select * from employee;
++--------+----------+--------------------+-----------+------------+------------+
+| emp_id | emp_name | designation        | salary    | manager_id | project_id |
++--------+----------+--------------------+-----------+------------+------------+
+|    101 | Amit     | Project Manager    |  90000.00 |       NULL |          1 |
+|    102 | Rahul    | Developer          |  60000.00 |        101 |          1 |
+|    103 | Neha     | Tester             |  45000.00 |        101 |          1 |
+|    104 | Kiran    | Developer          |  58000.00 |        101 |          1 |
+|    105 | Priya    | Project Manager    |  95000.00 |       NULL |          2 |
+|    106 | Arjun    | Developer          |  62000.00 |        105 |          2 |
+|    107 | Sneha    | Designer           |  50000.00 |        105 |          2 |
+|    108 | Rohit    | Tester             |  47000.00 |        105 |          2 |
+|    109 | Vikas    | Project Manager    |  98000.00 |       NULL |          3 |
+|    110 | Meena    | Developer          |  65000.00 |        109 |          3 |
+|    111 | Anjali   | Tester             |  48000.00 |        109 |          3 |
+|    112 | Suresh   | Developer          |  63000.00 |        109 |          3 |
+|    113 | Deepak   | Project Manager    | 100000.00 |       NULL |          4 |
+|    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |          4 |
+|    115 | Varun    | Security Analyst   |  70000.00 |        113 |          4 |
+|    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |          4 |
+|    117 | Manoj    | Project Manager    |  92000.00 |       NULL |          5 |
+|    118 | Ritika   | Security Analyst   |  68000.00 |        117 |          5 |
+|    119 | Harsh    | Developer          |  64000.00 |        117 |          5 |
+|    120 | Komal    | Tester             |  46000.00 |        117 |          5 |
+|    121 | Ajay     | Project Manager    |  97000.00 |       NULL |          6 |
+|    122 | Tina     | Data Analyst       |  69000.00 |        121 |          6 |
+|    123 | Ravi     | Data Engineer      |  71000.00 |        121 |          6 |
+|    124 | Pooja    | BI Developer       |  66000.00 |        121 |          6 |
+|    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |          7 |
+|    126 | Kavita   | ERP Developer      |  62000.00 |        125 |          7 |
+|    127 | Yogesh   | Tester             |  45000.00 |        125 |          7 |
+|    128 | Divya    | Support Engineer   |  48000.00 |        125 |          7 |
+|    129 | Ashok    | Project Manager    |  96000.00 |       NULL |          8 |
+|    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |          8 |
+|    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |          8 |
+|    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |
+|    133 | Gaurav   | Developer          |  55000.00 |        101 |       NULL |
+|    134 | Nidhi    | Tester             |  42000.00 |        105 |       NULL |
+|    135 | Prakash  | Designer           |  50000.00 |        109 |       NULL |
+|    136 | Alok     | DevOps Engineer    |  70000.00 |        113 |       NULL |
+|    137 | Shruti   | Data Analyst       |  65000.00 |        121 |       NULL |
+|    138 | Ramesh   | Support            |  48000.00 |        125 |       NULL |
+|    139 | Payal    | HR Executive       |  45000.00 |       NULL |       NULL |
+|    140 | Omkar    | Intern             |  25000.00 |        101 |       NULL |
++--------+----------+--------------------+-----------+------------+------------+
+40 rows in set (0.00 sec)
+
+mysql> select * from employee where project_id is null;
++--------+----------+-----------------+----------+------------+------------+
+| emp_id | emp_name | designation     | salary   | manager_id | project_id |
++--------+----------+-----------------+----------+------------+------------+
+|    133 | Gaurav   | Developer       | 55000.00 |        101 |       NULL |
+|    134 | Nidhi    | Tester          | 42000.00 |        105 |       NULL |
+|    135 | Prakash  | Designer        | 50000.00 |        109 |       NULL |
+|    136 | Alok     | DevOps Engineer | 70000.00 |        113 |       NULL |
+|    137 | Shruti   | Data Analyst    | 65000.00 |        121 |       NULL |
+|    138 | Ramesh   | Support         | 48000.00 |        125 |       NULL |
+|    139 | Payal    | HR Executive    | 45000.00 |       NULL |       NULL |
+|    140 | Omkar    | Intern          | 25000.00 |        101 |       NULL |
++--------+----------+-----------------+----------+------------+------------+
+8 rows in set (0.00 sec)
+
+mysql> select * from employee where project_id not null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'null' at line 1
+mysql> select * from employee where not project_id null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'null' at line 1
+mysql> select * from employee where project_id <> null;
+Empty set (0.01 sec)
+
+mysql> select count(project_id) from employee;
++-------------------+
+| count(project_id) |
++-------------------+
+|                32 |
++-------------------+
+1 row in set (0.01 sec)
+
+mysql> select count(p) from employee e right join project p on e.project_id = p.project_id;
+ERROR 1054 (42S22): Unknown column 'p' in 'field list'
+mysql> select count(project_id) from employee e right join project p on e.project_id = p.project_id;
+ERROR 1052 (23000): Column 'project_id' in field list is ambiguous
+mysql> select count(project_id) from employee e left join project p on e.project_id = p.project_id;
+ERROR 1052 (23000): Column 'project_id' in field list is ambiguous
+mysql> select count(project_id) from employee e inner join project p on e.project_id = p.project_id;
+ERROR 1052 (23000): Column 'project_id' in field list is ambiguous
+mysql> select e.*, p.* from employee e left join project p on e.project_id = p.project_id;
++--------+----------+--------------------+-----------+------------+------------+------------+-----------------+-----------+------------+
+| emp_id | emp_name | designation        | salary    | manager_id | project_id | project_id | project_name    | location  | budget     |
++--------+----------+--------------------+-----------+------------+------------+------------+-----------------+-----------+------------+
+|    101 | Amit     | Project Manager    |  90000.00 |       NULL |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    102 | Rahul    | Developer          |  60000.00 |        101 |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    103 | Neha     | Tester             |  45000.00 |        101 |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    104 | Kiran    | Developer          |  58000.00 |        101 |          1 |          1 | AI Development  | Pune      | 1500000.00 |
+|    105 | Priya    | Project Manager    |  95000.00 |       NULL |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    106 | Arjun    | Developer          |  62000.00 |        105 |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    107 | Sneha    | Designer           |  50000.00 |        105 |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    108 | Rohit    | Tester             |  47000.00 |        105 |          2 |          2 | Web Portal      | Mumbai    |  900000.00 |
+|    109 | Vikas    | Project Manager    |  98000.00 |       NULL |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    110 | Meena    | Developer          |  65000.00 |        109 |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    111 | Anjali   | Tester             |  48000.00 |        109 |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    112 | Suresh   | Developer          |  63000.00 |        109 |          3 |          3 | Mobile App      | Bangalore | 1200000.00 |
+|    113 | Deepak   | Project Manager    | 100000.00 |       NULL |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    115 | Varun    | Security Analyst   |  70000.00 |        113 |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |          4 |          4 | Cloud Migration | Hyderabad | 2000000.00 |
+|    117 | Manoj    | Project Manager    |  92000.00 |       NULL |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    118 | Ritika   | Security Analyst   |  68000.00 |        117 |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    119 | Harsh    | Developer          |  64000.00 |        117 |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    120 | Komal    | Tester             |  46000.00 |        117 |          5 |          5 | Cyber Security  | Chennai   | 1800000.00 |
+|    121 | Ajay     | Project Manager    |  97000.00 |       NULL |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    122 | Tina     | Data Analyst       |  69000.00 |        121 |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    123 | Ravi     | Data Engineer      |  71000.00 |        121 |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    124 | Pooja    | BI Developer       |  66000.00 |        121 |          6 |          6 | Data Analytics  | Delhi     | 1600000.00 |
+|    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    126 | Kavita   | ERP Developer      |  62000.00 |        125 |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    127 | Yogesh   | Tester             |  45000.00 |        125 |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    128 | Divya    | Support Engineer   |  48000.00 |        125 |          7 |          7 | ERP System      | Kolkata   | 1100000.00 |
+|    129 | Ashok    | Project Manager    |  96000.00 |       NULL |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
+|    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
+|    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
+|    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |          8 | Blockchain      | Noida     | 1300000.00 |
+|    133 | Gaurav   | Developer          |  55000.00 |        101 |       NULL |       NULL | NULL            | NULL      |       NULL |
+|    134 | Nidhi    | Tester             |  42000.00 |        105 |       NULL |       NULL | NULL            | NULL      |       NULL |
+|    135 | Prakash  | Designer           |  50000.00 |        109 |       NULL |       NULL | NULL            | NULL      |       NULL |
+|    136 | Alok     | DevOps Engineer    |  70000.00 |        113 |       NULL |       NULL | NULL            | NULL      |       NULL |
+|    137 | Shruti   | Data Analyst       |  65000.00 |        121 |       NULL |       NULL | NULL            | NULL      |       NULL |
+|    138 | Ramesh   | Support            |  48000.00 |        125 |       NULL |       NULL | NULL            | NULL      |       NULL |
+|    139 | Payal    | HR Executive       |  45000.00 |       NULL |       NULL |       NULL | NULL            | NULL      |       NULL |
+|    140 | Omkar    | Intern             |  25000.00 |        101 |       NULL |       NULL | NULL            | NULL      |       NULL |
++--------+----------+--------------------+-----------+------------+------------+------------+-----------------+-----------+------------+
+40 rows in set (0.00 sec)
+
+mysql> select e.emp_name, e.designation, e.salary from employee e left join p.project_name, p.location from project p on e.project_id = p.project_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', p.location from project p on e.project_id = p.project_id' at line 1
+mysql> select e.emp_name, e.designation, e.salary, p.project_name, p.location from employee e left join project p on e.project_id = p.project_id;
++----------+--------------------+-----------+-----------------+-----------+
+| emp_name | designation        | salary    | project_name    | location  |
++----------+--------------------+-----------+-----------------+-----------+
+| Amit     | Project Manager    |  90000.00 | AI Development  | Pune      |
+| Rahul    | Developer          |  60000.00 | AI Development  | Pune      |
+| Neha     | Tester             |  45000.00 | AI Development  | Pune      |
+| Kiran    | Developer          |  58000.00 | AI Development  | Pune      |
+| Priya    | Project Manager    |  95000.00 | Web Portal      | Mumbai    |
+| Arjun    | Developer          |  62000.00 | Web Portal      | Mumbai    |
+| Sneha    | Designer           |  50000.00 | Web Portal      | Mumbai    |
+| Rohit    | Tester             |  47000.00 | Web Portal      | Mumbai    |
+| Vikas    | Project Manager    |  98000.00 | Mobile App      | Bangalore |
+| Meena    | Developer          |  65000.00 | Mobile App      | Bangalore |
+| Anjali   | Tester             |  48000.00 | Mobile App      | Bangalore |
+| Suresh   | Developer          |  63000.00 | Mobile App      | Bangalore |
+| Deepak   | Project Manager    | 100000.00 | Cloud Migration | Hyderabad |
+| Nikita   | Cloud Engineer     |  75000.00 | Cloud Migration | Hyderabad |
+| Varun    | Security Analyst   |  70000.00 | Cloud Migration | Hyderabad |
+| Isha     | DevOps Engineer    |  72000.00 | Cloud Migration | Hyderabad |
+| Manoj    | Project Manager    |  92000.00 | Cyber Security  | Chennai   |
+| Ritika   | Security Analyst   |  68000.00 | Cyber Security  | Chennai   |
+| Harsh    | Developer          |  64000.00 | Cyber Security  | Chennai   |
+| Komal    | Tester             |  46000.00 | Cyber Security  | Chennai   |
+| Ajay     | Project Manager    |  97000.00 | Data Analytics  | Delhi     |
+| Tina     | Data Analyst       |  69000.00 | Data Analytics  | Delhi     |
+| Ravi     | Data Engineer      |  71000.00 | Data Analytics  | Delhi     |
+| Pooja    | BI Developer       |  66000.00 | Data Analytics  | Delhi     |
+| Sanjay   | Project Manager    |  94000.00 | ERP System      | Kolkata   |
+| Kavita   | ERP Developer      |  62000.00 | ERP System      | Kolkata   |
+| Yogesh   | Tester             |  45000.00 | ERP System      | Kolkata   |
+| Divya    | Support Engineer   |  48000.00 | ERP System      | Kolkata   |
+| Ashok    | Project Manager    |  96000.00 | Blockchain      | Noida     |
+| Seema    | Blockchain Dev     |  73000.00 | Blockchain      | Noida     |
+| Mahesh   | Smart Contract Dev |  74000.00 | Blockchain      | Noida     |
+| Rekha    | Tester             |  49000.00 | Blockchain      | Noida     |
+| Gaurav   | Developer          |  55000.00 | NULL            | NULL      |
+| Nidhi    | Tester             |  42000.00 | NULL            | NULL      |
+| Prakash  | Designer           |  50000.00 | NULL            | NULL      |
+| Alok     | DevOps Engineer    |  70000.00 | NULL            | NULL      |
+| Shruti   | Data Analyst       |  65000.00 | NULL            | NULL      |
+| Ramesh   | Support            |  48000.00 | NULL            | NULL      |
+| Payal    | HR Executive       |  45000.00 | NULL            | NULL      |
+| Omkar    | Intern             |  25000.00 | NULL            | NULL      |
++----------+--------------------+-----------+-----------------+-----------+
+40 rows in set (0.00 sec)
+
+mysql> select p.project_id, p.project_name, p.location, p.budget, e.emp_id, e.emp_name, e.designation, e.salary, e.manager_id from project right join employee e on p.project_id = e.project_id;
+ERROR 1054 (42S22): Unknown column 'p.project_id' in 'field list'
+mysql> select p.project_id, p.project_name, p.location, p.budget, e.emp_id, e.emp_name, e.designation, e.salary, e.manager_id from project p right join employee e on p.project_id = e.project_id;
++------------+-----------------+-----------+------------+--------+----------+--------------------+-----------+------------+
+| project_id | project_name    | location  | budget     | emp_id | emp_name | designation        | salary    | manager_id |
++------------+-----------------+-----------+------------+--------+----------+--------------------+-----------+------------+
+|          1 | AI Development  | Pune      | 1500000.00 |    101 | Amit     | Project Manager    |  90000.00 |       NULL |
+|          1 | AI Development  | Pune      | 1500000.00 |    102 | Rahul    | Developer          |  60000.00 |        101 |
+|          1 | AI Development  | Pune      | 1500000.00 |    103 | Neha     | Tester             |  45000.00 |        101 |
+|          1 | AI Development  | Pune      | 1500000.00 |    104 | Kiran    | Developer          |  58000.00 |        101 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    105 | Priya    | Project Manager    |  95000.00 |       NULL |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    106 | Arjun    | Developer          |  62000.00 |        105 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    107 | Sneha    | Designer           |  50000.00 |        105 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    108 | Rohit    | Tester             |  47000.00 |        105 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    109 | Vikas    | Project Manager    |  98000.00 |       NULL |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    110 | Meena    | Developer          |  65000.00 |        109 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    111 | Anjali   | Tester             |  48000.00 |        109 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    112 | Suresh   | Developer          |  63000.00 |        109 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    113 | Deepak   | Project Manager    | 100000.00 |       NULL |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    115 | Varun    | Security Analyst   |  70000.00 |        113 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    117 | Manoj    | Project Manager    |  92000.00 |       NULL |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    118 | Ritika   | Security Analyst   |  68000.00 |        117 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    119 | Harsh    | Developer          |  64000.00 |        117 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    120 | Komal    | Tester             |  46000.00 |        117 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    121 | Ajay     | Project Manager    |  97000.00 |       NULL |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    122 | Tina     | Data Analyst       |  69000.00 |        121 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    123 | Ravi     | Data Engineer      |  71000.00 |        121 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    124 | Pooja    | BI Developer       |  66000.00 |        121 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    126 | Kavita   | ERP Developer      |  62000.00 |        125 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    127 | Yogesh   | Tester             |  45000.00 |        125 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    128 | Divya    | Support Engineer   |  48000.00 |        125 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    129 | Ashok    | Project Manager    |  96000.00 |       NULL |
+|          8 | Blockchain      | Noida     | 1300000.00 |    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    132 | Rekha    | Tester             |  49000.00 |        129 |
+|       NULL | NULL            | NULL      |       NULL |    133 | Gaurav   | Developer          |  55000.00 |        101 |
+|       NULL | NULL            | NULL      |       NULL |    134 | Nidhi    | Tester             |  42000.00 |        105 |
+|       NULL | NULL            | NULL      |       NULL |    135 | Prakash  | Designer           |  50000.00 |        109 |
+|       NULL | NULL            | NULL      |       NULL |    136 | Alok     | DevOps Engineer    |  70000.00 |        113 |
+|       NULL | NULL            | NULL      |       NULL |    137 | Shruti   | Data Analyst       |  65000.00 |        121 |
+|       NULL | NULL            | NULL      |       NULL |    138 | Ramesh   | Support            |  48000.00 |        125 |
+|       NULL | NULL            | NULL      |       NULL |    139 | Payal    | HR Executive       |  45000.00 |       NULL |
+|       NULL | NULL            | NULL      |       NULL |    140 | Omkar    | Intern             |  25000.00 |        101 |
++------------+-----------------+-----------+------------+--------+----------+--------------------+-----------+------------+
+40 rows in set (0.00 sec)
+
+mysql> select p.project_id, p.project_name, p.location, p.budget, e.emp_id, e.emp_name, e.designation, e.salary, e.manager_id from project p inner join employee e on p.project_id = e.project_id;
++------------+-----------------+-----------+------------+--------+----------+--------------------+-----------+------------+
+| project_id | project_name    | location  | budget     | emp_id | emp_name | designation        | salary    | manager_id |
++------------+-----------------+-----------+------------+--------+----------+--------------------+-----------+------------+
+|          1 | AI Development  | Pune      | 1500000.00 |    101 | Amit     | Project Manager    |  90000.00 |       NULL |
+|          1 | AI Development  | Pune      | 1500000.00 |    102 | Rahul    | Developer          |  60000.00 |        101 |
+|          1 | AI Development  | Pune      | 1500000.00 |    103 | Neha     | Tester             |  45000.00 |        101 |
+|          1 | AI Development  | Pune      | 1500000.00 |    104 | Kiran    | Developer          |  58000.00 |        101 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    105 | Priya    | Project Manager    |  95000.00 |       NULL |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    106 | Arjun    | Developer          |  62000.00 |        105 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    107 | Sneha    | Designer           |  50000.00 |        105 |
+|          2 | Web Portal      | Mumbai    |  900000.00 |    108 | Rohit    | Tester             |  47000.00 |        105 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    109 | Vikas    | Project Manager    |  98000.00 |       NULL |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    110 | Meena    | Developer          |  65000.00 |        109 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    111 | Anjali   | Tester             |  48000.00 |        109 |
+|          3 | Mobile App      | Bangalore | 1200000.00 |    112 | Suresh   | Developer          |  63000.00 |        109 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    113 | Deepak   | Project Manager    | 100000.00 |       NULL |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    115 | Varun    | Security Analyst   |  70000.00 |        113 |
+|          4 | Cloud Migration | Hyderabad | 2000000.00 |    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    117 | Manoj    | Project Manager    |  92000.00 |       NULL |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    118 | Ritika   | Security Analyst   |  68000.00 |        117 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    119 | Harsh    | Developer          |  64000.00 |        117 |
+|          5 | Cyber Security  | Chennai   | 1800000.00 |    120 | Komal    | Tester             |  46000.00 |        117 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    121 | Ajay     | Project Manager    |  97000.00 |       NULL |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    122 | Tina     | Data Analyst       |  69000.00 |        121 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    123 | Ravi     | Data Engineer      |  71000.00 |        121 |
+|          6 | Data Analytics  | Delhi     | 1600000.00 |    124 | Pooja    | BI Developer       |  66000.00 |        121 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    126 | Kavita   | ERP Developer      |  62000.00 |        125 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    127 | Yogesh   | Tester             |  45000.00 |        125 |
+|          7 | ERP System      | Kolkata   | 1100000.00 |    128 | Divya    | Support Engineer   |  48000.00 |        125 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    129 | Ashok    | Project Manager    |  96000.00 |       NULL |
+|          8 | Blockchain      | Noida     | 1300000.00 |    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |
+|          8 | Blockchain      | Noida     | 1300000.00 |    132 | Rekha    | Tester             |  49000.00 |        129 |
++------------+-----------------+-----------+------------+--------+----------+--------------------+-----------+------------+
+32 rows in set (0.01 sec)
+
+mysql> select e.manager_id, e.manager_name, e.emp_id, e.emp_name, e_designation from employee e;
+ERROR 1054 (42S22): Unknown column 'e.manager_name' in 'field list'
+mysql> select e.manager_id, e.emp_id, e.emp_name, e_designation from employee e;
+ERROR 1054 (42S22): Unknown column 'e_designation' in 'field list'
+mysql> select manager_id count(*) from employee where manager_id is not null group by manager_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'count(*) from employee where manager_id is not null group by manager_id' at line 1
+mysql> select manager_id count(*) from employee where manager_id is null group by manager_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'count(*) from employee where manager_id is null group by manager_id' at line 1
+mysql> select manager_id count(*) from employee
+    -> where manager_id IS NOT NULL
+    -> GROUP BY manager_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'count(*) from employee
+where manager_id IS NOT NULL
+GROUP BY manager_id' at line 1
+mysql> select manager_id, count(*) from employee where manager_id is null group by manager_id;
++------------+----------+
+| manager_id | count(*) |
++------------+----------+
+|       NULL |        9 |
++------------+----------+
+1 row in set (0.03 sec)
+
+mysql> select manager_id, count(*) from employee where manager_id is not null group by manager_id;
++------------+----------+
+| manager_id | count(*) |
++------------+----------+
+|        101 |        5 |
+|        105 |        4 |
+|        109 |        4 |
+|        113 |        4 |
+|        117 |        3 |
+|        121 |        4 |
+|        125 |        4 |
+|        129 |        3 |
++------------+----------+
+8 rows in set (0.00 sec)
+
+mysql> select manager_id, sum(salary) from employee where manager_id is not null group by manager_id;
++------------+-------------+
+| manager_id | sum(salary) |
++------------+-------------+
+|        101 |   243000.00 |
+|        105 |   201000.00 |
+|        109 |   226000.00 |
+|        113 |   287000.00 |
+|        117 |   178000.00 |
+|        121 |   271000.00 |
+|        125 |   203000.00 |
+|        129 |   196000.00 |
++------------+-------------+
+8 rows in set (0.01 sec)
+
+mysql> select * from employee where peoject_id is not null;
+ERROR 1054 (42S22): Unknown column 'peoject_id' in 'where clause'
+mysql> select * from employee where project_id is not null;
++--------+----------+--------------------+-----------+------------+------------+
+| emp_id | emp_name | designation        | salary    | manager_id | project_id |
++--------+----------+--------------------+-----------+------------+------------+
+|    101 | Amit     | Project Manager    |  90000.00 |       NULL |          1 |
+|    102 | Rahul    | Developer          |  60000.00 |        101 |          1 |
+|    103 | Neha     | Tester             |  45000.00 |        101 |          1 |
+|    104 | Kiran    | Developer          |  58000.00 |        101 |          1 |
+|    105 | Priya    | Project Manager    |  95000.00 |       NULL |          2 |
+|    106 | Arjun    | Developer          |  62000.00 |        105 |          2 |
+|    107 | Sneha    | Designer           |  50000.00 |        105 |          2 |
+|    108 | Rohit    | Tester             |  47000.00 |        105 |          2 |
+|    109 | Vikas    | Project Manager    |  98000.00 |       NULL |          3 |
+|    110 | Meena    | Developer          |  65000.00 |        109 |          3 |
+|    111 | Anjali   | Tester             |  48000.00 |        109 |          3 |
+|    112 | Suresh   | Developer          |  63000.00 |        109 |          3 |
+|    113 | Deepak   | Project Manager    | 100000.00 |       NULL |          4 |
+|    114 | Nikita   | Cloud Engineer     |  75000.00 |        113 |          4 |
+|    115 | Varun    | Security Analyst   |  70000.00 |        113 |          4 |
+|    116 | Isha     | DevOps Engineer    |  72000.00 |        113 |          4 |
+|    117 | Manoj    | Project Manager    |  92000.00 |       NULL |          5 |
+|    118 | Ritika   | Security Analyst   |  68000.00 |        117 |          5 |
+|    119 | Harsh    | Developer          |  64000.00 |        117 |          5 |
+|    120 | Komal    | Tester             |  46000.00 |        117 |          5 |
+|    121 | Ajay     | Project Manager    |  97000.00 |       NULL |          6 |
+|    122 | Tina     | Data Analyst       |  69000.00 |        121 |          6 |
+|    123 | Ravi     | Data Engineer      |  71000.00 |        121 |          6 |
+|    124 | Pooja    | BI Developer       |  66000.00 |        121 |          6 |
+|    125 | Sanjay   | Project Manager    |  94000.00 |       NULL |          7 |
+|    126 | Kavita   | ERP Developer      |  62000.00 |        125 |          7 |
+|    127 | Yogesh   | Tester             |  45000.00 |        125 |          7 |
+|    128 | Divya    | Support Engineer   |  48000.00 |        125 |          7 |
+|    129 | Ashok    | Project Manager    |  96000.00 |       NULL |          8 |
+|    130 | Seema    | Blockchain Dev     |  73000.00 |        129 |          8 |
+|    131 | Mahesh   | Smart Contract Dev |  74000.00 |        129 |          8 |
+|    132 | Rekha    | Tester             |  49000.00 |        129 |          8 |
++--------+----------+--------------------+-----------+------------+------------+
+32 rows in set (0.01 sec)
