@@ -1,0 +1,966 @@
+mysql> show databases;
++--------------------------------+
+| Database                       |
++--------------------------------+
+| billing                        |
+| company                        |
+| information_schema             |
+| library_database               |
+| mysql                          |
+| mysql_practice_and_training    |
+| online_examdb                  |
+| perform_join_comp_assignment   |
+| performance_schema             |
+| practice                       |
+| practice_aggregate_function    |
+| praticing_all_queries_commands |
+| sys                            |
+| team                           |
++--------------------------------+
+14 rows in set (0.00 sec)
+
+mysql> use online_examdb;
+Database changed
+mysql> CREATE TABLE Student (
+    ->  student_id INT PRIMARY KEY,
+    ->  student_name VARCHAR(100),
+    ->  email VARCHAR(100),
+    ->  gender VARCHAR(10),
+    ->  city VARCHAR(50),
+    ->  registration_date DATE
+    -> );
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> desc student;
++-------------------+--------------+------+-----+---------+-------+
+| Field             | Type         | Null | Key | Default | Extra |
++-------------------+--------------+------+-----+---------+-------+
+| student_id        | int          | NO   | PRI | NULL    |       |
+| student_name      | varchar(100) | YES  |     | NULL    |       |
+| email             | varchar(100) | YES  |     | NULL    |       |
+| gender            | varchar(10)  | YES  |     | NULL    |       |
+| city              | varchar(50)  | YES  |     | NULL    |       |
+| registration_date | date         | YES  |     | NULL    |       |
++-------------------+--------------+------+-----+---------+-------+
+6 rows in set (0.04 sec)
+
+mysql> CREATE TABLE Subject (
+    ->  subject_id INT PRIMARY KEY,
+    ->  subject_name VARCHAR(100),
+    ->  total_marks INT
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> desc subject;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| subject_id   | int          | NO   | PRI | NULL    |       |
+| subject_name | varchar(100) | YES  |     | NULL    |       |
+| total_marks  | int          | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE TABLE ExamSchedule (
+    ->  exam_id INT PRIMARY KEY,
+    ->  subject_id INT,
+    ->  exam_date DATE,
+    ->  duration_minutes INT,
+    ->  FOREIGN KEY (subject_id) REFERENCES Subject(subject_id)
+    -> );
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> desc examschedule;
++------------------+------+------+-----+---------+-------+
+| Field            | Type | Null | Key | Default | Extra |
++------------------+------+------+-----+---------+-------+
+| exam_id          | int  | NO   | PRI | NULL    |       |
+| subject_id       | int  | YES  | MUL | NULL    |       |
+| exam_date        | date | YES  |     | NULL    |       |
+| duration_minutes | int  | YES  |     | NULL    |       |
++------------------+------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> CREATE TABLE Question (
+    ->  question_id INT PRIMARY KEY,
+    ->  question_text VARCHAR(500),
+    ->  difficulty_level VARCHAR(20),
+    ->  marks INT
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc question;
++------------------+--------------+------+-----+---------+-------+
+| Field            | Type         | Null | Key | Default | Extra |
++------------------+--------------+------+-----+---------+-------+
+| question_id      | int          | NO   | PRI | NULL    |       |
+| question_text    | varchar(500) | YES  |     | NULL    |       |
+| difficulty_level | varchar(20)  | YES  |     | NULL    |       |
+| marks            | int          | YES  |     | NULL    |       |
++------------------+--------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> CREATE TABLE SubjectQuestion (
+    ->  subject_id INT,
+    ->  question_id INT,
+    ->  PRIMARY KEY(subject_id, question_id),
+    ->  FOREIGN KEY (subject_id) REFERENCES Subject(subject_id),
+    ->  FOREIGN KEY (question_id) REFERENCES Question(question_id)
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> desc subjectquestion;
++-------------+------+------+-----+---------+-------+
+| Field       | Type | Null | Key | Default | Extra |
++-------------+------+------+-----+---------+-------+
+| subject_id  | int  | NO   | PRI | NULL    |       |
+| question_id | int  | NO   | PRI | NULL    |       |
++-------------+------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Result (
+    ->  result_id INT PRIMARY KEY,
+    ->  student_id INT,
+    ->  exam_id INT,
+    ->  marks_obtained INT,
+    ->  result_status VARCHAR(20),
+    ->  FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    ->  FOREIGN KEY (exam_id) REFERENCES ExamSchedule(exam_id));
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> desc result
+    -> ;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| result_id      | int         | NO   | PRI | NULL    |       |
+| student_id     | int         | YES  | MUL | NULL    |       |
+| exam_id        | int         | YES  | MUL | NULL    |       |
+| marks_obtained | int         | YES  |     | NULL    |       |
+| result_status  | varchar(20) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> show tables;
++-------------------------+
+| Tables_in_online_examdb |
++-------------------------+
+| examschedule            |
+| question                |
+| result                  |
+| student                 |
+| subject                 |
+| subjectquestion         |
++-------------------------+
+6 rows in set (0.01 sec)
+
+mysql> select * from student;
+Empty set (0.01 sec)
+
+mysql> INSERT INTO Student VALUES
+    -> (1,'Alice Johnson','alice@gmail.com','Female','New York','2024-02-10'),
+    -> (2,'Aaron Smith','aaron@gmail.com','Male','Chicago','2024-03-15'),
+    -> (3,'Bob Wilson','bob@yahoo.com','Male','New York','2023-12-20'),
+    -> (4,'Cathy Brown','cathy@gmail.com','Female','Los Angeles','2024-05-01'),
+    -> (5,'David Anderson','david@gmail.com','Male','Chicago','2025-01-12'),
+    -> (6,'Emma Watson','emma@gmail.com','Female','New York','2025-02-18'),
+    -> (7,'Jackson Lee','jackson@gmail.com','Male','Houston','2024-06-25'),
+    -> (8,'Mason Clark','mason@gmail.com','Male','Chicago','2024-07-10');
+Query OK, 8 rows affected (0.02 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select
+    -> * from student;
++------------+----------------+-------------------+--------+-------------+-------------------+
+| student_id | student_name   | email             | gender | city        | registration_date |
++------------+----------------+-------------------+--------+-------------+-------------------+
+|          1 | Alice Johnson  | alice@gmail.com   | Female | New York    | 2024-02-10        |
+|          2 | Aaron Smith    | aaron@gmail.com   | Male   | Chicago     | 2024-03-15        |
+|          3 | Bob Wilson     | bob@yahoo.com     | Male   | New York    | 2023-12-20        |
+|          4 | Cathy Brown    | cathy@gmail.com   | Female | Los Angeles | 2024-05-01        |
+|          5 | David Anderson | david@gmail.com   | Male   | Chicago     | 2025-01-12        |
+|          6 | Emma Watson    | emma@gmail.com    | Female | New York    | 2025-02-18        |
+|          7 | Jackson Lee    | jackson@gmail.com | Male   | Houston     | 2024-06-25        |
+|          8 | Mason Clark    | mason@gmail.com   | Male   | Chicago     | 2024-07-10        |
++------------+----------------+-------------------+--------+-------------+-------------------+
+8 rows in set (0.00 sec)
+
+mysql> INSERT INTO Subject VALUES
+    -> (101,'Mathematics',100),
+    -> (102,'Science',90),
+    -> (103,'English',80),
+    -> (104,'Computer Science',100);
+Query OK, 4 rows affected (0.02 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from subject;
++------------+------------------+-------------+
+| subject_id | subject_name     | total_marks |
++------------+------------------+-------------+
+|        101 | Mathematics      |         100 |
+|        102 | Science          |          90 |
+|        103 | English          |          80 |
+|        104 | Computer Science |         100 |
++------------+------------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO ExamSchedule VALUES
+    -> (201,101,'2025-01-15',120),
+    -> (202,102,'2025-02-10',90),
+    -> (203,103,'2025-03-05',60),
+    -> (204,104,'2025-04-20',150),
+    -> (205,101,'2024-12-10',100);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from examschedule;
++---------+------------+------------+------------------+
+| exam_id | subject_id | exam_date  | duration_minutes |
++---------+------------+------------+------------------+
+|     201 |        101 | 2025-01-15 |              120 |
+|     202 |        102 | 2025-02-10 |               90 |
+|     203 |        103 | 2025-03-05 |               60 |
+|     204 |        104 | 2025-04-20 |              150 |
+|     205 |        101 | 2024-12-10 |              100 |
++---------+------------+------------+------------------+
+5 rows in set (0.01 sec)
+
+mysql> INSERT INTO Question VALUES
+    -> (301,'Algebra Question','Hard',10),
+    -> (302,'Geometry Question','Medium',5),
+    -> (303,'Physics Theory','Hard',8),
+    -> (304,'Chemistry Basics','Easy',2),
+    -> (305,'Grammar Test','Easy',5),
+    -> (306,'Programming Logic','Hard',10),
+    -> (307,'Networking Basics','Medium',7),
+    -> (308,'Essay Writing','Easy',6);
+Query OK, 8 rows affected (0.02 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select * from questions;
+ERROR 1146 (42S02): Table 'online_examdb.questions' doesn't exist
+mysql> select * from question;
++-------------+-------------------+------------------+-------+
+| question_id | question_text     | difficulty_level | marks |
++-------------+-------------------+------------------+-------+
+|         301 | Algebra Question  | Hard             |    10 |
+|         302 | Geometry Question | Medium           |     5 |
+|         303 | Physics Theory    | Hard             |     8 |
+|         304 | Chemistry Basics  | Easy             |     2 |
+|         305 | Grammar Test      | Easy             |     5 |
+|         306 | Programming Logic | Hard             |    10 |
+|         307 | Networking Basics | Medium           |     7 |
+|         308 | Essay Writing     | Easy             |     6 |
++-------------+-------------------+------------------+-------+
+8 rows in set (0.00 sec)
+
+mysql> INSERT INTO SubjectQuestion VALUES
+    -> (101,301),
+    -> (101,302),
+    -> (101,303),
+    -> (101,304),
+    -> (101,305),
+    -> (101,306),
+    -> (102,303),
+    -> (102,304),
+    -> (102,307),
+    -> (103,305),
+    -> (103,308),
+    -> (104,306),
+    -> (104,307);
+Query OK, 13 rows affected (0.01 sec)
+Records: 13  Duplicates: 0  Warnings: 0
+
+mysql> select * from subjectquestion;
++------------+-------------+
+| subject_id | question_id |
++------------+-------------+
+|        101 |         301 |
+|        101 |         302 |
+|        101 |         303 |
+|        102 |         303 |
+|        101 |         304 |
+|        102 |         304 |
+|        101 |         305 |
+|        103 |         305 |
+|        101 |         306 |
+|        104 |         306 |
+|        102 |         307 |
+|        104 |         307 |
+|        103 |         308 |
++------------+-------------+
+13 rows in set (0.00 sec)
+
+mysql> INSERT INTO Result VALUES
+    -> (401,1,201,85,'Pass'),
+    -> (402,2,201,45,'Pass'),
+    -> (403,3,201,30,'Fail'),
+    -> (404,4,202,75,'Pass'),
+    -> (405,5,202,55,'Pass'),
+    -> (406,6,203,65,'Pass'),
+    -> (407,7,204,95,'Pass'),
+    -> (408,8,205,20,'Fail'),
+    -> (409,1,202,78,'Pass'),
+    -> (410,2,203,35,'Fail'),
+    -> (411,5,204,88,'Pass'),
+    -> (412,6,201,92,'Pass'),
+    -> (413,7,202,60,'Pass');
+Query OK, 13 rows affected (0.01 sec)
+Records: 13  Duplicates: 0  Warnings: 0
+
+mysql> select * from result;
++-----------+------------+---------+----------------+---------------+
+| result_id | student_id | exam_id | marks_obtained | result_status |
++-----------+------------+---------+----------------+---------------+
+|       401 |          1 |     201 |             85 | Pass          |
+|       402 |          2 |     201 |             45 | Pass          |
+|       403 |          3 |     201 |             30 | Fail          |
+|       404 |          4 |     202 |             75 | Pass          |
+|       405 |          5 |     202 |             55 | Pass          |
+|       406 |          6 |     203 |             65 | Pass          |
+|       407 |          7 |     204 |             95 | Pass          |
+|       408 |          8 |     205 |             20 | Fail          |
+|       409 |          1 |     202 |             78 | Pass          |
+|       410 |          2 |     203 |             35 | Fail          |
+|       411 |          5 |     204 |             88 | Pass          |
+|       412 |          6 |     201 |             92 | Pass          |
+|       413 |          7 |     202 |             60 | Pass          |
++-----------+------------+---------+----------------+---------------+
+13 rows in set (0.00 sec)
+
+mysql> --start queries from here
+    -> select * from student;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--start queries from here
+select * from student' at line 1
+mysql> select * from student;
++------------+----------------+-------------------+--------+-------------+-------------------+
+| student_id | student_name   | email             | gender | city        | registration_date |
++------------+----------------+-------------------+--------+-------------+-------------------+
+|          1 | Alice Johnson  | alice@gmail.com   | Female | New York    | 2024-02-10        |
+|          2 | Aaron Smith    | aaron@gmail.com   | Male   | Chicago     | 2024-03-15        |
+|          3 | Bob Wilson     | bob@yahoo.com     | Male   | New York    | 2023-12-20        |
+|          4 | Cathy Brown    | cathy@gmail.com   | Female | Los Angeles | 2024-05-01        |
+|          5 | David Anderson | david@gmail.com   | Male   | Chicago     | 2025-01-12        |
+|          6 | Emma Watson    | emma@gmail.com    | Female | New York    | 2025-02-18        |
+|          7 | Jackson Lee    | jackson@gmail.com | Male   | Houston     | 2024-06-25        |
+|          8 | Mason Clark    | mason@gmail.com   | Male   | Chicago     | 2024-07-10        |
++------------+----------------+-------------------+--------+-------------+-------------------+
+8 rows in set (0.00 sec)
+
+mysql> select student_name, email from student;
++----------------+-------------------+
+| student_name   | email             |
++----------------+-------------------+
+| Alice Johnson  | alice@gmail.com   |
+| Aaron Smith    | aaron@gmail.com   |
+| Bob Wilson     | bob@yahoo.com     |
+| Cathy Brown    | cathy@gmail.com   |
+| David Anderson | david@gmail.com   |
+| Emma Watson    | emma@gmail.com    |
+| Jackson Lee    | jackson@gmail.com |
+| Mason Clark    | mason@gmail.com   |
++----------------+-------------------+
+8 rows in set (0.00 sec)
+
+mysql> select * from student where city="new york";
++------------+---------------+-----------------+--------+----------+-------------------+
+| student_id | student_name  | email           | gender | city     | registration_date |
++------------+---------------+-----------------+--------+----------+-------------------+
+|          1 | Alice Johnson | alice@gmail.com | Female | New York | 2024-02-10        |
+|          3 | Bob Wilson    | bob@yahoo.com   | Male   | New York | 2023-12-20        |
+|          6 | Emma Watson   | emma@gmail.com  | Female | New York | 2025-02-18        |
++------------+---------------+-----------------+--------+----------+-------------------+
+3 rows in set (0.01 sec)
+
+mysql> select * from student where gender = "female";
++------------+---------------+-----------------+--------+-------------+-------------------+
+| student_id | student_name  | email           | gender | city        | registration_date |
++------------+---------------+-----------------+--------+-------------+-------------------+
+|          1 | Alice Johnson | alice@gmail.com | Female | New York    | 2024-02-10        |
+|          4 | Cathy Brown   | cathy@gmail.com | Female | Los Angeles | 2024-05-01        |
+|          6 | Emma Watson   | emma@gmail.com  | Female | New York    | 2025-02-18        |
++------------+---------------+-----------------+--------+-------------+-------------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from student where registration_date <'2024-01-01';
++------------+--------------+---------------+--------+----------+-------------------+
+| student_id | student_name | email         | gender | city     | registration_date |
++------------+--------------+---------------+--------+----------+-------------------+
+|          3 | Bob Wilson   | bob@yahoo.com | Male   | New York | 2023-12-20        |
++------------+--------------+---------------+--------+----------+-------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from student where registration_date > '2024-01-01';
++------------+----------------+-------------------+--------+-------------+-------------------+
+| student_id | student_name   | email             | gender | city        | registration_date |
++------------+----------------+-------------------+--------+-------------+-------------------+
+|          1 | Alice Johnson  | alice@gmail.com   | Female | New York    | 2024-02-10        |
+|          2 | Aaron Smith    | aaron@gmail.com   | Male   | Chicago     | 2024-03-15        |
+|          4 | Cathy Brown    | cathy@gmail.com   | Female | Los Angeles | 2024-05-01        |
+|          5 | David Anderson | david@gmail.com   | Male   | Chicago     | 2025-01-12        |
+|          6 | Emma Watson    | emma@gmail.com    | Female | New York    | 2025-02-18        |
+|          7 | Jackson Lee    | jackson@gmail.com | Male   | Houston     | 2024-06-25        |
+|          8 | Mason Clark    | mason@gmail.com   | Male   | Chicago     | 2024-07-10        |
++------------+----------------+-------------------+--------+-------------+-------------------+
+7 rows in set (0.00 sec)
+
+mysql> select subject_name, marks from subject where marks > 80;
+ERROR 1054 (42S22): Unknown column 'marks' in 'field list'
+mysql> select subject_name, total_marks from subject where total_marks > 80;
++------------------+-------------+
+| subject_name     | total_marks |
++------------------+-------------+
+| Mathematics      |         100 |
+| Science          |          90 |
+| Computer Science |         100 |
++------------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from student where registration_date between '2024-02-01' and '2024-07-10';
++------------+---------------+-------------------+--------+-------------+-------------------+
+| student_id | student_name  | email             | gender | city        | registration_date |
++------------+---------------+-------------------+--------+-------------+-------------------+
+|          1 | Alice Johnson | alice@gmail.com   | Female | New York    | 2024-02-10        |
+|          2 | Aaron Smith   | aaron@gmail.com   | Male   | Chicago     | 2024-03-15        |
+|          4 | Cathy Brown   | cathy@gmail.com   | Female | Los Angeles | 2024-05-01        |
+|          7 | Jackson Lee   | jackson@gmail.com | Male   | Houston     | 2024-06-25        |
+|          8 | Mason Clark   | mason@gmail.com   | Male   | Chicago     | 2024-07-10        |
++------------+---------------+-------------------+--------+-------------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from questions;
+ERROR 1146 (42S02): Table 'online_examdb.questions' doesn't exist
+mysql> select * from question;
++-------------+-------------------+------------------+-------+
+| question_id | question_text     | difficulty_level | marks |
++-------------+-------------------+------------------+-------+
+|         301 | Algebra Question  | Hard             |    10 |
+|         302 | Geometry Question | Medium           |     5 |
+|         303 | Physics Theory    | Hard             |     8 |
+|         304 | Chemistry Basics  | Easy             |     2 |
+|         305 | Grammar Test      | Easy             |     5 |
+|         306 | Programming Logic | Hard             |    10 |
+|         307 | Networking Basics | Medium           |     7 |
+|         308 | Essay Writing     | Easy             |     6 |
++-------------+-------------------+------------------+-------+
+8 rows in set (0.00 sec)
+
+mysql> select * from question where difficulty_level='Hard';
++-------------+-------------------+------------------+-------+
+| question_id | question_text     | difficulty_level | marks |
++-------------+-------------------+------------------+-------+
+|         301 | Algebra Question  | Hard             |    10 |
+|         303 | Physics Theory    | Hard             |     8 |
+|         306 | Programming Logic | Hard             |    10 |
++-------------+-------------------+------------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from student where student_name like "A%";
++------------+---------------+-----------------+--------+----------+-------------------+
+| student_id | student_name  | email           | gender | city     | registration_date |
++------------+---------------+-----------------+--------+----------+-------------------+
+|          1 | Alice Johnson | alice@gmail.com | Female | New York | 2024-02-10        |
+|          2 | Aaron Smith   | aaron@gmail.com | Male   | Chicago  | 2024-03-15        |
++------------+---------------+-----------------+--------+----------+-------------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from student where email like"%gmail.com";
++------------+----------------+-------------------+--------+-------------+-------------------+
+| student_id | student_name   | email             | gender | city        | registration_date |
++------------+----------------+-------------------+--------+-------------+-------------------+
+|          1 | Alice Johnson  | alice@gmail.com   | Female | New York    | 2024-02-10        |
+|          2 | Aaron Smith    | aaron@gmail.com   | Male   | Chicago     | 2024-03-15        |
+|          4 | Cathy Brown    | cathy@gmail.com   | Female | Los Angeles | 2024-05-01        |
+|          5 | David Anderson | david@gmail.com   | Male   | Chicago     | 2025-01-12        |
+|          6 | Emma Watson    | emma@gmail.com    | Female | New York    | 2025-02-18        |
+|          7 | Jackson Lee    | jackson@gmail.com | Male   | Houston     | 2024-06-25        |
+|          8 | Mason Clark    | mason@gmail.com   | Male   | Chicago     | 2024-07-10        |
++------------+----------------+-------------------+--------+-------------+-------------------+
+7 rows in set (0.00 sec)
+
+mysql> select * from subject where subject_name like "Math%";
++------------+--------------+-------------+
+| subject_id | subject_name | total_marks |
++------------+--------------+-------------+
+|        101 | Mathematics  |         100 |
++------------+--------------+-------------+
+1 row in set (0.01 sec)
+
+mysql> select * from question where marks between 5 and 10;
++-------------+-------------------+------------------+-------+
+| question_id | question_text     | difficulty_level | marks |
++-------------+-------------------+------------------+-------+
+|         301 | Algebra Question  | Hard             |    10 |
+|         302 | Geometry Question | Medium           |     5 |
+|         303 | Physics Theory    | Hard             |     8 |
+|         305 | Grammar Test      | Easy             |     5 |
+|         306 | Programming Logic | Hard             |    10 |
+|         307 | Networking Basics | Medium           |     7 |
+|         308 | Essay Writing     | Easy             |     6 |
++-------------+-------------------+------------------+-------+
+7 rows in set (0.01 sec)
+
+mysql> select * from result where marks_obtained >= 40;
++-----------+------------+---------+----------------+---------------+
+| result_id | student_id | exam_id | marks_obtained | result_status |
++-----------+------------+---------+----------------+---------------+
+|       401 |          1 |     201 |             85 | Pass          |
+|       402 |          2 |     201 |             45 | Pass          |
+|       404 |          4 |     202 |             75 | Pass          |
+|       405 |          5 |     202 |             55 | Pass          |
+|       406 |          6 |     203 |             65 | Pass          |
+|       407 |          7 |     204 |             95 | Pass          |
+|       409 |          1 |     202 |             78 | Pass          |
+|       411 |          5 |     204 |             88 | Pass          |
+|       412 |          6 |     201 |             92 | Pass          |
+|       413 |          7 |     202 |             60 | Pass          |
++-----------+------------+---------+----------------+---------------+
+10 rows in set (0.00 sec)
+
+mysql> select city, count(total_students) from student where city > 1;
+ERROR 1054 (42S22): Unknown column 'total_students' in 'field list'
+mysql> select city, count(total_students) as student_id from student where city > 1;
+ERROR 1054 (42S22): Unknown column 'total_students' in 'field list'
+mysql> select city, count(student_id) as total_students from student where city > 1;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'online_examdb.student.city'; this is incompatible with sql_mode=only_full_group_by
+mysql> select city, count(student_id) as total_students from student group by city having count(student_id) > 1;
++----------+----------------+
+| city     | total_students |
++----------+----------------+
+| New York |              3 |
+| Chicago  |              3 |
++----------+----------------+
+2 rows in set (0.04 sec)
+
+mysql> select * from examschedule where duration_minutes > 90;
++---------+------------+------------+------------------+
+| exam_id | subject_id | exam_date  | duration_minutes |
++---------+------------+------------+------------------+
+|     201 |        101 | 2025-01-15 |              120 |
+|     204 |        104 | 2025-04-20 |              150 |
+|     205 |        101 | 2024-12-10 |              100 |
++---------+------------+------------+------------------+
+3 rows in set (0.01 sec)
+
+mysql> select * from student where gender = "male" and city = "chicago";
++------------+----------------+-----------------+--------+---------+-------------------+
+| student_id | student_name   | email           | gender | city    | registration_date |
++------------+----------------+-----------------+--------+---------+-------------------+
+|          2 | Aaron Smith    | aaron@gmail.com | Male   | Chicago | 2024-03-15        |
+|          5 | David Anderson | david@gmail.com | Male   | Chicago | 2025-01-12        |
+|          8 | Mason Clark    | mason@gmail.com | Male   | Chicago | 2024-07-10        |
++------------+----------------+-----------------+--------+---------+-------------------+
+3 rows in set (0.01 sec)
+
+mysql> select * from subject where total_marks between 50 and 100;
++------------+------------------+-------------+
+| subject_id | subject_name     | total_marks |
++------------+------------------+-------------+
+|        101 | Mathematics      |         100 |
+|        102 | Science          |          90 |
+|        103 | English          |          80 |
+|        104 | Computer Science |         100 |
++------------+------------------+-------------+
+4 rows in set (0.01 sec)
+
+mysql> select * from question where marks = 2;
++-------------+------------------+------------------+-------+
+| question_id | question_text    | difficulty_level | marks |
++-------------+------------------+------------------+-------+
+|         304 | Chemistry Basics | Easy             |     2 |
++-------------+------------------+------------------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from student where student_name like "%son%";
++------------+----------------+-------------------+--------+----------+-------------------+
+| student_id | student_name   | email             | gender | city     | registration_date |
++------------+----------------+-------------------+--------+----------+-------------------+
+|          1 | Alice Johnson  | alice@gmail.com   | Female | New York | 2024-02-10        |
+|          3 | Bob Wilson     | bob@yahoo.com     | Male   | New York | 2023-12-20        |
+|          5 | David Anderson | david@gmail.com   | Male   | Chicago  | 2025-01-12        |
+|          6 | Emma Watson    | emma@gmail.com    | Female | New York | 2025-02-18        |
+|          7 | Jackson Lee    | jackson@gmail.com | Male   | Houston  | 2024-06-25        |
+|          8 | Mason Clark    | mason@gmail.com   | Male   | Chicago  | 2024-07-10        |
++------------+----------------+-------------------+--------+----------+-------------------+
+6 rows in set (0.01 sec)
+
+mysql> select * from result where result_status = "pass";
++-----------+------------+---------+----------------+---------------+
+| result_id | student_id | exam_id | marks_obtained | result_status |
++-----------+------------+---------+----------------+---------------+
+|       401 |          1 |     201 |             85 | Pass          |
+|       402 |          2 |     201 |             45 | Pass          |
+|       404 |          4 |     202 |             75 | Pass          |
+|       405 |          5 |     202 |             55 | Pass          |
+|       406 |          6 |     203 |             65 | Pass          |
+|       407 |          7 |     204 |             95 | Pass          |
+|       409 |          1 |     202 |             78 | Pass          |
+|       411 |          5 |     204 |             88 | Pass          |
+|       412 |          6 |     201 |             92 | Pass          |
+|       413 |          7 |     202 |             60 | Pass          |
++-----------+------------+---------+----------------+---------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from student where student_name order by student_name;
+Empty set, 8 warnings (0.02 sec)
+
+mysql> select * from student where student_name order by asc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'asc' at line 1
+mysql> select * from student order by student_name asc;
++------------+----------------+-------------------+--------+-------------+-------------------+
+| student_id | student_name   | email             | gender | city        | registration_date |
++------------+----------------+-------------------+--------+-------------+-------------------+
+|          2 | Aaron Smith    | aaron@gmail.com   | Male   | Chicago     | 2024-03-15        |
+|          1 | Alice Johnson  | alice@gmail.com   | Female | New York    | 2024-02-10        |
+|          3 | Bob Wilson     | bob@yahoo.com     | Male   | New York    | 2023-12-20        |
+|          4 | Cathy Brown    | cathy@gmail.com   | Female | Los Angeles | 2024-05-01        |
+|          5 | David Anderson | david@gmail.com   | Male   | Chicago     | 2025-01-12        |
+|          6 | Emma Watson    | emma@gmail.com    | Female | New York    | 2025-02-18        |
+|          7 | Jackson Lee    | jackson@gmail.com | Male   | Houston     | 2024-06-25        |
+|          8 | Mason Clark    | mason@gmail.com   | Male   | Chicago     | 2024-07-10        |
++------------+----------------+-------------------+--------+-------------+-------------------+
+8 rows in set (0.01 sec)
+
+mysql> select * from student order by resgistration_date desc;
+ERROR 1054 (42S22): Unknown column 'resgistration_date' in 'order clause'
+mysql> select * from student order by registration_date desc;
++------------+----------------+-------------------+--------+-------------+-------------------+
+| student_id | student_name   | email             | gender | city        | registration_date |
++------------+----------------+-------------------+--------+-------------+-------------------+
+|          6 | Emma Watson    | emma@gmail.com    | Female | New York    | 2025-02-18        |
+|          5 | David Anderson | david@gmail.com   | Male   | Chicago     | 2025-01-12        |
+|          8 | Mason Clark    | mason@gmail.com   | Male   | Chicago     | 2024-07-10        |
+|          7 | Jackson Lee    | jackson@gmail.com | Male   | Houston     | 2024-06-25        |
+|          4 | Cathy Brown    | cathy@gmail.com   | Female | Los Angeles | 2024-05-01        |
+|          2 | Aaron Smith    | aaron@gmail.com   | Male   | Chicago     | 2024-03-15        |
+|          1 | Alice Johnson  | alice@gmail.com   | Female | New York    | 2024-02-10        |
+|          3 | Bob Wilson     | bob@yahoo.com     | Male   | New York    | 2023-12-20        |
++------------+----------------+-------------------+--------+-------------+-------------------+
+8 rows in set (0.00 sec)
+
+mysql> select * from subject where total_marks order by desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc' at line 1
+mysql> select * from subject order by total_marks  desc;
++------------+------------------+-------------+
+| subject_id | subject_name     | total_marks |
++------------+------------------+-------------+
+|        101 | Mathematics      |         100 |
+|        104 | Computer Science |         100 |
+|        102 | Science          |          90 |
+|        103 | English          |          80 |
++------------+------------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from question order by marks desc;
++-------------+-------------------+------------------+-------+
+| question_id | question_text     | difficulty_level | marks |
++-------------+-------------------+------------------+-------+
+|         301 | Algebra Question  | Hard             |    10 |
+|         306 | Programming Logic | Hard             |    10 |
+|         303 | Physics Theory    | Hard             |     8 |
+|         307 | Networking Basics | Medium           |     7 |
+|         308 | Essay Writing     | Easy             |     6 |
+|         302 | Geometry Question | Medium           |     5 |
+|         305 | Grammar Test      | Easy             |     5 |
+|         304 | Chemistry Basics  | Easy             |     2 |
++-------------+-------------------+------------------+-------+
+8 rows in set (0.00 sec)
+
+mysql> select * from question order by marks asc;
++-------------+-------------------+------------------+-------+
+| question_id | question_text     | difficulty_level | marks |
++-------------+-------------------+------------------+-------+
+|         304 | Chemistry Basics  | Easy             |     2 |
+|         302 | Geometry Question | Medium           |     5 |
+|         305 | Grammar Test      | Easy             |     5 |
+|         308 | Essay Writing     | Easy             |     6 |
+|         307 | Networking Basics | Medium           |     7 |
+|         303 | Physics Theory    | Hard             |     8 |
+|         301 | Algebra Question  | Hard             |    10 |
+|         306 | Programming Logic | Hard             |    10 |
++-------------+-------------------+------------------+-------+
+8 rows in set (0.00 sec)
+
+mysql> select * from result order by marks_obtained desc;
++-----------+------------+---------+----------------+---------------+
+| result_id | student_id | exam_id | marks_obtained | result_status |
++-----------+------------+---------+----------------+---------------+
+|       407 |          7 |     204 |             95 | Pass          |
+|       412 |          6 |     201 |             92 | Pass          |
+|       411 |          5 |     204 |             88 | Pass          |
+|       401 |          1 |     201 |             85 | Pass          |
+|       409 |          1 |     202 |             78 | Pass          |
+|       404 |          4 |     202 |             75 | Pass          |
+|       406 |          6 |     203 |             65 | Pass          |
+|       413 |          7 |     202 |             60 | Pass          |
+|       405 |          5 |     202 |             55 | Pass          |
+|       402 |          2 |     201 |             45 | Pass          |
+|       410 |          2 |     203 |             35 | Fail          |
+|       403 |          3 |     201 |             30 | Fail          |
+|       408 |          8 |     205 |             20 | Fail          |
++-----------+------------+---------+----------------+---------------+
+13 rows in set (0.00 sec)
+
+mysql> select * from result order by marks_obtained asc;
++-----------+------------+---------+----------------+---------------+
+| result_id | student_id | exam_id | marks_obtained | result_status |
++-----------+------------+---------+----------------+---------------+
+|       408 |          8 |     205 |             20 | Fail          |
+|       403 |          3 |     201 |             30 | Fail          |
+|       410 |          2 |     203 |             35 | Fail          |
+|       402 |          2 |     201 |             45 | Pass          |
+|       405 |          5 |     202 |             55 | Pass          |
+|       413 |          7 |     202 |             60 | Pass          |
+|       406 |          6 |     203 |             65 | Pass          |
+|       404 |          4 |     202 |             75 | Pass          |
+|       409 |          1 |     202 |             78 | Pass          |
+|       401 |          1 |     201 |             85 | Pass          |
+|       411 |          5 |     204 |             88 | Pass          |
+|       412 |          6 |     201 |             92 | Pass          |
+|       407 |          7 |     204 |             95 | Pass          |
++-----------+------------+---------+----------------+---------------+
+13 rows in set (0.00 sec)
+
+mysql> select * from examschedule order by exam_date;
++---------+------------+------------+------------------+
+| exam_id | subject_id | exam_date  | duration_minutes |
++---------+------------+------------+------------------+
+|     205 |        101 | 2024-12-10 |              100 |
+|     201 |        101 | 2025-01-15 |              120 |
+|     202 |        102 | 2025-02-10 |               90 |
+|     203 |        103 | 2025-03-05 |               60 |
+|     204 |        104 | 2025-04-20 |              150 |
++---------+------------+------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from student order by city;
++------------+----------------+-------------------+--------+-------------+-------------------+
+| student_id | student_name   | email             | gender | city        | registration_date |
++------------+----------------+-------------------+--------+-------------+-------------------+
+|          2 | Aaron Smith    | aaron@gmail.com   | Male   | Chicago     | 2024-03-15        |
+|          5 | David Anderson | david@gmail.com   | Male   | Chicago     | 2025-01-12        |
+|          8 | Mason Clark    | mason@gmail.com   | Male   | Chicago     | 2024-07-10        |
+|          7 | Jackson Lee    | jackson@gmail.com | Male   | Houston     | 2024-06-25        |
+|          4 | Cathy Brown    | cathy@gmail.com   | Female | Los Angeles | 2024-05-01        |
+|          1 | Alice Johnson  | alice@gmail.com   | Female | New York    | 2024-02-10        |
+|          3 | Bob Wilson     | bob@yahoo.com     | Male   | New York    | 2023-12-20        |
+|          6 | Emma Watson    | emma@gmail.com    | Female | New York    | 2025-02-18        |
++------------+----------------+-------------------+--------+-------------+-------------------+
+8 rows in set (0.00 sec)
+
+mysql> select * from student order by city, student_name;
++------------+----------------+-------------------+--------+-------------+-------------------+
+| student_id | student_name   | email             | gender | city        | registration_date |
++------------+----------------+-------------------+--------+-------------+-------------------+
+|          2 | Aaron Smith    | aaron@gmail.com   | Male   | Chicago     | 2024-03-15        |
+|          5 | David Anderson | david@gmail.com   | Male   | Chicago     | 2025-01-12        |
+|          8 | Mason Clark    | mason@gmail.com   | Male   | Chicago     | 2024-07-10        |
+|          7 | Jackson Lee    | jackson@gmail.com | Male   | Houston     | 2024-06-25        |
+|          4 | Cathy Brown    | cathy@gmail.com   | Female | Los Angeles | 2024-05-01        |
+|          1 | Alice Johnson  | alice@gmail.com   | Female | New York    | 2024-02-10        |
+|          3 | Bob Wilson     | bob@yahoo.com     | Male   | New York    | 2023-12-20        |
+|          6 | Emma Watson    | emma@gmail.com    | Female | New York    | 2025-02-18        |
++------------+----------------+-------------------+--------+-------------+-------------------+
+8 rows in set (0.00 sec)
+
+mysql> select * from question order by difficulty_level desc;
++-------------+-------------------+------------------+-------+
+| question_id | question_text     | difficulty_level | marks |
++-------------+-------------------+------------------+-------+
+|         302 | Geometry Question | Medium           |     5 |
+|         307 | Networking Basics | Medium           |     7 |
+|         301 | Algebra Question  | Hard             |    10 |
+|         303 | Physics Theory    | Hard             |     8 |
+|         306 | Programming Logic | Hard             |    10 |
+|         304 | Chemistry Basics  | Easy             |     2 |
+|         305 | Grammar Test      | Easy             |     5 |
+|         308 | Essay Writing     | Easy             |     6 |
++-------------+-------------------+------------------+-------+
+8 rows in set (0.00 sec)
+
+mysql> select * from question order by difficulty_level="hard" desc;
++-------------+-------------------+------------------+-------+
+| question_id | question_text     | difficulty_level | marks |
++-------------+-------------------+------------------+-------+
+|         301 | Algebra Question  | Hard             |    10 |
+|         303 | Physics Theory    | Hard             |     8 |
+|         306 | Programming Logic | Hard             |    10 |
+|         302 | Geometry Question | Medium           |     5 |
+|         304 | Chemistry Basics  | Easy             |     2 |
+|         305 | Grammar Test      | Easy             |     5 |
+|         307 | Networking Basics | Medium           |     7 |
+|         308 | Essay Writing     | Easy             |     6 |
++-------------+-------------------+------------------+-------+
+8 rows in set (0.01 sec)
+
+mysql> select * from question order by difficulty_level="hard";
++-------------+-------------------+------------------+-------+
+| question_id | question_text     | difficulty_level | marks |
++-------------+-------------------+------------------+-------+
+|         302 | Geometry Question | Medium           |     5 |
+|         304 | Chemistry Basics  | Easy             |     2 |
+|         305 | Grammar Test      | Easy             |     5 |
+|         307 | Networking Basics | Medium           |     7 |
+|         308 | Essay Writing     | Easy             |     6 |
+|         301 | Algebra Question  | Hard             |    10 |
+|         303 | Physics Theory    | Hard             |     8 |
+|         306 | Programming Logic | Hard             |    10 |
++-------------+-------------------+------------------+-------+
+8 rows in set (0.00 sec)
+
+mysql> select * from question where difficulty_level="hard" order by marks desc;
++-------------+-------------------+------------------+-------+
+| question_id | question_text     | difficulty_level | marks |
++-------------+-------------------+------------------+-------+
+|         301 | Algebra Question  | Hard             |    10 |
+|         306 | Programming Logic | Hard             |    10 |
+|         303 | Physics Theory    | Hard             |     8 |
++-------------+-------------------+------------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from result where result_status="pass" order by marks_obtained desc;
++-----------+------------+---------+----------------+---------------+
+| result_id | student_id | exam_id | marks_obtained | result_status |
++-----------+------------+---------+----------------+---------------+
+|       407 |          7 |     204 |             95 | Pass          |
+|       412 |          6 |     201 |             92 | Pass          |
+|       411 |          5 |     204 |             88 | Pass          |
+|       401 |          1 |     201 |             85 | Pass          |
+|       409 |          1 |     202 |             78 | Pass          |
+|       404 |          4 |     202 |             75 | Pass          |
+|       406 |          6 |     203 |             65 | Pass          |
+|       413 |          7 |     202 |             60 | Pass          |
+|       405 |          5 |     202 |             55 | Pass          |
+|       402 |          2 |     201 |             45 | Pass          |
++-----------+------------+---------+----------------+---------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from subject subject_name like '%science%' order by subject_name;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'like '%science%' order by subject_name' at line 1
+mysql> select * from subject where subject_name like '%science%' order by subject_name;
++------------+------------------+-------------+
+| subject_id | subject_name     | total_marks |
++------------+------------------+-------------+
+|        104 | Computer Science |         100 |
+|        102 | Science          |          90 |
++------------+------------------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select s.student_name, r.exam_id, r.marks_obtained, r.result_status from student s join result r on s.student_id = r.student_id;
++----------------+---------+----------------+---------------+
+| student_name   | exam_id | marks_obtained | result_status |
++----------------+---------+----------------+---------------+
+| Alice Johnson  |     201 |             85 | Pass          |
+| Alice Johnson  |     202 |             78 | Pass          |
+| Aaron Smith    |     201 |             45 | Pass          |
+| Aaron Smith    |     203 |             35 | Fail          |
+| Bob Wilson     |     201 |             30 | Fail          |
+| Cathy Brown    |     202 |             75 | Pass          |
+| David Anderson |     202 |             55 | Pass          |
+| David Anderson |     204 |             88 | Pass          |
+| Emma Watson    |     203 |             65 | Pass          |
+| Emma Watson    |     201 |             92 | Pass          |
+| Jackson Lee    |     204 |             95 | Pass          |
+| Jackson Lee    |     202 |             60 | Pass          |
+| Mason Clark    |     205 |             20 | Fail          |
++----------------+---------+----------------+---------------+
+13 rows in set (0.02 sec)
+
+mysql> select s.student_id, s.student_name, e.exam_date from student s join examschedule e on s.student_id = e.student_id;
+ERROR 1054 (42S22): Unknown column 'e.student_id' in 'on clause'
+mysql> select s.student_id, s.student_name, e.exam_date from student s inner join result r on s.student_id = r.exam_id inner join examschedule e on r.student_id = e.student_id;
+ERROR 1054 (42S22): Unknown column 'e.student_id' in 'on clause'
+mysql> ^C
+mysql> select s.student_name as 'Student Name', e.exam_date as 'Exam Date' from student s inner join result r on s.student_id = r.student_id inner join examschedule e on r.exam_id = r.exam_id;
++----------------+------------+
+| Student Name   | Exam Date  |
++----------------+------------+
+| Jackson Lee    | 2025-01-15 |
+| Emma Watson    | 2025-01-15 |
+| David Anderson | 2025-01-15 |
+| Aaron Smith    | 2025-01-15 |
+| Alice Johnson  | 2025-01-15 |
+| Mason Clark    | 2025-01-15 |
+| Jackson Lee    | 2025-01-15 |
+| Emma Watson    | 2025-01-15 |
+| David Anderson | 2025-01-15 |
+| Cathy Brown    | 2025-01-15 |
+| Bob Wilson     | 2025-01-15 |
+| Aaron Smith    | 2025-01-15 |
+| Alice Johnson  | 2025-01-15 |
+| Jackson Lee    | 2025-02-10 |
+| Emma Watson    | 2025-02-10 |
+| David Anderson | 2025-02-10 |
+| Aaron Smith    | 2025-02-10 |
+| Alice Johnson  | 2025-02-10 |
+| Mason Clark    | 2025-02-10 |
+| Jackson Lee    | 2025-02-10 |
+| Emma Watson    | 2025-02-10 |
+| David Anderson | 2025-02-10 |
+| Cathy Brown    | 2025-02-10 |
+| Bob Wilson     | 2025-02-10 |
+| Aaron Smith    | 2025-02-10 |
+| Alice Johnson  | 2025-02-10 |
+| Jackson Lee    | 2025-03-05 |
+| Emma Watson    | 2025-03-05 |
+| David Anderson | 2025-03-05 |
+| Aaron Smith    | 2025-03-05 |
+| Alice Johnson  | 2025-03-05 |
+| Mason Clark    | 2025-03-05 |
+| Jackson Lee    | 2025-03-05 |
+| Emma Watson    | 2025-03-05 |
+| David Anderson | 2025-03-05 |
+| Cathy Brown    | 2025-03-05 |
+| Bob Wilson     | 2025-03-05 |
+| Aaron Smith    | 2025-03-05 |
+| Alice Johnson  | 2025-03-05 |
+| Jackson Lee    | 2025-04-20 |
+| Emma Watson    | 2025-04-20 |
+| David Anderson | 2025-04-20 |
+| Aaron Smith    | 2025-04-20 |
+| Alice Johnson  | 2025-04-20 |
+| Mason Clark    | 2025-04-20 |
+| Jackson Lee    | 2025-04-20 |
+| Emma Watson    | 2025-04-20 |
+| David Anderson | 2025-04-20 |
+| Cathy Brown    | 2025-04-20 |
+| Bob Wilson     | 2025-04-20 |
+| Aaron Smith    | 2025-04-20 |
+| Alice Johnson  | 2025-04-20 |
+| Jackson Lee    | 2024-12-10 |
+| Emma Watson    | 2024-12-10 |
+| David Anderson | 2024-12-10 |
+| Aaron Smith    | 2024-12-10 |
+| Alice Johnson  | 2024-12-10 |
+| Mason Clark    | 2024-12-10 |
+| Jackson Lee    | 2024-12-10 |
+| Emma Watson    | 2024-12-10 |
+| David Anderson | 2024-12-10 |
+| Cathy Brown    | 2024-12-10 |
+| Bob Wilson     | 2024-12-10 |
+| Aaron Smith    | 2024-12-10 |
+| Alice Johnson  | 2024-12-10 |
++----------------+------------+
+65 rows in set (0.01 sec)
+
+mysql> select s.student_name as "Student Name", sub.subject_name as "Subject Name" from student s join result r on s.student_id = r.student_id join examschedule e on e.exam_id = r.exam_id join subject sub on sub.subject_id = e.subject_id;
++----------------+------------------+
+| Student Name   | Subject Name     |
++----------------+------------------+
+| Alice Johnson  | Mathematics      |
+| Aaron Smith    | Mathematics      |
+| Bob Wilson     | Mathematics      |
+| Emma Watson    | Mathematics      |
+| Mason Clark    | Mathematics      |
+| Cathy Brown    | Science          |
+| David Anderson | Science          |
+| Alice Johnson  | Science          |
+| Jackson Lee    | Science          |
+| Emma Watson    | English          |
+| Aaron Smith    | English          |
+| Jackson Lee    | Computer Science |
+| David Anderson | Computer Science |
++----------------+------------------+
+13 rows in set (0.01 sec)
+
+mysql>
