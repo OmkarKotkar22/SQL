@@ -1,24 +1,3 @@
-mysql> show databases;
-+--------------------------------+
-| Database                       |
-+--------------------------------+
-| billing                        |
-| company                        |
-| information_schema             |
-| library_database               |
-| mysql                          |
-| mysql_practice_and_training    |
-| online_examdb                  |
-| perform_join_comp_assignment   |
-| performance_schema             |
-| practice                       |
-| practice_aggregate_function    |
-| praticing_all_queries_commands |
-| sys                            |
-| team                           |
-+--------------------------------+
-14 rows in set (0.00 sec)
-
 mysql> use online_examdb;
 Database changed
 mysql> CREATE TABLE Student (
