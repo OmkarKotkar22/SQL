@@ -237,8 +237,6 @@ mysql> INSERT INTO Question VALUES
 Query OK, 8 rows affected (0.02 sec)
 Records: 8  Duplicates: 0  Warnings: 0
 
-mysql> select * from questions;
-ERROR 1146 (42S02): Table 'online_examdb.questions' doesn't exist
 mysql> select * from question;
 +-------------+-------------------+------------------+-------+
 | question_id | question_text     | difficulty_level | marks |
@@ -328,10 +326,6 @@ mysql> select * from result;
 +-----------+------------+---------+----------------+---------------+
 13 rows in set (0.00 sec)
 
-mysql> --start queries from here
-    -> select * from student;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--start queries from here
-select * from student' at line 1
 mysql> select * from student;
 +------------+----------------+-------------------+--------+-------------+-------------------+
 | student_id | student_name   | email             | gender | city        | registration_date |
@@ -404,8 +398,6 @@ mysql> select * from student where registration_date > '2024-01-01';
 +------------+----------------+-------------------+--------+-------------+-------------------+
 7 rows in set (0.00 sec)
 
-mysql> select subject_name, marks from subject where marks > 80;
-ERROR 1054 (42S22): Unknown column 'marks' in 'field list'
 mysql> select subject_name, total_marks from subject where total_marks > 80;
 +------------------+-------------+
 | subject_name     | total_marks |
@@ -428,8 +420,6 @@ mysql> select * from student where registration_date between '2024-02-01' and '2
 +------------+---------------+-------------------+--------+-------------+-------------------+
 5 rows in set (0.00 sec)
 
-mysql> select * from questions;
-ERROR 1146 (42S02): Table 'online_examdb.questions' doesn't exist
 mysql> select * from question;
 +-------------+-------------------+------------------+-------+
 | question_id | question_text     | difficulty_level | marks |
@@ -517,12 +507,6 @@ mysql> select * from result where marks_obtained >= 40;
 +-----------+------------+---------+----------------+---------------+
 10 rows in set (0.00 sec)
 
-mysql> select city, count(total_students) from student where city > 1;
-ERROR 1054 (42S22): Unknown column 'total_students' in 'field list'
-mysql> select city, count(total_students) as student_id from student where city > 1;
-ERROR 1054 (42S22): Unknown column 'total_students' in 'field list'
-mysql> select city, count(student_id) as total_students from student where city > 1;
-ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'online_examdb.student.city'; this is incompatible with sql_mode=only_full_group_by
 mysql> select city, count(student_id) as total_students from student group by city having count(student_id) > 1;
 +----------+----------------+
 | city     | total_students |
@@ -604,8 +588,6 @@ mysql> select * from result where result_status = "pass";
 mysql> select * from student where student_name order by student_name;
 Empty set, 8 warnings (0.02 sec)
 
-mysql> select * from student where student_name order by asc;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'asc' at line 1
 mysql> select * from student order by student_name asc;
 +------------+----------------+-------------------+--------+-------------+-------------------+
 | student_id | student_name   | email             | gender | city        | registration_date |
@@ -621,8 +603,6 @@ mysql> select * from student order by student_name asc;
 +------------+----------------+-------------------+--------+-------------+-------------------+
 8 rows in set (0.01 sec)
 
-mysql> select * from student order by resgistration_date desc;
-ERROR 1054 (42S22): Unknown column 'resgistration_date' in 'order clause'
 mysql> select * from student order by registration_date desc;
 +------------+----------------+-------------------+--------+-------------+-------------------+
 | student_id | student_name   | email             | gender | city        | registration_date |
@@ -638,8 +618,6 @@ mysql> select * from student order by registration_date desc;
 +------------+----------------+-------------------+--------+-------------+-------------------+
 8 rows in set (0.00 sec)
 
-mysql> select * from subject where total_marks order by desc;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc' at line 1
 mysql> select * from subject order by total_marks  desc;
 +------------+------------------+-------------+
 | subject_id | subject_name     | total_marks |
@@ -835,8 +813,6 @@ mysql> select * from result where result_status="pass" order by marks_obtained d
 +-----------+------------+---------+----------------+---------------+
 10 rows in set (0.00 sec)
 
-mysql> select * from subject subject_name like '%science%' order by subject_name;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'like '%science%' order by subject_name' at line 1
 mysql> select * from subject where subject_name like '%science%' order by subject_name;
 +------------+------------------+-------------+
 | subject_id | subject_name     | total_marks |
@@ -866,11 +842,6 @@ mysql> select s.student_name, r.exam_id, r.marks_obtained, r.result_status from 
 +----------------+---------+----------------+---------------+
 13 rows in set (0.02 sec)
 
-mysql> select s.student_id, s.student_name, e.exam_date from student s join examschedule e on s.student_id = e.student_id;
-ERROR 1054 (42S22): Unknown column 'e.student_id' in 'on clause'
-mysql> select s.student_id, s.student_name, e.exam_date from student s inner join result r on s.student_id = r.exam_id inner join examschedule e on r.student_id = e.student_id;
-ERROR 1054 (42S22): Unknown column 'e.student_id' in 'on clause'
-mysql> ^C
 mysql> select s.student_name as 'Student Name', e.exam_date as 'Exam Date' from student s inner join result r on s.student_id = r.student_id inner join examschedule e on r.exam_id = r.exam_id;
 +----------------+------------+
 | Student Name   | Exam Date  |
@@ -962,5 +933,254 @@ mysql> select s.student_name as "Student Name", sub.subject_name as "Subject Nam
 | David Anderson | Computer Science |
 +----------------+------------------+
 13 rows in set (0.01 sec)
+
+mysql> select s.subject_name as "Subject Name", q.question_text as "Question Text" from subject s join subjectquestion sq on s.subject_id = sq.subject_id join question q on sq.question_id = q.question_id;
++------------------+-------------------+
+| Subject Name     | Question Text     |
++------------------+-------------------+
+| Mathematics      | Algebra Question  |
+| Mathematics      | Geometry Question |
+| Mathematics      | Physics Theory    |
+| Mathematics      | Chemistry Basics  |
+| Mathematics      | Grammar Test      |
+| Mathematics      | Programming Logic |
+| Science          | Physics Theory    |
+| Science          | Chemistry Basics  |
+| Science          | Networking Basics |
+| English          | Grammar Test      |
+| English          | Essay Writing     |
+| Computer Science | Programming Logic |
+| Computer Science | Networking Basics |
++------------------+-------------------+
+13 rows in set (0.01 sec)
+
+mysql> select s.student_id, s.student_name, s.registration_date from student s left join result r on s.student_id = r.student_id;
++------------+----------------+-------------------+
+| student_id | student_name   | registration_date |
++------------+----------------+-------------------+
+|          1 | Alice Johnson  | 2024-02-10        |
+|          1 | Alice Johnson  | 2024-02-10        |
+|          2 | Aaron Smith    | 2024-03-15        |
+|          2 | Aaron Smith    | 2024-03-15        |
+|          3 | Bob Wilson     | 2023-12-20        |
+|          4 | Cathy Brown    | 2024-05-01        |
+|          5 | David Anderson | 2025-01-12        |
+|          5 | David Anderson | 2025-01-12        |
+|          6 | Emma Watson    | 2025-02-18        |
+|          6 | Emma Watson    | 2025-02-18        |
+|          7 | Jackson Lee    | 2024-06-25        |
+|          7 | Jackson Lee    | 2024-06-25        |
+|          8 | Mason Clark    | 2024-07-10        |
++------------+----------------+-------------------+
+13 rows in set (0.01 sec)
+
+mysql> select s.student_id, s.student_name, s.registration_date, r.marks_obtained, r.result_status from student s left join result r on s.student_id = r.student_id;
++------------+----------------+-------------------+----------------+---------------+
+| student_id | student_name   | registration_date | marks_obtained | result_status |
++------------+----------------+-------------------+----------------+---------------+
+|          1 | Alice Johnson  | 2024-02-10        |             85 | Pass          |
+|          1 | Alice Johnson  | 2024-02-10        |             78 | Pass          |
+|          2 | Aaron Smith    | 2024-03-15        |             45 | Pass          |
+|          2 | Aaron Smith    | 2024-03-15        |             35 | Fail          |
+|          3 | Bob Wilson     | 2023-12-20        |             30 | Fail          |
+|          4 | Cathy Brown    | 2024-05-01        |             75 | Pass          |
+|          5 | David Anderson | 2025-01-12        |             55 | Pass          |
+|          5 | David Anderson | 2025-01-12        |             88 | Pass          |
+|          6 | Emma Watson    | 2025-02-18        |             65 | Pass          |
+|          6 | Emma Watson    | 2025-02-18        |             92 | Pass          |
+|          7 | Jackson Lee    | 2024-06-25        |             95 | Pass          |
+|          7 | Jackson Lee    | 2024-06-25        |             60 | Pass          |
+|          8 | Mason Clark    | 2024-07-10        |             20 | Fail          |
++------------+----------------+-------------------+----------------+---------------+
+13 rows in set (0.01 sec)
+
+mysql> select s.student_id, s.student_name, r.exam_id, r.marks_obtained, r.result_status from result r right join student s on r.student_id = s.student_id;
++------------+----------------+---------+----------------+---------------+
+| student_id | student_name   | exam_id | marks_obtained | result_status |
++------------+----------------+---------+----------------+---------------+
+|          1 | Alice Johnson  |     201 |             85 | Pass          |
+|          1 | Alice Johnson  |     202 |             78 | Pass          |
+|          2 | Aaron Smith    |     201 |             45 | Pass          |
+|          2 | Aaron Smith    |     203 |             35 | Fail          |
+|          3 | Bob Wilson     |     201 |             30 | Fail          |
+|          4 | Cathy Brown    |     202 |             75 | Pass          |
+|          5 | David Anderson |     202 |             55 | Pass          |
+|          5 | David Anderson |     204 |             88 | Pass          |
+|          6 | Emma Watson    |     203 |             65 | Pass          |
+|          6 | Emma Watson    |     201 |             92 | Pass          |
+|          7 | Jackson Lee    |     204 |             95 | Pass          |
+|          7 | Jackson Lee    |     202 |             60 | Pass          |
+|          8 | Mason Clark    |     205 |             20 | Fail          |
++------------+----------------+---------+----------------+---------------+
+13 rows in set (0.00 sec)
+
+mysql> select s.student_name as "Student Name", sub.subject_name as "Subject Name" from student s join result r on s.student_id = r.student_id join examschedule e on r.exam_id = e.exam_id join subject sub on e.subject_id = sub.subject_id where r.result_status = "pass";
++----------------+------------------+
+| Student Name   | Subject Name     |
++----------------+------------------+
+| Alice Johnson  | Mathematics      |
+| Aaron Smith    | Mathematics      |
+| Cathy Brown    | Science          |
+| David Anderson | Science          |
+| Emma Watson    | English          |
+| Jackson Lee    | Computer Science |
+| Alice Johnson  | Science          |
+| David Anderson | Computer Science |
+| Emma Watson    | Mathematics      |
+| Jackson Lee    | Science          |
++----------------+------------------+
+10 rows in set (0.01 sec)
+
+mysql> select count(city) as "Student City" from student;
++--------------+
+| Student City |
++--------------+
+|            8 |
++--------------+
+1 row in set (0.01 sec)
+
+mysql> select count(gender) as "Male Gender" from student;
++-------------+
+| Male Gender |
++-------------+
+|           8 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select count(gender) as "Male Gender" from student where gender = "Male";
++-------------+
+| Male Gender |
++-------------+
+|           5 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> select count(gender) as "Male Gender" from student where gender = "female";
++-------------+
+| Male Gender |
++-------------+
+|           3 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select sub.subject_name, count(e.exam_id) as total_exams from subject sub join examschedule e on sub.subject_id = e.subject_id group by sub.subject_name;
++------------------+-------------+
+| subject_name     | total_exams |
++------------------+-------------+
+| Mathematics      |           2 |
+| Science          |           1 |
+| English          |           1 |
+| Computer Science |           1 |
++------------------+-------------+
+4 rows in set (0.01 sec)
+
+mysql> select s.student_name, avg(r.marks_obtained) as "Average Marks" from student s join result r on s.student_id = r.student_id group by s.student_id, s.student_name;
++----------------+---------------+
+| student_name   | Average Marks |
++----------------+---------------+
+| Alice Johnson  |       81.5000 |
+| Aaron Smith    |       40.0000 |
+| Bob Wilson     |       30.0000 |
+| Cathy Brown    |       75.0000 |
+| David Anderson |       71.5000 |
+| Emma Watson    |       78.5000 |
+| Jackson Lee    |       77.5000 |
+| Mason Clark    |       20.0000 |
++----------------+---------------+
+8 rows in set (0.01 sec)
+
+mysql> select s.student_name as "Student Name", avg(r.marks_obtained) as "Average Marks" from student s join result r on s.student_id = r.student_id group by s.student_id, s.student_name having avg(r.marks_obtained) > 60;
++----------------+---------------+
+| Student Name   | Average Marks |
++----------------+---------------+
+| Alice Johnson  |       81.5000 |
+| Cathy Brown    |       75.0000 |
+| David Anderson |       71.5000 |
+| Emma Watson    |       78.5000 |
+| Jackson Lee    |       77.5000 |
++----------------+---------------+
+5 rows in set (0.01 sec)
+
+mysql> select sub.subject_name as "Subject Name", count(q.question_id) as "Total Questions" from subject sub join subjectquestion sq on sub.subject_id = sq.subject_id join question q on sq.question_id = q.question_id group by sub.subject_id, sub.subject_name;
++------------------+-----------------+
+| Subject Name     | Total Questions |
++------------------+-----------------+
+| Mathematics      |               6 |
+| Science          |               3 |
+| English          |               2 |
+| Computer Science |               2 |
++------------------+-----------------+
+4 rows in set (0.01 sec)
+
+mysql> select sub.subject_name as "Subject Name", count(q.question_id) as "Total Questions" from subject sub join subjectquestion sq on sub.subject_id = sq.subject_id join question q on sq.question_id = q.question_id group by sub.subject_id, sub.subject_name having count(q.question_id) > 5;
++--------------+-----------------+
+| Subject Name | Total Questions |
++--------------+-----------------+
+| Mathematics  |               6 |
++--------------+-----------------+
+1 row in set (0.00 sec)
+
+mysql> select e.exam_id as "Exam Id", e.exam_date as "Exam Date", sum(r.marks_obtained) as "Total Marks" from examschedule e join result r on e.exam_id = r.exam_id group by e.exam_id, e.exam_date;
++---------+------------+-------------+
+| Exam Id | Exam Date  | Total Marks |
++---------+------------+-------------+
+|     201 | 2025-01-15 |         252 |
+|     202 | 2025-02-10 |         268 |
+|     203 | 2025-03-05 |         100 |
+|     204 | 2025-04-20 |         183 |
+|     205 | 2024-12-10 |          20 |
++---------+------------+-------------+
+5 rows in set (0.01 sec)
+
+mysql> select e.exam_id as "Exam Id", e.exam_date as "Exam Date", sum(r.marks_obtained) as "Total Marks" from examschedule e join result r on e.exam_id = r.exam_id group by e.exam_id, e.exam_date having sum(r.marks_obtained) > 200;
++---------+------------+-------------+
+| Exam Id | Exam Date  | Total Marks |
++---------+------------+-------------+
+|     201 | 2025-01-15 |         252 |
+|     202 | 2025-02-10 |         268 |
++---------+------------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select count(result_status) = "Pass" from result;
++-------------------------------+
+| count(result_status) = "Pass" |
++-------------------------------+
+|                             0 |
++-------------------------------+
+1 row in set, 1 warning (0.01 sec)
+
+mysql> select count(result_status) from result where result_status = "pass";
++----------------------+
+| count(result_status) |
++----------------------+
+|                   10 |
++----------------------+
+1 row in set (0.01 sec)
+
+mysql> select count(result_status) from result where result_status = "fail";
++----------------------+
+| count(result_status) |
++----------------------+
+|                    3 |
++----------------------+
+1 row in set (0.00 sec)
+
+mysql> select count(result_status) from result group by result_status;
++----------------------+
+| count(result_status) |
++----------------------+
+|                   10 |
+|                    3 |
++----------------------+
+2 rows in set (0.00 sec)
+
+mysql> select count(result_status) as "Pass and Fail" from result group by result_status;
++---------------+
+| Pass and Fail |
++---------------+
+|            10 |
+|             3 |
++---------------+
+2 rows in set (0.00 sec)
 
 mysql>
