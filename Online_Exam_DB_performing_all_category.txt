@@ -1,3 +1,361 @@
+1️⃣ List all students
+`
+SELECT * FROM Student;
+`
+
+2️⃣ Show student names and emails
+`
+SELECT student_name, email FROM Student;
+`
+
+3️⃣ Students from 'New York'
+`
+SELECT * FROM Student WHERE city = 'New York';
+`
+
+4️⃣ Female students
+`
+SELECT * FROM Student WHERE gender = 'Female';
+`
+
+5️⃣ Students registered after 2024-01-01
+`
+SELECT * FROM Student WHERE registration_date > '2024-01-01';
+`
+
+6️⃣ Subjects with total marks > 80
+`
+SELECT * FROM Subject WHERE total_marks > 80;
+`
+
+7️⃣ Exams between two dates
+`
+SELECT * FROM ExamSchedule 
+WHERE exam_date BETWEEN '2024-01-01' AND '2024-12-31';
+`
+
+8️⃣ Questions with difficulty = 'Hard'
+`
+SELECT * FROM Question WHERE difficulty_level = 'Hard';
+`
+
+9️⃣ Students whose name starts with 'A'
+`
+SELECT * FROM Student WHERE student_name LIKE 'A%';
+`
+
+🔟 Students whose email ends with gmail.com
+`
+SELECT * FROM Student WHERE email LIKE '%gmail.com';
+`
+
+11️⃣ Subjects containing 'Math'
+`
+SELECT * FROM Subject WHERE subject_name LIKE '%Math%';
+`
+
+12️⃣ Questions having marks between 5 and 10
+`
+SELECT * FROM Question WHERE marks BETWEEN 5 AND 10;
+`
+
+13️⃣ Results where marks_obtained >= 40
+`
+SELECT * FROM Result WHERE marks_obtained >= 40;
+`
+
+14️⃣ Students from multiple cities
+`
+SELECT DISTINCT city FROM Student;
+`
+
+15️⃣ Exams longer than 90 minutes
+`
+SELECT * FROM ExamSchedule WHERE duration_minutes > 90;
+`
+
+16️⃣ Male students from Chicago
+`
+SELECT * FROM Student 
+WHERE gender = 'Male' AND city = 'Chicago';
+`
+
+17️⃣ Subjects with total_marks between 50 and 100
+`
+SELECT * FROM Subject 
+WHERE total_marks BETWEEN 50 AND 100;
+`
+
+18️⃣ Questions with marks = 2
+`
+SELECT * FROM Question WHERE marks = 2;
+`
+
+19️⃣ Students whose name contains 'son'
+`
+SELECT * FROM Student WHERE student_name LIKE '%son%';
+`
+
+20️⃣ Results with status 'Pass'
+`
+SELECT * FROM Result WHERE result_status = 'Pass';
+`
+
+(👇 Below are JOIN & AGGREGATE queries 👇)
+
+21️⃣ Students ordered by name
+`
+SELECT * FROM Student ORDER BY student_name;
+`
+
+22️⃣ Students ordered by registration_date DESC
+`
+SELECT * FROM Student ORDER BY registration_date DESC;
+`
+
+23️⃣ Subjects ordered by total_marks DESC
+`
+SELECT * FROM Subject ORDER BY total_marks DESC;
+`
+
+24️⃣ Questions ordered by marks
+`
+SELECT * FROM Question ORDER BY marks;
+`
+
+25️⃣ Results ordered by marks_obtained DESC
+`
+SELECT * FROM Result ORDER BY marks_obtained DESC;
+`
+
+26️⃣ Exams ordered by date
+`
+SELECT * FROM ExamSchedule ORDER BY exam_date;
+`
+
+27️⃣ Students ordered by city then name
+`
+SELECT * FROM Student ORDER BY city, student_name;
+`
+
+28️⃣ Hard questions ordered by marks DESC
+`
+SELECT * FROM Question 
+WHERE difficulty_level = 'Hard'
+ORDER BY marks DESC;
+`
+
+29️⃣ Passed results ordered by marks
+`
+SELECT * FROM Result 
+WHERE result_status = 'Pass'
+ORDER BY marks_obtained;
+`
+
+30️⃣ Subjects containing 'Science' ordered
+`SELECT * FROM Subject 
+WHERE subject_name LIKE '%Science%'
+ORDER BY subject_name;
+`
+
+🔗 JOIN Queries
+31️⃣ Student with their exam results
+`
+SELECT s.student_name, r.marks_obtained, r.result_status
+FROM Student s
+JOIN Result r ON s.student_id = r.student_id;
+`
+
+32️⃣ Student with exam date
+`
+SELECT s.student_name, e.exam_date
+FROM Student s
+JOIN Result r ON s.student_id = r.student_id
+JOIN ExamSchedule e ON r.exam_id = e.exam_id;
+`
+
+33️⃣ Student with subject name
+`
+SELECT s.student_name, sub.subject_name
+FROM Student s
+JOIN Result r ON s.student_id = r.student_id
+JOIN ExamSchedule e ON r.exam_id = e.exam_id
+JOIN Subject sub ON e.subject_id = sub.subject_id;
+`
+
+34️⃣ Subject with questions
+`
+SELECT sub.subject_name, q.question_text
+FROM Subject sub
+JOIN SubjectQuestion sq ON sub.subject_id = sq.subject_id
+JOIN Question q ON sq.question_id = q.question_id;
+`
+
+35️⃣ Left join students and results
+`
+SELECT s.student_name, r.marks_obtained
+FROM Student s
+LEFT JOIN Result r ON s.student_id = r.student_id;
+`
+
+36️⃣ Right join results and student
+`
+SELECT s.student_name, r.marks_obtained
+FROM Student s
+RIGHT JOIN Result r ON s.student_id = r.student_id;
+`
+(👇 Aggregate Queries 👇)
+
+38️⃣ Count students by city
+`
+SELECT city, COUNT(*) 
+FROM Student
+GROUP BY city;
+`
+
+39️⃣ Count students by gender
+`
+SELECT gender, COUNT(*)
+FROM Student
+GROUP BY gender;
+`
+
+40️⃣ Total exams per subject
+`
+SELECT subject_id, COUNT(*) 
+FROM ExamSchedule
+GROUP BY subject_id;
+`
+
+41️⃣ Average marks per student
+`
+SELECT s.student_name, AVG(r.marks_obtained)
+FROM Student s
+JOIN Result r ON s.student_id = r.student_id
+GROUP BY s.student_id;
+`
+
+42️⃣ Students with avg marks > 60
+`
+SELECT s.student_name, AVG(r.marks_obtained)
+FROM Student s
+JOIN Result r ON s.student_id = r.student_id
+GROUP BY s.student_id
+HAVING AVG(r.marks_obtained) > 60;
+`
+
+43️⃣ Count questions per subject
+`
+SELECT subject_id, COUNT(question_id)
+FROM SubjectQuestion
+GROUP BY subject_id;
+`
+
+44️⃣ Subjects having more than 5 questions
+`
+SELECT subject_id, COUNT(question_id)
+FROM SubjectQuestion
+GROUP BY subject_id
+HAVING COUNT(question_id) > 5;
+`
+
+45️⃣ Total marks obtained per exam
+`
+SELECT exam_id, SUM(marks_obtained)
+FROM Result
+GROUP BY exam_id;
+`
+
+47️⃣ Count pass and fail
+`
+SELECT result_status, COUNT(*)
+FROM Result
+GROUP BY result_status;
+`
+
+49️⃣ Students Who Scored More Than 70
+`
+SELECT s.student_name
+FROM Student s
+JOIN Result r ON s.student_id = r.student_id
+WHERE r.marks_obtained > 70;
+`
+
+50️⃣ Count of Exams Given by Each Student
+`
+SELECT s.student_name, COUNT(r.exam_id)
+FROM Student s
+JOIN Result r ON s.student_id = r.student_id
+GROUP BY s.student_id;
+`
+51️⃣ Average Marks Per Subject
+`
+SELECT sub.subject_name, AVG(r.marks_obtained)
+FROM Subject sub
+JOIN ExamSchedule e ON sub.subject_id = e.subject_id
+JOIN Result r ON e.exam_id = r.exam_id
+GROUP BY sub.subject_id;
+`
+
+65️⃣ Highest Marks Per Exam
+`SELECT exam_id, MAX(marks_obtained)
+FROM Result
+GROUP BY exam_id;
+`
+
+66️⃣ Lowest Marks Per Subject
+`SELECT sub.subject_name, MIN(r.marks_obtained)
+FROM Subject sub
+JOIN ExamSchedule e ON sub.subject_id = e.subject_id
+JOIN Result r ON e.exam_id = r.exam_id
+GROUP BY sub.subject_id;
+`
+
+67️⃣ Students Appeared in Subjects Containing 'Math'
+`SELECT DISTINCT s.student_name
+FROM Student s
+JOIN Result r ON s.student_id = r.student_id
+JOIN ExamSchedule e ON r.exam_id = e.exam_id
+JOIN Subject sub ON e.subject_id = sub.subject_id
+WHERE sub.subject_name LIKE '%Math%';
+`
+
+71️⃣ Students Who Passed More Than 1 Exam
+`SELECT s.student_name, COUNT(*)
+FROM Student s
+JOIN Result r ON s.student_id = r.student_id
+WHERE r.result_status = 'Pass'
+GROUP BY s.student_id
+HAVING COUNT(*) > 1;
+`
+
+72️⃣ Students Ordered By Total Marks Desc
+`SELECT s.student_name, SUM(r.marks_obtained) AS total_marks
+FROM Student s
+JOIN Result r ON s.student_id = r.student_id
+GROUP BY s.student_id
+ORDER BY total_marks DESC;
+`
+
+75️⃣ Total Questions By Difficult
+`SELECT difficulty_level, COUNT(*)
+FROM Question
+GROUP BY difficulty_level;
+`
+
+78️⃣ Full Report (Student + Subject + Questions Count + Marks)
+`SELECT s.student_name,
+       sub.subject_name,
+       COUNT(q.question_id) AS total_questions,
+       r.marks_obtained
+FROM Student s
+JOIN Result r ON s.student_id = r.student_id
+JOIN ExamSchedule e ON r.exam_id = e.exam_id
+JOIN Subject sub ON e.subject_id = sub.subject_id
+JOIN SubjectQuestion sq ON sub.subject_id = sq.subject_id
+JOIN Question q ON sq.question_id = q.question_id
+GROUP BY s.student_id, sub.subject_id, r.marks_obtained;
+`
 mysql> use online_examdb;
 Database changed
 mysql> CREATE TABLE Student (
