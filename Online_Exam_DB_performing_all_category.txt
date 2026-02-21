@@ -1447,3 +1447,194 @@ mysql> select sub.subject_name as "Subject Name", min(r.marks_obtained) as "Lowe
 | Computer Science |           88 |
 +------------------+--------------+
 4 rows in set (0.01 sec)
+
+mysql> select s.student_name as "Student Name", sub.subject_name as "Subject Name" from student s join result r on s.student_id = r.student_id join examschedule es on r.exam_id = es.exam_id join subject sub on es.subject_id = sub.subject_id where sub.subject_name like "%Math%";
++---------------+--------------+
+| Student Name  | Subject Name |
++---------------+--------------+
+| Alice Johnson | Mathematics  |
+| Aaron Smith   | Mathematics  |
+| Bob Wilson    | Mathematics  |
+| Emma Watson   | Mathematics  |
+| Mason Clark   | Mathematics  |
++---------------+--------------+
+5 rows in set (0.09 sec)
+
+mysql> select r.exam_id as "Exam Id", s.gender as "Student Gender", count(*) as "Total Students" from result r join student s on r.student_id = s.student_id group by r.exam_id, s.gender order by r.exam_id;
++---------+----------------+----------------+
+| Exam Id | Student Gender | Total Students |
++---------+----------------+----------------+
+|     201 | Female         |              2 |
+|     201 | Male           |              2 |
+|     202 | Female         |              2 |
+|     202 | Male           |              2 |
+|     203 | Female         |              1 |
+|     203 | Male           |              1 |
+|     204 | Male           |              2 |
+|     205 | Male           |              1 |
++---------+----------------+----------------+
+8 rows in set (0.04 sec)
+
+mysql> select s.student_name as "Student Name", es.exam_date as "Exam Date" from student s join
+result r on s.student_id = r.student_id join examschedule es on r.exam_id = es.exam_id where exam_date like "%2025%";
++----------------+------------+
+| Student Name   | Exam Date  |
++----------------+------------+
+| Alice Johnson  | 2025-01-15 |
+| Aaron Smith    | 2025-01-15 |
+| Bob Wilson     | 2025-01-15 |
+| Emma Watson    | 2025-01-15 |
+| Cathy Brown    | 2025-02-10 |
+| David Anderson | 2025-02-10 |
+| Alice Johnson  | 2025-02-10 |
+| Jackson Lee    | 2025-02-10 |
+| Emma Watson    | 2025-03-05 |
+| Aaron Smith    | 2025-03-05 |
+| Jackson Lee    | 2025-04-20 |
+| David Anderson | 2025-04-20 |
++----------------+------------+
+12 rows in set (0.01 sec)
+
+mysql> select sub.subject_name as "Subject Name", sub.total_marks as "Total Marks" from subject sub;
++------------------+-------------+
+| Subject Name     | Total Marks |
++------------------+-------------+
+| Mathematics      |         100 |
+| Science          |          90 |
+| English          |          80 |
+| Computer Science |         100 |
++------------------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> select sub.subject_name as "Subject Name", sum(r.marks_obtained) as "Total Marks" from subject sub join examschedule es on sub.subject_id = es.subject_id join result r on es.exam_id = r.exam_id group by sub.subject_name;
++------------------+-------------+
+| Subject Name     | Total Marks |
++------------------+-------------+
+| Mathematics      |         272 |
+| Science          |         268 |
+| English          |         100 |
+| Computer Science |         183 |
++------------------+-------------+
+4 rows in set (0.01 sec)
+
+mysql> select s.student_id as "Student Id", s.student_name as "Student Name", count(r.exam_id) as passed_exam from student s join result r on s.student_id = r.student_id where r.result_status = "Pass" group by s.student_id, s.student_name having count(r.exam_id) > 1 order by passed_exam desc;
++------------+----------------+-------------+
+| Student Id | Student Name   | passed_exam |
++------------+----------------+-------------+
+|          1 | Alice Johnson  |           2 |
+|          5 | David Anderson |           2 |
+|          6 | Emma Watson    |           2 |
+|          7 | Jackson Lee    |           2 |
++------------+----------------+-------------+
+4 rows in set (0.01 sec)
+
+mysql> select s.student_id as "Student Id", s.student_name as "Student Name", sum(r.marks_obtained) as Marks from student s join result r on s.student_id = r.student_id group by s.student_id, s.student_name order by Marks desc;
++------------+----------------+-------+
+| Student Id | Student Name   | Marks |
++------------+----------------+-------+
+|          1 | Alice Johnson  |   163 |
+|          6 | Emma Watson    |   157 |
+|          7 | Jackson Lee    |   155 |
+|          5 | David Anderson |   143 |
+|          2 | Aaron Smith    |    80 |
+|          4 | Cathy Brown    |    75 |
+|          3 | Bob Wilson     |    30 |
+|          8 | Mason Clark    |    20 |
++------------+----------------+-------+
+8 rows in set (0.00 sec)
+
+mysql> select sub.subject_id as "Subject Id", sub.subject_name as "Subject Name", es.duration_minutes from subject sub join examschedule es on sub.subject_id = es.subject_id where duration_minutes > 90;
++------------+------------------+------------------+
+| Subject Id | Subject Name     | duration_minutes |
++------------+------------------+------------------+
+|        101 | Mathematics      |              120 |
+|        104 | Computer Science |              150 |
+|        101 | Mathematics      |              100 |
++------------+------------------+------------------+
+3 rows in set (0.01 sec)
+
+mysql> select s.student_name as "Student Name", s.city as "City", r.result_status as "Status(P or F)" from student s join result r on s.student_id = r.student_id where result_status = "Pass";
++----------------+-------------+----------------+
+| Student Name   | City        | Status(P or F) |
++----------------+-------------+----------------+
+| Alice Johnson  | New York    | Pass           |
+| Aaron Smith    | Chicago     | Pass           |
+| Cathy Brown    | Los Angeles | Pass           |
+| David Anderson | Chicago     | Pass           |
+| Emma Watson    | New York    | Pass           |
+| Jackson Lee    | Houston     | Pass           |
+| Alice Johnson  | New York    | Pass           |
+| David Anderson | Chicago     | Pass           |
+| Emma Watson    | New York    | Pass           |
+| Jackson Lee    | Houston     | Pass           |
++----------------+-------------+----------------+
+10 rows in set (0.00 sec)
+
+mysql> select count(difficulty_level) from question;
++-------------------------+
+| count(difficulty_level) |
++-------------------------+
+|                       8 |
++-------------------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT difficulty_level,
+    ->        COUNT(*) AS total_questions
+    -> FROM question
+    -> GROUP BY difficulty_level;
++------------------+-----------------+
+| difficulty_level | total_questions |
++------------------+-----------------+
+| Hard             |               3 |
+| Medium           |               2 |
+| Easy             |               3 |
++------------------+-----------------+
+3 rows in set (0.01 sec)
+
+mysql> select sub.subject_name as "Subject Name", q.difficulty_level as "Difficult", count(*) as total_questions from question q join subjectquestion sq on q.question_id = sq.question_id join subject sub on sq.subject_id = sub.subject_id group by sub.subject_name, q.difficulty_level;
++------------------+-----------+-----------------+
+| Subject Name     | Difficult | total_questions |
++------------------+-----------+-----------------+
+| Mathematics      | Hard      |               3 |
+| Mathematics      | Medium    |               1 |
+| Mathematics      | Easy      |               2 |
+| Science          | Hard      |               1 |
+| Science          | Easy      |               1 |
+| Science          | Medium    |               1 |
+| English          | Easy      |               2 |
+| Computer Science | Hard      |               1 |
+| Computer Science | Medium    |               1 |
++------------------+-----------+-----------------+
+9 rows in set (0.01 sec)
+
+mysql> select s.student_id as "Student_id", s.student_name as "Student Name", r.marks_obtained as "Marks" from student s join result r on s.student_id = r.student_id where r.marks_obtained between 50 and 80;
++------------+----------------+-------+
+| Student_id | Student Name   | Marks |
++------------+----------------+-------+
+|          4 | Cathy Brown    |    75 |
+|          5 | David Anderson |    55 |
+|          6 | Emma Watson    |    65 |
+|          1 | Alice Johnson  |    78 |
+|          7 | Jackson Lee    |    60 |
++------------+----------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select s.student_name as "Student Name", sub.subject_name as "Subject Name", count(q.question_id) as total_questions, r.marks_obtained from student s join result r on s.student_id = r.student_id join examschedule es on r.exam_id = es.exam_id join subject sub on es.subject_id = sub.subject_id join subjectquestion sq on sub.subject_id = sq.subject_id join question q on sq.question_id = q.question_id group by s.student_name, sub.subject_name, r.marks_obtained order by s.student_name;
++----------------+------------------+-----------------+----------------+
+| Student Name   | Subject Name     | total_questions | marks_obtained |
++----------------+------------------+-----------------+----------------+
+| Aaron Smith    | English          |               2 |             35 |
+| Aaron Smith    | Mathematics      |               6 |             45 |
+| Alice Johnson  | Mathematics      |               6 |             85 |
+| Alice Johnson  | Science          |               3 |             78 |
+| Bob Wilson     | Mathematics      |               6 |             30 |
+| Cathy Brown    | Science          |               3 |             75 |
+| David Anderson | Computer Science |               2 |             88 |
+| David Anderson | Science          |               3 |             55 |
+| Emma Watson    | English          |               2 |             65 |
+| Emma Watson    | Mathematics      |               6 |             92 |
+| Jackson Lee    | Computer Science |               2 |             95 |
+| Jackson Lee    | Science          |               3 |             60 |
+| Mason Clark    | Mathematics      |               6 |             20 |
++----------------+------------------+-----------------+----------------+
+13 rows in set (0.01 sec)
