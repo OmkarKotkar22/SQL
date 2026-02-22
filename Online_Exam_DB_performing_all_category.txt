@@ -1118,7 +1118,7 @@ mysql> select sub.subject_name as "Subject Name", count(q.question_id) as "Total
 +--------------+-----------------+
 | Mathematics  |               6 |
 +--------------+-----------------+
-1 row in set (0.00 sec)
+1 row in set (0.00 sec) 
 
 mysql> select e.exam_id as "Exam Id", e.exam_date as "Exam Date", sum(r.marks_obtained) as "Total Marks" from examschedule e join result r on e.exam_id = r.exam_id group by e.exam_id, e.exam_date;
 +---------+------------+-------------+
