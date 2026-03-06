@@ -1,0 +1,390 @@
+mysql> show databases;
++--------------------------------+
+| Database                       |
++--------------------------------+
+| billing                        |
+| company                        |
+| e_commercedb                   |
+| information_schema             |
+| library_database               |
+| mysql                          |
+| mysql_practice_and_training    |
+| online_examdb                  |
+| perform_join_comp_assignment   |
+| performance_schema             |
+| practice                       |
+| practice_aggregate_function    |
+| praticing_all_queries_commands |
+| sql_machine_test_1             |
+| sys                            |
+| team                           |
++--------------------------------+
+16 rows in set (0.17 sec)
+
+mysql> create database Perform_Subquery;
+Query OK, 1 row affected (0.12 sec)
+
+mysql> show databases;
++--------------------------------+
+| Database                       |
++--------------------------------+
+| billing                        |
+| company                        |
+| e_commercedb                   |
+| information_schema             |
+| library_database               |
+| mysql                          |
+| mysql_practice_and_training    |
+| online_examdb                  |
+| perform_join_comp_assignment   |
+| perform_subquery               |
+| performance_schema             |
+| practice                       |
+| practice_aggregate_function    |
+| praticing_all_queries_commands |
+| sql_machine_test_1             |
+| sys                            |
+| team                           |
++--------------------------------+
+17 rows in set (0.03 sec)
+
+mysql> create table department(dept_id int primary key auto_increment, dept_name varchar(100) not null, location varchar(100) not null);
+ERROR 1046 (3D000): No database selected
+mysql> use perform_subquery;
+Database changed
+mysql> create table department(dept_id int primary key auto_increment, dept_name varchar(100) not null, location varchar(100) not null);
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> desc department;
++-----------+--------------+------+-----+---------+----------------+
+| Field     | Type         | Null | Key | Default | Extra          |
++-----------+--------------+------+-----+---------+----------------+
+| dept_id   | int          | NO   | PRI | NULL    | auto_increment |
+| dept_name | varchar(100) | NO   |     | NULL    |                |
+| location  | varchar(100) | NO   |     | NULL    |                |
++-----------+--------------+------+-----+---------+----------------+
+3 rows in set (0.04 sec)
+
+mysql> create table employee(emp_id int primary key auto_increment, emp_name varchar(100) not null, dept_id int, foreign key(dept_id) refernece dept(dept_id), salary int not null, join_year date not null);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'refernece dept(dept_id), salary int not null, join_year date not null)' at line 1
+mysql> create table employee(emp_id int primary key auto_increment, emp_name varchar(100) not null, dept_id int, foreign key(dept_id) refernece department(dept_id), salary int not null, join_year date not null);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'refernece department(dept_id), salary int not null, join_year date not null)' at line 1
+mysql> create table employee(emp_id int primary key auto_increment, emp_name varchar(100) not null, dept_id int, foreign key(dept_id) refernce department(dept_id), salary int not null, join_year date not null);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'refernce department(dept_id), salary int not null, join_year date not null)' at line 1
+mysql> create table employee(emp_id int primary key auto_increment, emp_name varchar(100) not null, dept_id int, foreign key(dept_id) reference department(dept_id), salary int not null, join_year date not null);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'reference department(dept_id), salary int not null, join_year date not null)' at line 1
+mysql> create table employee(emp_id int primary key auto_increment, emp_name varchar(100) not null, dept_id int, foreign key(dept_id) references department(dept_id), salary int not null, join_year date not null);
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> desc employee;
++-----------+--------------+------+-----+---------+----------------+
+| Field     | Type         | Null | Key | Default | Extra          |
++-----------+--------------+------+-----+---------+----------------+
+| emp_id    | int          | NO   | PRI | NULL    | auto_increment |
+| emp_name  | varchar(100) | NO   |     | NULL    |                |
+| dept_id   | int          | YES  | MUL | NULL    |                |
+| salary    | int          | NO   |     | NULL    |                |
+| join_year | date         | NO   |     | NULL    |                |
++-----------+--------------+------+-----+---------+----------------+
+5 rows in set (0.01 sec)
+
+mysql> create table project(project_id int primary key auto_increment, project_name varchar(100) not null, emp_id int, foreign key(emp_id) references employee(emp_id), budget int not null);
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> desc project;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| project_id   | int          | NO   | PRI | NULL    | auto_increment |
+| project_name | varchar(100) | NO   |     | NULL    |                |
+| emp_id       | int          | YES  | MUL | NULL    |                |
+| budget       | int          | NO   |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> insert into department values(1, 'HR', 'Mumbai');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into department values('0', 'IT', 'Pune');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into department values('0', 'Sales', 'Delhi'),('0','Finance','Mumbai'),('0','Marketing','Pune'),('0','Research','Bangalore');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from department;
++---------+-----------+-----------+
+| dept_id | dept_name | location  |
++---------+-----------+-----------+
+|       1 | HR        | Mumbai    |
+|       2 | IT        | Pune      |
+|       3 | Sales     | Delhi     |
+|       4 | Finance   | Mumbai    |
+|       5 | Marketing | Pune      |
+|       6 | Research  | Bangalore |
++---------+-----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> insert into employee(1, 'Rahul', 2, 75000, 2019);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1, 'Rahul', 2, 75000, 2019)' at line 1
+mysql> alter table employee modify join_year int;
+Query OK, 0 rows affected (0.18 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++-----------+--------------+------+-----+---------+----------------+
+| Field     | Type         | Null | Key | Default | Extra          |
++-----------+--------------+------+-----+---------+----------------+
+| emp_id    | int          | NO   | PRI | NULL    | auto_increment |
+| emp_name  | varchar(100) | NO   |     | NULL    |                |
+| dept_id   | int          | YES  | MUL | NULL    |                |
+| salary    | int          | NO   |     | NULL    |                |
+| join_year | int          | YES  |     | NULL    |                |
++-----------+--------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into employee(1, 'Rahul', 2, 75000, 2019);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1, 'Rahul', 2, 75000, 2019)' at line 1
+mysql> insert into employee values(1, 'Rahul', 2, 75000, 2019);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into employee values('0', 'Priya', 1, 60000, 2021),('0', 'Amit', 3, 50000, 2020),('0', 'Sneha', 2, 85000, 2022),('0', 'Karan', 4, 90000, 2018),('0', 'Neha', 1, 65000, 2023),('0', 'Arjun', 5, 55000, 2021),('0', 'Meena', 1, 70000, 2019),('0', 'Vikram', 3, 45000, 2020),('0', 'Pooja', 4, 95000, 2022),('0', 'Rohan', 2, 72000, 2021),('0', 'Prem', 5, 62000, 2023);
+Query OK, 11 rows affected (0.01 sec)
+Records: 11  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++--------+----------+---------+--------+-----------+
+| emp_id | emp_name | dept_id | salary | join_year |
++--------+----------+---------+--------+-----------+
+|      1 | Rahul    |       2 |  75000 |      2019 |
+|      2 | Priya    |       1 |  60000 |      2021 |
+|      3 | Amit     |       3 |  50000 |      2020 |
+|      4 | Sneha    |       2 |  85000 |      2022 |
+|      5 | Karan    |       4 |  90000 |      2018 |
+|      6 | Neha     |       1 |  65000 |      2023 |
+|      7 | Arjun    |       5 |  55000 |      2021 |
+|      8 | Meena    |       1 |  70000 |      2019 |
+|      9 | Vikram   |       3 |  45000 |      2020 |
+|     10 | Pooja    |       4 |  95000 |      2022 |
+|     11 | Rohan    |       2 |  72000 |      2021 |
+|     12 | Prem     |       5 |  62000 |      2023 |
++--------+----------+---------+--------+-----------+
+12 rows in set (0.01 sec)
+
+mysql> insert into project values(101, 'Banking System', 1, 80000),('0', 'HR Portal', 2, 45000),('0', 'Sales Dashboard', 3, 60000),('0', 'AI Research', 5, 120000),('0', 'Marketing Analytics', 7, 70000),('0', 'Finance Automation', 10, 150000),('0', 'Mobile App', 4, 90000),('0', 'Cloud Migration', 6, 85000);
+Query OK, 8 rows affected (0.01 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select * from project;
++------------+---------------------+--------+--------+
+| project_id | project_name        | emp_id | budget |
++------------+---------------------+--------+--------+
+|        101 | Banking System      |      1 |  80000 |
+|        102 | HR Portal           |      2 |  45000 |
+|        103 | Sales Dashboard     |      3 |  60000 |
+|        104 | AI Research         |      5 | 120000 |
+|        105 | Marketing Analytics |      7 |  70000 |
+|        106 | Finance Automation  |     10 | 150000 |
+|        107 | Mobile App          |      4 |  90000 |
+|        108 | Cloud Migration     |      6 |  85000 |
++------------+---------------------+--------+--------+
+8 rows in set (0.00 sec)
+       insert into project values(101, 'Banking System', 1, 80000),('0', 'HR Portal', 2, 45000),('0', 'Sales Dashboard', 3, 60000),('0', 'AI Research', 5, 120000),('0', 'Marketing Analytics', 7, 70000),('0', 'Finance Automation', 10, 150000),('0', 'Mobile App', 4, 90000),('0', 'Cloud Migration', 6, 85000);^C
+mysql> select max(salary) from employee > (select avg(salary) from employee) ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '> (select avg(salary) from employee)' at line 1
+mysql> select max(salary) from employee where salary > (select avg(salary) from employee);
++-------------+
+| max(salary) |
++-------------+
+|       95000 |
++-------------+
+1 row in set (0.02 sec)
+
+mysql> select * from employee where salary > (select avg(salary) from employee);
++--------+----------+---------+--------+-----------+
+| emp_id | emp_name | dept_id | salary | join_year |
++--------+----------+---------+--------+-----------+
+|      1 | Rahul    |       2 |  75000 |      2019 |
+|      4 | Sneha    |       2 |  85000 |      2022 |
+|      5 | Karan    |       4 |  90000 |      2018 |
+|      8 | Meena    |       1 |  70000 |      2019 |
+|     10 | Pooja    |       4 |  95000 |      2022 |
+|     11 | Rohan    |       2 |  72000 |      2021 |
++--------+----------+---------+--------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> select avg(salary) from employee;
++-------------+
+| avg(salary) |
++-------------+
+|  68666.6667 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee where dept_id = (select dept_id from department where dept_name = 'HR');
++--------+----------+---------+--------+-----------+
+| emp_id | emp_name | dept_id | salary | join_year |
++--------+----------+---------+--------+-----------+
+|      2 | Priya    |       1 |  60000 |      2021 |
+|      6 | Neha     |       1 |  65000 |      2023 |
+|      8 | Meena    |       1 |  70000 |      2019 |
++--------+----------+---------+--------+-----------+
+3 rows in set (0.01 sec)
+
+mysql> select min(salary) from employee;
++-------------+
+| min(salary) |
++-------------+
+|       45000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee where salary > (select min(salary) from employee);
++--------+----------+---------+--------+-----------+
+| emp_id | emp_name | dept_id | salary | join_year |
++--------+----------+---------+--------+-----------+
+|      1 | Rahul    |       2 |  75000 |      2019 |
+|      2 | Priya    |       1 |  60000 |      2021 |
+|      3 | Amit     |       3 |  50000 |      2020 |
+|      4 | Sneha    |       2 |  85000 |      2022 |
+|      5 | Karan    |       4 |  90000 |      2018 |
+|      6 | Neha     |       1 |  65000 |      2023 |
+|      7 | Arjun    |       5 |  55000 |      2021 |
+|      8 | Meena    |       1 |  70000 |      2019 |
+|     10 | Pooja    |       4 |  95000 |      2022 |
+|     11 | Rohan    |       2 |  72000 |      2021 |
+|     12 | Prem     |       5 |  62000 |      2023 |
++--------+----------+---------+--------+-----------+
+11 rows in set (0.00 sec)
+
+mysql> select dept_id from department where location = "Mumbai";
++---------+
+| dept_id |
++---------+
+|       1 |
+|       4 |
++---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee where dept_id in (select dept_id from department where location = "Mumbai");
++--------+----------+---------+--------+-----------+
+| emp_id | emp_name | dept_id | salary | join_year |
++--------+----------+---------+--------+-----------+
+|      2 | Priya    |       1 |  60000 |      2021 |
+|      6 | Neha     |       1 |  65000 |      2023 |
+|      8 | Meena    |       1 |  70000 |      2019 |
+|      5 | Karan    |       4 |  90000 |      2018 |
+|     10 | Pooja    |       4 |  95000 |      2022 |
++--------+----------+---------+--------+-----------+
+5 rows in set (0.01 sec)
+
+mysql> select * from employee where emp_id in (select emp_id from project);
++--------+----------+---------+--------+-----------+
+| emp_id | emp_name | dept_id | salary | join_year |
++--------+----------+---------+--------+-----------+
+|      1 | Rahul    |       2 |  75000 |      2019 |
+|      2 | Priya    |       1 |  60000 |      2021 |
+|      3 | Amit     |       3 |  50000 |      2020 |
+|      4 | Sneha    |       2 |  85000 |      2022 |
+|      5 | Karan    |       4 |  90000 |      2018 |
+|      6 | Neha     |       1 |  65000 |      2023 |
+|      7 | Arjun    |       5 |  55000 |      2021 |
+|     10 | Pooja    |       4 |  95000 |      2022 |
++--------+----------+---------+--------+-----------+
+8 rows in set (0.01 sec)
+
+mysql> select max(salary) fro employee;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'employee' at line 1
+mysql> select max(salary) from employee;
++-------------+
+| max(salary) |
++-------------+
+|       95000 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> select * from employee where salary = ( select max(salary) from employee);
++--------+----------+---------+--------+-----------+
+| emp_id | emp_name | dept_id | salary | join_year |
++--------+----------+---------+--------+-----------+
+|     10 | Pooja    |       4 |  95000 |      2022 |
++--------+----------+---------+--------+-----------+
+1 row in set (0.01 sec)
+
+mysql> select * from employee where join_year = (select join_year from employee where emp_id = 3);
++--------+----------+---------+--------+-----------+
+| emp_id | emp_name | dept_id | salary | join_year |
++--------+----------+---------+--------+-----------+
+|      3 | Amit     |       3 |  50000 |      2020 |
+|      9 | Vikram   |       3 |  45000 |      2020 |
++--------+----------+---------+--------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from employee where salary > (select salary from employee where emp_name = 'Rahul');
++--------+----------+---------+--------+-----------+
+| emp_id | emp_name | dept_id | salary | join_year |
++--------+----------+---------+--------+-----------+
+|      4 | Sneha    |       2 |  85000 |      2022 |
+|      5 | Karan    |       4 |  90000 |      2018 |
+|     10 | Pooja    |       4 |  95000 |      2022 |
++--------+----------+---------+--------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee where dept_id exists (select dept_id from department);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'exists (select dept_id from department)' at line 1
+mysql> select * from employee e where exists (select dept_id from department d where d.dept_id = e.dept_id);
++--------+----------+---------+--------+-----------+
+| emp_id | emp_name | dept_id | salary | join_year |
++--------+----------+---------+--------+-----------+
+|      2 | Priya    |       1 |  60000 |      2021 |
+|      6 | Neha     |       1 |  65000 |      2023 |
+|      8 | Meena    |       1 |  70000 |      2019 |
+|      1 | Rahul    |       2 |  75000 |      2019 |
+|      4 | Sneha    |       2 |  85000 |      2022 |
+|     11 | Rohan    |       2 |  72000 |      2021 |
+|      3 | Amit     |       3 |  50000 |      2020 |
+|      9 | Vikram   |       3 |  45000 |      2020 |
+|      5 | Karan    |       4 |  90000 |      2018 |
+|     10 | Pooja    |       4 |  95000 |      2022 |
+|      7 | Arjun    |       5 |  55000 |      2021 |
+|     12 | Prem     |       5 |  62000 |      2023 |
++--------+----------+---------+--------+-----------+
+12 rows in set (0.01 sec)
+
+mysql> select * from employee e where exists (select 1 from department d where d.dept_id = e.dept_id);
++--------+----------+---------+--------+-----------+
+| emp_id | emp_name | dept_id | salary | join_year |
++--------+----------+---------+--------+-----------+
+|      2 | Priya    |       1 |  60000 |      2021 |
+|      6 | Neha     |       1 |  65000 |      2023 |
+|      8 | Meena    |       1 |  70000 |      2019 |
+|      1 | Rahul    |       2 |  75000 |      2019 |
+|      4 | Sneha    |       2 |  85000 |      2022 |
+|     11 | Rohan    |       2 |  72000 |      2021 |
+|      3 | Amit     |       3 |  50000 |      2020 |
+|      9 | Vikram   |       3 |  45000 |      2020 |
+|      5 | Karan    |       4 |  90000 |      2018 |
+|     10 | Pooja    |       4 |  95000 |      2022 |
+|      7 | Arjun    |       5 |  55000 |      2021 |
+|     12 | Prem     |       5 |  62000 |      2023 |
++--------+----------+---------+--------+-----------+
+12 rows in set (0.00 sec)
+
+mysql> select * from employee where dept_id in (select dept_id from department);
++--------+----------+---------+--------+-----------+
+| emp_id | emp_name | dept_id | salary | join_year |
++--------+----------+---------+--------+-----------+
+|      2 | Priya    |       1 |  60000 |      2021 |
+|      6 | Neha     |       1 |  65000 |      2023 |
+|      8 | Meena    |       1 |  70000 |      2019 |
+|      1 | Rahul    |       2 |  75000 |      2019 |
+|      4 | Sneha    |       2 |  85000 |      2022 |
+|     11 | Rohan    |       2 |  72000 |      2021 |
+|      3 | Amit     |       3 |  50000 |      2020 |
+|      9 | Vikram   |       3 |  45000 |      2020 |
+|      5 | Karan    |       4 |  90000 |      2018 |
+|     10 | Pooja    |       4 |  95000 |      2022 |
+|      7 | Arjun    |       5 |  55000 |      2021 |
+|     12 | Prem     |       5 |  62000 |      2023 |
++--------+----------+---------+--------+-----------+
+12 rows in set (0.00 sec)
