@@ -1,0 +1,1640 @@
+C:\Users\kotka>mysql -u root -p
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+
+Create Database
+
+mysql> CREATE DATABASE ecommerce_db;
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> use ecommerce_db;
+Database changed
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| ecommerce_db       |
+| employee_tracker   |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+6 rows in set (0.02 sec)
+
+mysql> SELECT DATABASE();
++--------------+
+| DATABASE()   |
++--------------+
+| ecommerce_db |
++--------------+
+1 row in set (0.00 sec)
+
+Create Tables
+
+Category Table
+
+mysql> CREATE TABLE category(
+    -> category_id INT PRIMARY KEY AUTO_INCREMENT,
+    -> category_name VARCHAR(100) NOT NULL UNIQUE,
+    -> description VARCHAR(255)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> DESC category;
++---------------+--------------+------+-----+---------+----------------+
+| Field         | Type         | Null | Key | Default | Extra          |
++---------------+--------------+------+-----+---------+----------------+
+| category_id   | int          | NO   | PRI | NULL    | auto_increment |
+| category_name | varchar(100) | NO   | UNI | NULL    |                |
+| description   | varchar(255) | YES  |     | NULL    |                |
++---------------+--------------+------+-----+---------+----------------+
+3 rows in set (0.01 sec)
+
+Customer Table
+
+mysql> CREATE TABLE customer(
+    -> customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    -> first_name VARCHAR(100) NOT NULL,
+    -> last_name VARCHAR(100) NOT NULL,
+    -> email VARCHAR(100) UNIQUE NOT NULL,
+    -> phone VARCHAR(15),
+    -> city VARCHAR(60),
+    -> registration_date DATE DEFAULT (CURRENT_DATE)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DESC customer;
++-------------------+--------------+------+-----+-----------+-------------------+
+| Field             | Type         | Null | Key | Default   | Extra             |
++-------------------+--------------+------+-----+-----------+-------------------+
+| customer_id       | int          | NO   | PRI | NULL      | auto_increment    |
+| first_name        | varchar(100) | NO   |     | NULL      |                   |
+| last_name         | varchar(100) | NO   |     | NULL      |                   |
+| email             | varchar(100) | NO   | UNI | NULL      |                   |
+| phone             | varchar(15)  | YES  |     | NULL      |                   |
+| city              | varchar(60)  | YES  |     | NULL      |                   |
+| registration_date | date         | YES  |     | curdate() | DEFAULT_GENERATED |
++-------------------+--------------+------+-----+-----------+-------------------+
+7 rows in set (0.01 sec)
+
+Employee Table
+
+mysql> CREATE TABLE employee(
+    -> employee_id INT PRIMARY KEY AUTO_INCREMENT,
+    -> employee_name VARCHAR(100) NOT NULL,
+    -> email VARCHAR(100) UNIQUE,
+    -> salary DECIMAL(10,2),
+    -> manager_id INT,
+    -> FOREIGN KEY (manager_id) REFERENCES employee(employee_id)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> DESC employee;
++---------------+---------------+------+-----+---------+----------------+
+| Field         | Type          | Null | Key | Default | Extra          |
++---------------+---------------+------+-----+---------+----------------+
+| employee_id   | int           | NO   | PRI | NULL    | auto_increment |
+| employee_name | varchar(100)  | NO   |     | NULL    |                |
+| email         | varchar(100)  | YES  | UNI | NULL    |                |
+| salary        | decimal(10,2) | YES  |     | NULL    |                |
+| manager_id    | int           | YES  | MUL | NULL    |                |
++---------------+---------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+Product Table
+
+mysql> CREATE TABLE product(
+    -> product_id INT PRIMARY KEY AUTO_INCREMENT,
+    -> product_name VARCHAR(100) NOT NULL,
+    -> category_id INT,
+    -> price DECIMAL(10,2) NOT NULL,
+    -> stock INT DEFAULT 0,
+    -> brand VARCHAR(50),
+    -> CHECK(price > 0),
+    -> CHECK(stock >= 0),
+    -> FOREIGN KEY (category_id)
+    -> REFERENCES category(category_id)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DESC product;
++--------------+---------------+------+-----+---------+----------------+
+| Field        | Type          | Null | Key | Default | Extra          |
++--------------+---------------+------+-----+---------+----------------+
+| product_id   | int           | NO   | PRI | NULL    | auto_increment |
+| product_name | varchar(100)  | NO   |     | NULL    |                |
+| category_id  | int           | YES  | MUL | NULL    |                |
+| price        | decimal(10,2) | NO   |     | NULL    |                |
+| stock        | int           | YES  |     | 0       |                |
+| brand        | varchar(50)   | YES  |     | NULL    |                |
++--------------+---------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+Orders Table
+
+mysql> CREATE TABLE orders(
+    -> order_id INT PRIMARY KEY AUTO_INCREMENT,
+    -> customer_id INT NOT NULL,
+    -> order_date DATE DEFAULT (CURRENT_DATE),
+    -> status VARCHAR(30) DEFAULT 'Pending',
+    -> total_amount DECIMAL(10,2),
+    -> CHECK(total_amount >= 0),
+    -> FOREIGN KEY (customer_id)
+    -> REFERENCES customer(customer_id)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DESC orders;
++--------------+---------------+------+-----+-----------+-------------------+
+| Field        | Type          | Null | Key | Default   | Extra             |
++--------------+---------------+------+-----+-----------+-------------------+
+| order_id     | int           | NO   | PRI | NULL      | auto_increment    |
+| customer_id  | int           | NO   | MUL | NULL      |                   |
+| order_date   | date          | YES  |     | curdate() | DEFAULT_GENERATED |
+| status       | varchar(30)   | YES  |     | Pending   |                   |
+| total_amount | decimal(10,2) | YES  |     | NULL      |                   |
++--------------+---------------+------+-----+-----------+-------------------+
+5 rows in set (0.00 sec)
+
+Order Item Table
+
+mysql> CREATE TABLE order_item (
+    ->     order_item_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     order_id INT NOT NULL,
+    ->     product_id INT NOT NULL,
+    ->     quantity INT NOT NULL,
+    ->     price DECIMAL(10,2) NOT NULL,
+    ->
+    ->     CHECK (quantity > 0),
+    ->     CHECK (price > 0),
+    ->
+    ->     FOREIGN KEY (order_id)
+    ->         REFERENCES orders(order_id),
+    ->
+    ->     FOREIGN KEY (product_id)
+    ->         REFERENCES product(product_id)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> DESC order_item;
++---------------+---------------+------+-----+---------+----------------+
+| Field         | Type          | Null | Key | Default | Extra          |
++---------------+---------------+------+-----+---------+----------------+
+| order_item_id | int           | NO   | PRI | NULL    | auto_increment |
+| order_id      | int           | NO   | MUL | NULL    |                |
+| product_id    | int           | NO   | MUL | NULL    |                |
+| quantity      | int           | NO   |     | NULL    |                |
+| price         | decimal(10,2) | NO   |     | NULL    |                |
++---------------+---------------+------+-----+---------+----------------+
+5 rows in set (0.01 sec)
+
+Payment Table
+
+mysql> CREATE TABLE payment(
+    -> payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    -> order_id INT UNIQUE NOT NULL,
+    -> payment_date DATE DEFAULT(CURRENT_DATE),
+    -> payment_method VARCHAR(30),
+    -> amount DECIMAL(10,2),
+    -> payment_status VARCHAR(30) DEFAULT 'Pending',
+    -> FOREIGN KEY(order_id)
+    -> REFERENCES orders(order_id)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DESC payment;
++----------------+---------------+------+-----+-----------+-------------------+
+| Field          | Type          | Null | Key | Default   | Extra             |
++----------------+---------------+------+-----+-----------+-------------------+
+| payment_id     | int           | NO   | PRI | NULL      | auto_increment    |
+| order_id       | int           | NO   | UNI | NULL      |                   |
+| payment_date   | date          | YES  |     | curdate() | DEFAULT_GENERATED |
+| payment_method | varchar(30)   | YES  |     | NULL      |                   |
+| amount         | decimal(10,2) | YES  |     | NULL      |                   |
+| payment_status | varchar(30)   | YES  |     | Pending   |                   |
++----------------+---------------+------+-----+-----------+-------------------+
+6 rows in set (0.00 sec)
+
+ALTER — Add Column
+
+mysql> ALTER TABLE customer
+    -> ADD gender VARCHAR(10);
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC customer;
++-------------------+--------------+------+-----+-----------+-------------------+
+| Field             | Type         | Null | Key | Default   | Extra             |
++-------------------+--------------+------+-----+-----------+-------------------+
+| customer_id       | int          | NO   | PRI | NULL      | auto_increment    |
+| first_name        | varchar(100) | NO   |     | NULL      |                   |
+| last_name         | varchar(100) | NO   |     | NULL      |                   |
+| email             | varchar(100) | NO   | UNI | NULL      |                   |
+| phone             | varchar(15)  | YES  |     | NULL      |                   |
+| city              | varchar(60)  | YES  |     | NULL      |                   |
+| registration_date | date         | YES  |     | curdate() | DEFAULT_GENERATED |
+| gender            | varchar(10)  | YES  |     | NULL      |                   |
++-------------------+--------------+------+-----+-----------+-------------------+
+8 rows in set (0.02 sec)
+
+ALTER — Modify Column
+
+mysql> ALTER TABLE customer
+    -> MODIFY phone VARCHAR(20);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC customer;
++-------------------+--------------+------+-----+-----------+-------------------+
+| Field             | Type         | Null | Key | Default   | Extra             |
++-------------------+--------------+------+-----+-----------+-------------------+
+| customer_id       | int          | NO   | PRI | NULL      | auto_increment    |
+| first_name        | varchar(100) | NO   |     | NULL      |                   |
+| last_name         | varchar(100) | NO   |     | NULL      |                   |
+| email             | varchar(100) | NO   | UNI | NULL      |                   |
+| phone             | varchar(20)  | YES  |     | NULL      |                   |
+| city              | varchar(60)  | YES  |     | NULL      |                   |
+| registration_date | date         | YES  |     | curdate() | DEFAULT_GENERATED |
+| gender            | varchar(10)  | YES  |     | NULL      |                   |
++-------------------+--------------+------+-----+-----------+-------------------+
+8 rows in set (0.00 sec)
+
+ALTER — Rename Column
+
+mysql> ALTER TABLE customer
+    -> RENAME COLUMN phone TO mobile_number;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC customer;
++-------------------+--------------+------+-----+-----------+-------------------+
+| Field             | Type         | Null | Key | Default   | Extra             |
++-------------------+--------------+------+-----+-----------+-------------------+
+| customer_id       | int          | NO   | PRI | NULL      | auto_increment    |
+| first_name        | varchar(100) | NO   |     | NULL      |                   |
+| last_name         | varchar(100) | NO   |     | NULL      |                   |
+| email             | varchar(100) | NO   | UNI | NULL      |                   |
+| mobile_number     | varchar(20)  | YES  |     | NULL      |                   |
+| city              | varchar(60)  | YES  |     | NULL      |                   |
+| registration_date | date         | YES  |     | curdate() | DEFAULT_GENERATED |
+| gender            | varchar(10)  | YES  |     | NULL      |                   |
++-------------------+--------------+------+-----+-----------+-------------------+
+8 rows in set (0.00 sec)
+
+ALTER — Drop Column
+
+mysql> ALTER TABLE customer
+    -> DROP COLUMN gender;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC customer;
++-------------------+--------------+------+-----+-----------+-------------------+
+| Field             | Type         | Null | Key | Default   | Extra             |
++-------------------+--------------+------+-----+-----------+-------------------+
+| customer_id       | int          | NO   | PRI | NULL      | auto_increment    |
+| first_name        | varchar(100) | NO   |     | NULL      |                   |
+| last_name         | varchar(100) | NO   |     | NULL      |                   |
+| email             | varchar(100) | NO   | UNI | NULL      |                   |
+| mobile_number     | varchar(20)  | YES  |     | NULL      |                   |
+| city              | varchar(60)  | YES  |     | NULL      |                   |
+| registration_date | date         | YES  |     | curdate() | DEFAULT_GENERATED |
++-------------------+--------------+------+-----+-----------+-------------------+
+7 rows in set (0.00 sec)
+
+Rename Table
+
+mysql> RENAME TABLE customer TO customers;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DESC customers;
++-------------------+--------------+------+-----+-----------+-------------------+
+| Field             | Type         | Null | Key | Default   | Extra             |
++-------------------+--------------+------+-----+-----------+-------------------+
+| customer_id       | int          | NO   | PRI | NULL      | auto_increment    |
+| first_name        | varchar(100) | NO   |     | NULL      |                   |
+| last_name         | varchar(100) | NO   |     | NULL      |                   |
+| email             | varchar(100) | NO   | UNI | NULL      |                   |
+| mobile_number     | varchar(20)  | YES  |     | NULL      |                   |
+| city              | varchar(60)  | YES  |     | NULL      |                   |
+| registration_date | date         | YES  |     | curdate() | DEFAULT_GENERATED |
++-------------------+--------------+------+-----+-----------+-------------------+
+7 rows in set (0.00 sec)
+
+TRUNCATE
+
+mysql> CREATE TABLE test_table (
+    -> id INT,
+    -> name VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO test_table
+    -> VALUES (1, 'Omkar'),
+    ->        (2, 'Rahul');
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> DESC test_table;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int         | YES  |     | NULL    |       |
+| name  | varchar(50) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+mysql> SELECT * FROM test_table;
++------+-------+
+| id   | name  |
++------+-------+
+|    1 | Omkar |
+|    2 | Rahul |
++------+-------+
+2 rows in set (0.00 sec)
+
+mysql> TRUNCATE TABLE test_table;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DESC TEST_TABLE;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int         | YES  |     | NULL    |       |
+| name  | varchar(50) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT * FROM test_table;
+Empty set (0.00 sec)
+
+mysql> DROP TABLE test_table;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DESC TEST_TABLE;
+ERROR 1146 (42S02): Table 'ecommerce_db.test_table' doesn't exist
+
+Insert Categories
+
+mysql> INSERT INTO category
+    -> (category_name, description)
+    -> VALUES
+    -> ('Electronics', 'Electronic Devices'),
+    -> ('Clothing', 'Men and Women Clothing'),
+    -> ('Books', 'Educational and Entertainment books'),
+    -> ('Furniture', 'Home and Office furniture'),
+    -> ('Sports', 'Sports equipment');
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM category;
++-------------+---------------+-------------------------------------+
+| category_id | category_name | description                         |
++-------------+---------------+-------------------------------------+
+|           1 | Electronics   | Electronic Devices                  |
+|           2 | Clothing      | Men and Women Clothing              |
+|           3 | Books         | Educational and Entertainment books |
+|           4 | Furniture     | Home and Office furniture           |
+|           5 | Sports        | Sports equipment                    |
++-------------+---------------+-------------------------------------+
+5 rows in set (0.01 sec)
+
+Insert Customers
+
+mysql> INSERT INTO customers
+    -> (first_name, last_name, email, mobile_number, city)
+    -> VALUES
+    -> ('Omkar', 'Kotkar', 'omkar@gmail.com', '9876543210', 'Ahilyanagar'),
+    -> ('Rahul', 'Patil', 'rahul@gmail.com', '9876543211', 'Pune'),
+    -> ('Sneha', 'Sharma', 'sneha@gmail.com', '9876543212', 'Mumbai'),
+    -> ('Amit', 'Joshi', 'amit@gmail.com', '9876543213', 'Nashik'),
+    -> ('Priya', 'Deshmukh', 'priya@gmail.com', '9876543214', 'Pune');
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM customers;
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+| customer_id | first_name | last_name | email           | mobile_number | city        | registration_date |
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+|           1 | Omkar      | Kotkar    | omkar@gmail.com | 9876543210    | Ahilyanagar | 2026-08-16        |
+|           2 | Rahul      | Patil     | rahul@gmail.com | 9876543211    | Pune        | 2026-08-16        |
+|           3 | Sneha      | Sharma    | sneha@gmail.com | 9876543212    | Mumbai      | 2026-08-16        |
+|           4 | Amit       | Joshi     | amit@gmail.com  | 9876543213    | Nashik      | 2026-08-16        |
+|           5 | Priya      | Deshmukh  | priya@gmail.com | 9876543214    | Pune        | 2026-08-16        |
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+5 rows in set (0.01 sec)
+
+Insert Employees
+
+mysql> INSERT INTO employee
+    -> (employee_name, email, salary, manager_id)
+    -> VALUES
+    -> ('Raj Mehta', 'raj@shopease.com', 80000, NULL);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO employee
+    -> (employee_name, email, salary, manager_id)
+    -> VALUES
+    -> ('Amit Shah', 'amit@shopease.com', 50000, 1),
+    -> ('Neha Patil', 'neha@shopease.com', 55000, 1),
+    -> ('Vikas Joshi', 'vikas@shopease.com', 45000, 2);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM employee;
++-------------+---------------+--------------------+----------+------------+
+| employee_id | employee_name | email              | salary   | manager_id |
++-------------+---------------+--------------------+----------+------------+
+|           1 | Raj Mehta     | raj@shopease.com   | 80000.00 |       NULL |
+|           2 | Amit Shah     | amit@shopease.com  | 50000.00 |          1 |
+|           3 | Neha Patil    | neha@shopease.com  | 55000.00 |          1 |
+|           4 | Vikas Joshi   | vikas@shopease.com | 45000.00 |          2 |
++-------------+---------------+--------------------+----------+------------+
+4 rows in set (0.00 sec)
+
+Insert Products
+
+mysql> INSERT INTO product
+    -> (product_name, category_id, price, stock, brand)
+    -> VALUES
+    -> ('Laptop', 1, 65000, 10, 'Dell'),
+    -> ('Mobile Phone', 1, 30000, 20, 'Samsung'),
+    -> ('Headphones', 1, 2500, 50, 'Sony'),
+    -> ('T-Shirt', 2, 800, 100, 'Puma'),
+    -> ('Jeans', 2, 1800, 60, 'Levis'),
+    -> ('Java Book', 3, 700, 30, 'Pearson'),
+    -> ('SQL Book', 3, 600, 25, 'McGraw'),
+    -> ('Office Chair', 4, 5000, 15, 'Godrej'),
+    -> ('Football', 5, 1200, 40, 'Nivia');
+Query OK, 9 rows affected (0.01 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM product;
++------------+--------------+-------------+----------+-------+---------+
+| product_id | product_name | category_id | price    | stock | brand   |
++------------+--------------+-------------+----------+-------+---------+
+|          1 | Laptop       |           1 | 65000.00 |    10 | Dell    |
+|          2 | Mobile Phone |           1 | 30000.00 |    20 | Samsung |
+|          3 | Headphones   |           1 |  2500.00 |    50 | Sony    |
+|          4 | T-Shirt      |           2 |   800.00 |   100 | Puma    |
+|          5 | Jeans        |           2 |  1800.00 |    60 | Levis   |
+|          6 | Java Book    |           3 |   700.00 |    30 | Pearson |
+|          7 | SQL Book     |           3 |   600.00 |    25 | McGraw  |
+|          8 | Office Chair |           4 |  5000.00 |    15 | Godrej  |
+|          9 | Football     |           5 |  1200.00 |    40 | Nivia   |
++------------+--------------+-------------+----------+-------+---------+
+9 rows in set (0.00 sec)
+
+
+Insert Orders
+
+mysql> INSERT INTO orders
+    -> (customer_id, order_date, status, total_amount)
+    -> VALUES
+    -> (1, '2026-08-01', 'Delivered', 67500),
+    -> (2, '2026-08-03', 'Pending', 30000),
+    -> (3, '2026-08-05', 'Delivered', 2600),
+    -> (1, '2026-08-07', 'Shipped', 5000),
+    -> (4, '2026-08-10', 'Cancelled', 1800);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM orders;
++----------+-------------+------------+-----------+--------------+
+| order_id | customer_id | order_date | status    | total_amount |
++----------+-------------+------------+-----------+--------------+
+|        1 |           1 | 2026-08-01 | Delivered |     67500.00 |
+|        2 |           2 | 2026-08-03 | Pending   |     30000.00 |
+|        3 |           3 | 2026-08-05 | Delivered |      2600.00 |
+|        4 |           1 | 2026-08-07 | Shipped   |      5000.00 |
+|        5 |           4 | 2026-08-10 | Cancelled |      1800.00 |
++----------+-------------+------------+-----------+--------------+
+5 rows in set (0.00 sec)
+
+Insert Order_item
+
+mysql> INSERT INTO order_item
+    -> (order_id, product_id, quantity, price)
+    -> VALUES
+    -> (1, 1, 1, 65000),
+    -> (1, 3, 1, 2500),
+    -> (2, 2, 1, 30000),
+    -> (3, 3, 1, 2500),
+    -> (3, 4, 1, 100),
+    -> (4, 8, 1, 5000),
+    -> (5, 5, 1, 1800);
+Query OK, 7 rows affected (0.01 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM order_item;
++---------------+----------+------------+----------+----------+
+| order_item_id | order_id | product_id | quantity | price    |
++---------------+----------+------------+----------+----------+
+|             1 |        1 |          1 |        1 | 65000.00 |
+|             2 |        1 |          3 |        1 |  2500.00 |
+|             3 |        2 |          2 |        1 | 30000.00 |
+|             4 |        3 |          3 |        1 |  2500.00 |
+|             5 |        3 |          4 |        1 |   100.00 |
+|             6 |        4 |          8 |        1 |  5000.00 |
+|             7 |        5 |          5 |        1 |  1800.00 |
++---------------+----------+------------+----------+----------+
+7 rows in set (0.00 sec)
+
+Insert Payment
+
+mysql> INSERT INTO payment
+    -> (order_id, payment_method, amount, payment_status)
+    -> VALUES
+    -> (1, 'UPI', 67500, 'Completed'),
+    -> (2, 'Credit Card', 30000, 'Pending'),
+    -> (3, 'Cash', 2600, 'Completed'),
+    -> (4, 'UPI', 5000, 'Completed'),
+    -> (5, 'Debit Card', 1800, 'Refunded');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM payment;
++------------+----------+--------------+----------------+----------+----------------+
+| payment_id | order_id | payment_date | payment_method | amount   | payment_status |
++------------+----------+--------------+----------------+----------+----------------+
+|          1 |        1 | 2026-08-16   | UPI            | 67500.00 | Completed      |
+|          2 |        2 | 2026-08-16   | Credit Card    | 30000.00 | Pending        |
+|          3 |        3 | 2026-08-16   | Cash           |  2600.00 | Completed      |
+|          4 |        4 | 2026-08-16   | UPI            |  5000.00 | Completed      |
+|          5 |        5 | 2026-08-16   | Debit Card     |  1800.00 | Refunded       |
++------------+----------+--------------+----------------+----------+----------------+
+5 rows in set (0.00 sec)
+
+UPDATE
+
+Increase the price of all electronics by 10%.
+
+mysql> UPDATE product
+    -> SET price = price * 1.10
+    -> WHERE category_id = 1;
+Query OK, 3 rows affected (0.03 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+Update one customer's city
+
+mysql> UPDATE customers
+    -> SET city = 'Pune'
+    -> WHERE customer_id = 3;
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM customers;
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+| customer_id | first_name | last_name | email           | mobile_number | city        | registration_date |
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+|           1 | Omkar      | Kotkar    | omkar@gmail.com | 9876543210    | Ahilyanagar | 2026-08-16        |
+|           2 | Rahul      | Patil     | rahul@gmail.com | 9876543211    | Pune        | 2026-08-16        |
+|           3 | Sneha      | Sharma    | sneha@gmail.com | 9876543212    | Pune        | 2026-08-16        |
+|           4 | Amit       | Joshi     | amit@gmail.com  | 9876543213    | Nashik      | 2026-08-16        |
+|           5 | Priya      | Deshmukh  | priya@gmail.com | 9876543214    | Pune        | 2026-08-16        |
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+5 rows in set (0.00 sec)
+
+Update multiple columns
+
+mysql> UPDATE product
+    -> SET price = 700,
+    -> stock = 50
+    -> WHERE product_id = 6;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM product;
++------------+--------------+-------------+----------+-------+---------+
+| product_id | product_name | category_id | price    | stock | brand   |
++------------+--------------+-------------+----------+-------+---------+
+|          1 | Laptop       |           1 | 71500.00 |    10 | Dell    |
+|          2 | Mobile Phone |           1 | 33000.00 |    20 | Samsung |
+|          3 | Headphones   |           1 |  2750.00 |    50 | Sony    |
+|          4 | T-Shirt      |           2 |   800.00 |   100 | Puma    |
+|          5 | Jeans        |           2 |  1800.00 |    60 | Levis   |
+|          6 | Java Book    |           3 |   700.00 |    50 | Pearson |
+|          7 | SQL Book     |           3 |   600.00 |    25 | McGraw  |
+|          8 | Office Chair |           4 |  5000.00 |    15 | Godrej  |
+|          9 | Football     |           5 |  1200.00 |    40 | Nivia   |
++------------+--------------+-------------+----------+-------+---------+
+9 rows in set (0.00 sec)
+
+DELETE
+
+Delete a customer
+
+
+mysql> DELETE FROM customers
+    -> WHERE customer_id = 5;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM customers;
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+| customer_id | first_name | last_name | email           | mobile_number | city        | registration_date |
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+|           1 | Omkar      | Kotkar    | omkar@gmail.com | 9876543210    | Ahilyanagar | 2026-08-16        |
+|           2 | Rahul      | Patil     | rahul@gmail.com | 9876543211    | Pune        | 2026-08-16        |
+|           3 | Sneha      | Sharma    | sneha@gmail.com | 9876543212    | Pune        | 2026-08-16        |
+|           4 | Amit       | Joshi     | amit@gmail.com  | 9876543213    | Nashik      | 2026-08-16        |
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+4 rows in set (0.00 sec)
+
+SELECT
+
+Specific columns
+
+mysql> SELECT product_name, price FROM product;
++--------------+----------+
+| product_name | price    |
++--------------+----------+
+| Laptop       | 71500.00 |
+| Mobile Phone | 33000.00 |
+| Headphones   |  2750.00 |
+| T-Shirt      |   800.00 |
+| Jeans        |  1800.00 |
+| Java Book    |   700.00 |
+| SQL Book     |   600.00 |
+| Office Chair |  5000.00 |
+| Football     |  1200.00 |
++--------------+----------+
+9 rows in set (0.00 sec)
+
+
+WHERE
+
+Products greater than ₹5,000
+
+
+mysql> SELECT * FROM product
+    -> WHERE price > 5000;
++------------+--------------+-------------+----------+-------+---------+
+| product_id | product_name | category_id | price    | stock | brand   |
++------------+--------------+-------------+----------+-------+---------+
+|          1 | Laptop       |           1 | 71500.00 |    10 | Dell    |
+|          2 | Mobile Phone |           1 | 33000.00 |    20 | Samsung |
++------------+--------------+-------------+----------+-------+---------+
+2 rows in set (0.00 sec)
+
+Products between ₹1,000 and ₹5,000:
+
+mysql> SELECT * FROM product
+    -> WHERE price BETWEEN 1000 AND 5000;
++------------+--------------+-------------+---------+-------+--------+
+| product_id | product_name | category_id | price   | stock | brand  |
++------------+--------------+-------------+---------+-------+--------+
+|          3 | Headphones   |           1 | 2750.00 |    50 | Sony   |
+|          5 | Jeans        |           2 | 1800.00 |    60 | Levis  |
+|          8 | Office Chair |           4 | 5000.00 |    15 | Godrej |
+|          9 | Football     |           5 | 1200.00 |    40 | Nivia  |
++------------+--------------+-------------+---------+-------+--------+
+4 rows in set (0.00 sec)
+
+IN
+
+mysql> SELECT * FROM customers
+    -> WHERE city IN ('Pune', 'Mumbai');
++-------------+------------+-----------+-----------------+---------------+------+-------------------+
+| customer_id | first_name | last_name | email           | mobile_number | city | registration_date |
++-------------+------------+-----------+-----------------+---------------+------+-------------------+
+|           2 | Rahul      | Patil     | rahul@gmail.com | 9876543211    | Pune | 2026-08-16        |
+|           3 | Sneha      | Sharma    | sneha@gmail.com | 9876543212    | Pune | 2026-08-16        |
++-------------+------------+-----------+-----------------+---------------+------+-------------------+
+2 rows in set (0.00 sec)
+
+LIKE
+
+Names starting with O
+
+mysql> SELECT * FROM customers
+    -> WHERE first_name LIKE 'O%';
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+| customer_id | first_name | last_name | email           | mobile_number | city        | registration_date |
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+|           1 | Omkar      | Kotkar    | omkar@gmail.com | 9876543210    | Ahilyanagar | 2026-08-16        |
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+1 row in set (0.01 sec)
+
+Names containing a
+
+mysql> SELECT * FROM customers
+    -> WHERE first_name LIKE '%a%';
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+| customer_id | first_name | last_name | email           | mobile_number | city        | registration_date |
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+|           1 | Omkar      | Kotkar    | omkar@gmail.com | 9876543210    | Ahilyanagar | 2026-08-16        |
+|           2 | Rahul      | Patil     | rahul@gmail.com | 9876543211    | Pune        | 2026-08-16        |
+|           3 | Sneha      | Sharma    | sneha@gmail.com | 9876543212    | Pune        | 2026-08-16        |
+|           4 | Amit       | Joshi     | amit@gmail.com  | 9876543213    | Nashik      | 2026-08-16        |
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+4 rows in set (0.00 sec)
+
+Names ending with a
+
+mysql> SELECT * FROM customers
+    -> WHERE first_name LIKE '%a';
++-------------+------------+-----------+-----------------+---------------+------+-------------------+
+| customer_id | first_name | last_name | email           | mobile_number | city | registration_date |
++-------------+------------+-----------+-----------------+---------------+------+-------------------+
+|           3 | Sneha      | Sharma    | sneha@gmail.com | 9876543212    | Pune | 2026-08-16        |
++-------------+------------+-----------+-----------------+---------------+------+-------------------+
+1 row in set (0.00 sec)
+
+ORDER BY
+
+
+mysql> SELECT * FROM product
+    -> ORDER BY price;
++------------+--------------+-------------+----------+-------+---------+
+| product_id | product_name | category_id | price    | stock | brand   |
++------------+--------------+-------------+----------+-------+---------+
+|          7 | SQL Book     |           3 |   600.00 |    25 | McGraw  |
+|          6 | Java Book    |           3 |   700.00 |    50 | Pearson |
+|          4 | T-Shirt      |           2 |   800.00 |   100 | Puma    |
+|          9 | Football     |           5 |  1200.00 |    40 | Nivia   |
+|          5 | Jeans        |           2 |  1800.00 |    60 | Levis   |
+|          3 | Headphones   |           1 |  2750.00 |    50 | Sony    |
+|          8 | Office Chair |           4 |  5000.00 |    15 | Godrej  |
+|          2 | Mobile Phone |           1 | 33000.00 |    20 | Samsung |
+|          1 | Laptop       |           1 | 71500.00 |    10 | Dell    |
++------------+--------------+-------------+----------+-------+---------+
+9 rows in set (0.00 sec)
+
+Highest price first
+
+mysql> SELECT * FROM product
+    -> ORDER BY price DESC;
++------------+--------------+-------------+----------+-------+---------+
+| product_id | product_name | category_id | price    | stock | brand   |
++------------+--------------+-------------+----------+-------+---------+
+|          1 | Laptop       |           1 | 71500.00 |    10 | Dell    |
+|          2 | Mobile Phone |           1 | 33000.00 |    20 | Samsung |
+|          8 | Office Chair |           4 |  5000.00 |    15 | Godrej  |
+|          3 | Headphones   |           1 |  2750.00 |    50 | Sony    |
+|          5 | Jeans        |           2 |  1800.00 |    60 | Levis   |
+|          9 | Football     |           5 |  1200.00 |    40 | Nivia   |
+|          4 | T-Shirt      |           2 |   800.00 |   100 | Puma    |
+|          6 | Java Book    |           3 |   700.00 |    50 | Pearson |
+|          7 | SQL Book     |           3 |   600.00 |    25 | McGraw  |
++------------+--------------+-------------+----------+-------+---------+
+9 rows in set (0.00 sec)
+
+LIMIT
+
+3 products
+
+mysql> SELECT * FROM product
+    -> ORDER BY price LIMIT 3;
++------------+--------------+-------------+--------+-------+---------+
+| product_id | product_name | category_id | price  | stock | brand   |
++------------+--------------+-------------+--------+-------+---------+
+|          7 | SQL Book     |           3 | 600.00 |    25 | McGraw  |
+|          6 | Java Book    |           3 | 700.00 |    50 | Pearson |
+|          4 | T-Shirt      |           2 | 800.00 |   100 | Puma    |
++------------+--------------+-------------+--------+-------+---------+
+3 rows in set (0.00 sec)
+
+Top 3 expensive products
+
+mysql> SELECT * FROM product
+    -> ORDER BY price DESC LIMIT 3;
++------------+--------------+-------------+----------+-------+---------+
+| product_id | product_name | category_id | price    | stock | brand   |
++------------+--------------+-------------+----------+-------+---------+
+|          1 | Laptop       |           1 | 71500.00 |    10 | Dell    |
+|          2 | Mobile Phone |           1 | 33000.00 |    20 | Samsung |
+|          8 | Office Chair |           4 |  5000.00 |    15 | Godrej  |
++------------+--------------+-------------+----------+-------+---------+
+3 rows in set (0.00 sec)
+
+DISTINCT
+
+Find unique cities
+
+mysql> SELEct DISTINCT city
+    -> FROM customers;
++-------------+
+| city        |
++-------------+
+| Ahilyanagar |
+| Pune        |
+| Nashik      |
++-------------+
+3 rows in set (0.01 sec)
+
+Aggregate Functions
+
+COUNT
+
+mysql> SELECT COUNT(*) AS total_customers FROM customers;
++-----------------+
+| total_customers |
++-----------------+
+|               4 |
++-----------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT COUNT(*) AS total_product FROM product;
++---------------+
+| total_product |
++---------------+
+|             9 |
++---------------+
+1 row in set (0.00 sec)
+
+SUM
+
+mysql> SELECT SUM(total_amount) AS total_sales FROM orders;
++-------------+
+| total_sales |
++-------------+
+|   106900.00 |
++-------------+
+1 row in set (0.00 sec)
+
+AVG
+
+mysql> SELECT AVG(price) AS "Average Price" FROM product;
++---------------+
+| Average Price |
++---------------+
+|  13038.888889 |
++---------------+
+1 row in set (0.00 sec)
+
+MAX
+
+mysql> SELECT MAX(price) AS "Highest Price" FROM product;
++---------------+
+| Highest Price |
++---------------+
+|      71500.00 |
++---------------+
+1 row in set (0.00 sec)
+
+MIN
+
+mysql> SELECT MIN(price) AS "Lowest Price" FROM product;
++--------------+
+| Lowest Price |
++--------------+
+|       600.00 |
++--------------+
+1 row in set (0.00 sec)
+
+GROUP BY
+
+Find number of customers in each city
+
+mysql> SELECT city, COUNT(*) AS "Total Customer"
+    -> FROM customers
+    -> GROUP BY city;
++-------------+----------------+
+| city        | Total Customer |
++-------------+----------------+
+| Ahilyanagar |              1 |
+| Pune        |              2 |
+| Nashik      |              1 |
++-------------+----------------+
+3 rows in set (0.00 sec)
+
+Find total sales by order status
+
+mysql> SELECT status, SUM(total_amount) as "Total Sales"
+    -> FROM orders
+    -> GROUP BY status;
++-----------+-------------+
+| status    | Total Sales |
++-----------+-------------+
+| Delivered |    70100.00 |
+| Pending   |    30000.00 |
+| Shipped   |     5000.00 |
+| Cancelled |     1800.00 |
++-----------+-------------+
+4 rows in set (0.00 sec)
+
+HAVING
+
+Find statuses where total sales are greater than ₹30,000
+
+mysql> SELECT status, SUM(total_amount) AS "Total Sales"
+    -> FROM orders
+    -> GROUP BY status
+    -> HAVING SUM(total_amount) > 30000;
++-----------+-------------+
+| status    | Total Sales |
++-----------+-------------+
+| Delivered |    70100.00 |
++-----------+-------------+
+1 row in set (0.00 sec)
+
+JOINS
+
+
+INNER JOIN
+
+mysql> SELECT
+    -> p.product_id,
+    -> p.product_name,
+    -> c.category_name,
+    -> p.price
+    -> FROM product p
+    -> INNER JOIN category c
+    -> ON p.category_id = c.category_id;
++------------+--------------+---------------+----------+
+| product_id | product_name | category_name | price    |
++------------+--------------+---------------+----------+
+|          6 | Java Book    | Books         |   700.00 |
+|          7 | SQL Book     | Books         |   600.00 |
+|          4 | T-Shirt      | Clothing      |   800.00 |
+|          5 | Jeans        | Clothing      |  1800.00 |
+|          1 | Laptop       | Electronics   | 71500.00 |
+|          2 | Mobile Phone | Electronics   | 33000.00 |
+|          3 | Headphones   | Electronics   |  2750.00 |
+|          8 | Office Chair | Furniture     |  5000.00 |
+|          9 | Football     | Sports        |  1200.00 |
++------------+--------------+---------------+----------+
+9 rows in set (0.00 sec)
+
+Customer + Orders
+
+mysql> SELECT
+    -> C.first_name,
+    -> c.last_name,
+    -> o.order_id,
+    -> o.order_date,
+    -> o.total_amount
+    -> FROM customers c
+    -> INNER JOIN orders o
+    -> ON c.customer_id = o.customer_id;
++------------+-----------+----------+------------+--------------+
+| first_name | last_name | order_id | order_date | total_amount |
++------------+-----------+----------+------------+--------------+
+| Omkar      | Kotkar    |        1 | 2026-08-01 |     67500.00 |
+| Omkar      | Kotkar    |        4 | 2026-08-07 |      5000.00 |
+| Rahul      | Patil     |        2 | 2026-08-03 |     30000.00 |
+| Sneha      | Sharma    |        3 | 2026-08-05 |      2600.00 |
+| Amit       | Joshi     |        5 | 2026-08-10 |      1800.00 |
++------------+-----------+----------+------------+--------------+
+5 rows in set (0.00 sec)
+
+LEFT JOIN
+
+Show all customers, even if they haven't placed an order
+
+mysql> SELECT
+    -> C.customer_id,
+    -> c.first_name,
+    -> c.last_name,
+    -> o.order_id
+    -> FROM orders o
+    -> LEFT JOIN customers c
+    -> ON c.customer_id = o.customer_id;
++-------------+------------+-----------+----------+
+| customer_id | first_name | last_name | order_id |
++-------------+------------+-----------+----------+
+|           1 | Omkar      | Kotkar    |        1 |
+|           1 | Omkar      | Kotkar    |        4 |
+|           2 | Rahul      | Patil     |        2 |
+|           3 | Sneha      | Sharma    |        3 |
+|           4 | Amit       | Joshi     |        5 |
++-------------+------------+-----------+----------+
+5 rows in set (0.01 sec)
+
+This is useful for finding customers who have never ordered.
+
+mysql> SELECT
+    -> c.customer_id,
+    -> c.first_name
+    -> FROM customers c
+    -> LEFT JOIN orders o
+    -> ON c.customer_id = o.order_id
+    -> WHERE o.order_id IS NULL;
+Empty set (0.00 sec)
+
+Multiple JOIN
+
+Customer
+   ↓
+Orders
+   ↓
+Order Item
+   ↓
+Product
+
+mysql> SELECT
+    -> c.first_name,
+    -> o.order_id,
+    -> p.product_name,
+    -> oi.quantity,
+    -> oi.price
+    -> FROM customers c
+    -> JOIN orders o
+    -> ON c.customer_id = o.customer_id
+    -> JOIN order_item oi
+    -> ON o.order_id = oi.order_id
+    -> JOIN product p
+    -> ON oi.product_id = p.product_id;
++------------+----------+--------------+----------+----------+
+| first_name | order_id | product_name | quantity | price    |
++------------+----------+--------------+----------+----------+
+| Omkar      |        1 | Laptop       |        1 | 65000.00 |
+| Omkar      |        1 | Headphones   |        1 |  2500.00 |
+| Omkar      |        4 | Office Chair |        1 |  5000.00 |
+| Rahul      |        2 | Mobile Phone |        1 | 30000.00 |
+| Sneha      |        3 | Headphones   |        1 |  2500.00 |
+| Sneha      |        3 | T-Shirt      |        1 |   100.00 |
+| Amit       |        5 | Jeans        |        1 |  1800.00 |
++------------+----------+--------------+----------+----------+
+7 rows in set (0.00 sec)
+
+SELF JOIN
+
+Our employee table contains:
+
+employee_id
+employee_name
+manager_id
+Find employees and their managers
+
+mysql> SELECT
+    ->     e.employee_name AS employee,
+    ->     m.employee_name AS manager
+    -> FROM employee e
+    -> LEFT JOIN employee m
+    -> ON e.manager_id = m.employee_id;
++-------------+-----------+
+| employee    | manager   |
++-------------+-----------+
+| Raj Mehta   | NULL      |
+| Amit Shah   | Raj Mehta |
+| Neha Patil  | Raj Mehta |
+| Vikas Joshi | Amit Shah |
++-------------+-----------+
+4 rows in set (0.01 sec)
+
+
+mysql> SELECT
+    -> e.employee_name AS employee,
+    -> m.employee_name AS manager
+    -> FROM employee e
+    -> LEFT JOIN employee m
+    -> ON e.manager_id = m.employee_id;
++-------------+-----------+
+| employee    | manager   |
++-------------+-----------+
+| Raj Mehta   | NULL      |
+| Amit Shah   | Raj Mehta |
+| Neha Patil  | Raj Mehta |
+| Vikas Joshi | Amit Shah |
++-------------+-----------+
+4 rows in set (0.00 sec)
+
+Subqueries
+
+Find products that cost more than the average product price.
+
+mysql> SELECT product_name, price
+    -> FROM product
+    -> WHERE price > (
+    -> SELECT AVG(price)
+    -> FROM product
+    -> );
++--------------+----------+
+| product_name | price    |
++--------------+----------+
+| Laptop       | 71500.00 |
+| Mobile Phone | 33000.00 |
++--------------+----------+
+2 rows in set (0.01 sec)
+
+Find the most expensive product
+
+mysql> SELECT product_name, price
+    -> FROM product
+    -> WHERE price = (
+    -> SELECT MAX(price)
+    -> FROM product
+    -> );
++--------------+----------+
+| product_name | price    |
++--------------+----------+
+| Laptop       | 71500.00 |
++--------------+----------+
+1 row in set (0.00 sec)
+
+EXISTS
+
+Find customers who have placed at least one order
+
+mysql> SELECT *
+    -> FROM customers c
+    -> WHERE EXISTS (
+    -> SELECT 1
+    -> FROM orders o
+    -> WHERE o.customer_id = c.customer_id
+    -> );
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+| customer_id | first_name | last_name | email           | mobile_number | city        | registration_date |
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+|           1 | Omkar      | Kotkar    | omkar@gmail.com | 9876543210    | Ahilyanagar | 2026-08-16        |
+|           2 | Rahul      | Patil     | rahul@gmail.com | 9876543211    | Pune        | 2026-08-16        |
+|           3 | Sneha      | Sharma    | sneha@gmail.com | 9876543212    | Pune        | 2026-08-16        |
+|           4 | Amit       | Joshi     | amit@gmail.com  | 9876543213    | Nashik      | 2026-08-16        |
++-------------+------------+-----------+-----------------+---------------+-------------+-------------------+
+4 rows in set (0.01 sec)
+
+NOT EXISTS
+
+Find customers who never placed an order:
+ysql> SELECT *
+    -> FROM customers c
+    -> WHERE NOT EXISTS (
+    -> SELECT 1
+    -> FROM orders o
+    -> WHERE o.customer_id = c.customer_id
+    -> );
+Empty set (0.00 sec)
+
+CASE
+
+Create an order priority/category.
+
+mysql> SELECT
+    -> order_id,
+    -> total_amount,
+    -> CASE
+    -> WHEN total_amount >= 50000 THEN 'High Value'
+    -> WHEN total_amount >= 10000 THEN 'Medium Value'
+    -> ELSE 'Low Value'
+    -> END AS order_category
+    -> FROM orders;
++----------+--------------+----------------+
+| order_id | total_amount | order_category |
++----------+--------------+----------------+
+|        1 |     67500.00 | High Value     |
+|        2 |     30000.00 | Medium Value   |
+|        3 |      2600.00 | Low Value      |
+|        4 |      5000.00 | Low Value      |
+|        5 |      1800.00 | Low Value      |
++----------+--------------+----------------+
+5 rows in set (0.01 sec)
+
+String Functions
+
+mysql> SELECT UPPER(first_name)
+    -> FROM customers;
++-------------------+
+| UPPER(first_name) |
++-------------------+
+| OMKAR             |
+| RAHUL             |
+| SNEHA             |
+| AMIT              |
++-------------------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT LOWER(first_name)
+    -> FROM customers;
++-------------------+
+| LOWER(first_name) |
++-------------------+
+| omkar             |
+| rahul             |
+| sneha             |
+| amit              |
++-------------------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT CONCAT(first_name, ' ', last_name) AS full_name
+    -> FROM customers;
++--------------+
+| full_name    |
++--------------+
+| Omkar Kotkar |
+| Rahul Patil  |
+| Sneha Sharma |
+| Amit Joshi   |
++--------------+
+4 rows in set (0.01 sec)
+
+Product name length:
+
+mysql> SELECT
+    -> product_name,
+    -> LENGTH(product_name) AS name_length
+    -> FROM product;
++--------------+-------------+
+| product_name | name_length |
++--------------+-------------+
+| Laptop       |           6 |
+| Mobile Phone |          12 |
+| Headphones   |          10 |
+| T-Shirt      |           7 |
+| Jeans        |           5 |
+| Java Book    |           9 |
+| SQL Book     |           8 |
+| Office Chair |          12 |
+| Football     |           8 |
++--------------+-------------+
+9 rows in set (0.00 sec)
+
+Date Functions
+
+Orders from August:
+
+mysql> SELECT *
+    -> FROM orders
+    -> WHERE MONTH(order_date) = 8;
++----------+-------------+------------+-----------+--------------+
+| order_id | customer_id | order_date | status    | total_amount |
++----------+-------------+------------+-----------+--------------+
+|        1 |           1 | 2026-08-01 | Delivered |     67500.00 |
+|        2 |           2 | 2026-08-03 | Pending   |     30000.00 |
+|        3 |           3 | 2026-08-05 | Delivered |      2600.00 |
+|        4 |           1 | 2026-08-07 | Shipped   |      5000.00 |
+|        5 |           4 | 2026-08-10 | Cancelled |      1800.00 |
++----------+-------------+------------+-----------+--------------+
+5 rows in set (0.01 sec)
+
+Extract year
+
+mysql> SELECT
+    -> order_id,
+    -> YEAR(order_date) AS 'Order Year'
+    -> FROM orders;
++----------+------------+
+| order_id | Order Year |
++----------+------------+
+|        1 |       2026 |
+|        2 |       2026 |
+|        3 |       2026 |
+|        4 |       2026 |
+|        5 |       2026 |
++----------+------------+
+5 rows in set (0.01 sec)
+
+Extract Month
+
+mysql> SELECT
+    -> order_id,
+    -> MONTH(order_date) AS 'Order Month'
+    -> FROM orders;
++----------+-------------+
+| order_id | Order Month |
++----------+-------------+
+|        1 |           8 |
+|        2 |           8 |
+|        3 |           8 |
+|        4 |           8 |
+|        5 |           8 |
++----------+-------------+
+5 rows in set (0.00 sec)
+
+TCL
+
+The main commands are:
+
+COMMIT
+ROLLBACK
+SAVEPOINT
+ROLLBACK TO SAVEPOINT
+
+COMMIT
+
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> UPDATE product
+    -> SET stock = stock - 1
+    -> WHERE product_id = 1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM product;
++------------+--------------+-------------+----------+-------+---------+
+| product_id | product_name | category_id | price    | stock | brand   |
++------------+--------------+-------------+----------+-------+---------+
+|          1 | Laptop       |           1 | 71500.00 |     9 | Dell    |
+|          2 | Mobile Phone |           1 | 33000.00 |    20 | Samsung |
+|          3 | Headphones   |           1 |  2750.00 |    50 | Sony    |
+|          4 | T-Shirt      |           2 |   800.00 |   100 | Puma    |
+|          5 | Jeans        |           2 |  1800.00 |    60 | Levis   |
+|          6 | Java Book    |           3 |   700.00 |    50 | Pearson |
+|          7 | SQL Book     |           3 |   600.00 |    25 | McGraw  |
+|          8 | Office Chair |           4 |  5000.00 |    15 | Godrej  |
+|          9 | Football     |           5 |  1200.00 |    40 | Nivia   |
++------------+--------------+-------------+----------+-------+---------+
+9 rows in set (0.00 sec)
+
+mysql> COMMIT;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM product;
++------------+--------------+-------------+----------+-------+---------+
+| product_id | product_name | category_id | price    | stock | brand   |
++------------+--------------+-------------+----------+-------+---------+
+|          1 | Laptop       |           1 | 71500.00 |     9 | Dell    |
+|          2 | Mobile Phone |           1 | 33000.00 |    20 | Samsung |
+|          3 | Headphones   |           1 |  2750.00 |    50 | Sony    |
+|          4 | T-Shirt      |           2 |   800.00 |   100 | Puma    |
+|          5 | Jeans        |           2 |  1800.00 |    60 | Levis   |
+|          6 | Java Book    |           3 |   700.00 |    50 | Pearson |
+|          7 | SQL Book     |           3 |   600.00 |    25 | McGraw  |
+|          8 | Office Chair |           4 |  5000.00 |    15 | Godrej  |
+|          9 | Football     |           5 |  1200.00 |    40 | Nivia   |
++------------+--------------+-------------+----------+-------+---------+
+9 rows in set (0.00 sec)
+
+ROLLBACK
+
+mysql> UPDATE product
+    -> SET price = 100
+    -> WHERE product_id = 1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM product;
++------------+--------------+-------------+----------+-------+---------+
+| product_id | product_name | category_id | price    | stock | brand   |
++------------+--------------+-------------+----------+-------+---------+
+|          1 | Laptop       |           1 |   100.00 |     9 | Dell    |
+|          2 | Mobile Phone |           1 | 33000.00 |    20 | Samsung |
+|          3 | Headphones   |           1 |  2750.00 |    50 | Sony    |
+|          4 | T-Shirt      |           2 |   800.00 |   100 | Puma    |
+|          5 | Jeans        |           2 |  1800.00 |    60 | Levis   |
+|          6 | Java Book    |           3 |   700.00 |    50 | Pearson |
+|          7 | SQL Book     |           3 |   600.00 |    25 | McGraw  |
+|          8 | Office Chair |           4 |  5000.00 |    15 | Godrej  |
+|          9 | Football     |           5 |  1200.00 |    40 | Nivia   |
++------------+--------------+-------------+----------+-------+---------+
+9 rows in set (0.00 sec)
+
+mysql> ROLLBACK;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM product;
++------------+--------------+-------------+----------+-------+---------+
+| product_id | product_name | category_id | price    | stock | brand   |
++------------+--------------+-------------+----------+-------+---------+
+|          1 | Laptop       |           1 | 71500.00 |     9 | Dell    |
+|          2 | Mobile Phone |           1 | 33000.00 |    20 | Samsung |
+|          3 | Headphones   |           1 |  2750.00 |    50 | Sony    |
+|          4 | T-Shirt      |           2 |   800.00 |   100 | Puma    |
+|          5 | Jeans        |           2 |  1800.00 |    60 | Levis   |
+|          6 | Java Book    |           3 |   700.00 |    50 | Pearson |
+|          7 | SQL Book     |           3 |   600.00 |    25 | McGraw  |
+|          8 | Office Chair |           4 |  5000.00 |    15 | Godrej  |
+|          9 | Football     |           5 |  1200.00 |    40 | Nivia   |
++------------+--------------+-------------+----------+-------+---------+
+9 rows in set (0.00 sec)
+
+SAVEPOINT
+
+This is extremely useful for revision.
+
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> UPDATE product
+    -> SET price = price + 500
+    -> WHERE product_id = 1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM product;
++------------+--------------+-------------+----------+-------+---------+
+| product_id | product_name | category_id | price    | stock | brand   |
++------------+--------------+-------------+----------+-------+---------+
+|          1 | Laptop       |           1 | 72000.00 |     9 | Dell    |
+|          2 | Mobile Phone |           1 | 33000.00 |    20 | Samsung |
+|          3 | Headphones   |           1 |  2750.00 |    50 | Sony    |
+|          4 | T-Shirt      |           2 |   800.00 |   100 | Puma    |
+|          5 | Jeans        |           2 |  1800.00 |    60 | Levis   |
+|          6 | Java Book    |           3 |   700.00 |    50 | Pearson |
+|          7 | SQL Book     |           3 |   600.00 |    25 | McGraw  |
+|          8 | Office Chair |           4 |  5000.00 |    15 | Godrej  |
+|          9 | Football     |           5 |  1200.00 |    40 | Nivia   |
++------------+--------------+-------------+----------+-------+---------+
+9 rows in set (0.00 sec)
+
+mysql> SAVEPOINT price_update;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM product;
++------------+--------------+-------------+----------+-------+---------+
+| product_id | product_name | category_id | price    | stock | brand   |
++------------+--------------+-------------+----------+-------+---------+
+|          1 | Laptop       |           1 | 72000.00 |     9 | Dell    |
+|          2 | Mobile Phone |           1 | 33000.00 |    20 | Samsung |
+|          3 | Headphones   |           1 |  2750.00 |    50 | Sony    |
+|          4 | T-Shirt      |           2 |   800.00 |   100 | Puma    |
+|          5 | Jeans        |           2 |  1800.00 |    60 | Levis   |
+|          6 | Java Book    |           3 |   700.00 |    50 | Pearson |
+|          7 | SQL Book     |           3 |   600.00 |    25 | McGraw  |
+|          8 | Office Chair |           4 |  5000.00 |    15 | Godrej  |
+|          9 | Football     |           5 |  1200.00 |    40 | Nivia   |
++------------+--------------+-------------+----------+-------+---------+
+9 rows in set (0.00 sec)
+
+mysql> UPDATE product
+    -> SET stock = stock - 2
+    -> WHERE product_id = 1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM product;
++------------+--------------+-------------+----------+-------+---------+
+| product_id | product_name | category_id | price    | stock | brand   |
++------------+--------------+-------------+----------+-------+---------+
+|          1 | Laptop       |           1 | 72000.00 |     7 | Dell    |
+|          2 | Mobile Phone |           1 | 33000.00 |    20 | Samsung |
+|          3 | Headphones   |           1 |  2750.00 |    50 | Sony    |
+|          4 | T-Shirt      |           2 |   800.00 |   100 | Puma    |
+|          5 | Jeans        |           2 |  1800.00 |    60 | Levis   |
+|          6 | Java Book    |           3 |   700.00 |    50 | Pearson |
+|          7 | SQL Book     |           3 |   600.00 |    25 | McGraw  |
+|          8 | Office Chair |           4 |  5000.00 |    15 | Godrej  |
+|          9 | Football     |           5 |  1200.00 |    40 | Nivia   |
++------------+--------------+-------------+----------+-------+---------+
+9 rows in set (0.00 sec)
+
+mysql> ROLLBACK TO price_update;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM product;
++------------+--------------+-------------+----------+-------+---------+
+| product_id | product_name | category_id | price    | stock | brand   |
++------------+--------------+-------------+----------+-------+---------+
+|          1 | Laptop       |           1 | 72000.00 |     9 | Dell    |
+|          2 | Mobile Phone |           1 | 33000.00 |    20 | Samsung |
+|          3 | Headphones   |           1 |  2750.00 |    50 | Sony    |
+|          4 | T-Shirt      |           2 |   800.00 |   100 | Puma    |
+|          5 | Jeans        |           2 |  1800.00 |    60 | Levis   |
+|          6 | Java Book    |           3 |   700.00 |    50 | Pearson |
+|          7 | SQL Book     |           3 |   600.00 |    25 | McGraw  |
+|          8 | Office Chair |           4 |  5000.00 |    15 | Godrej  |
+|          9 | Football     |           5 |  1200.00 |    40 | Nivia   |
++------------+--------------+-------------+----------+-------+---------+
+9 rows in set (0.00 sec)
+
+mysql>
+mysql> COMMIT;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM product;
++------------+--------------+-------------+----------+-------+---------+
+| product_id | product_name | category_id | price    | stock | brand   |
++------------+--------------+-------------+----------+-------+---------+
+|          1 | Laptop       |           1 | 72000.00 |     9 | Dell    |
+|          2 | Mobile Phone |           1 | 33000.00 |    20 | Samsung |
+|          3 | Headphones   |           1 |  2750.00 |    50 | Sony    |
+|          4 | T-Shirt      |           2 |   800.00 |   100 | Puma    |
+|          5 | Jeans        |           2 |  1800.00 |    60 | Levis   |
+|          6 | Java Book    |           3 |   700.00 |    50 | Pearson |
+|          7 | SQL Book     |           3 |   600.00 |    25 | McGraw  |
+|          8 | Office Chair |           4 |  5000.00 |    15 | Godrej  |
+|          9 | Football     |           5 |  1200.00 |    40 | Nivia   |
++------------+--------------+-------------+----------+-------+---------+
+9 rows in set (0.00 sec)
+
+DCL
+
+DCL means Data Control Language.
+
+Main commands:
+
+GRANT
+REVOKE
+
+First create a database user
+
+mysql> CREATE USER 'shop_user'@'localhost'
+    -> IDENTIFIED BY 'Shop@123';
+Query OK, 0 rows affected (0.04 sec)
+
+Give SELECT permission
+
+mysql> GRANT SELECT
+    -> ON ecommerce_db.*
+    -> TO 'shop_user'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+Give SELECT and INSERT
+
+mysql> GRANT SELECT, INSERT
+    -> ON ecommerce_db.*
+    -> TO 'shop_user'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+Check permissions
+
+
+mysql> SHOW GRANTS FOR 'shop_user'@'localhost';
++---------------------------------------------------------------------+
+| Grants for shop_user@localhost                                      |
++---------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `shop_user`@`localhost`                       |
+| GRANT SELECT, INSERT ON `ecommerce_db`.* TO `shop_user`@`localhost` |
++---------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+Remove INSERT permission
+
+
+mysql> REVOKE INSERT
+    -> ON ecommerce_db.*
+    -> FROM 'shop_user'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SHOW GRANTS FOR 'shop_user'@'localhost';
++-------------------------------------------------------------+
+| Grants for shop_user@localhost                              |
++-------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `shop_user`@`localhost`               |
+| GRANT SELECT ON `ecommerce_db`.* TO `shop_user`@`localhost` |
++-------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+VIEW
+
+A view is a virtual table based on a query.
+
+Create a customer-order view
+
+mysql> CREATE VIEW customer_order_view AS
+    -> SELECT
+    -> c.customer_id,
+    -> CONCAT(c.first_name, ' ', c.last_name) AS "Customer Name",
+    -> o.order_id,
+    -> o.order_date,
+    -> o.status,
+    -> o.total_amount
+    -> FROM customers c
+    -> JOIN orders o
+    -> ON c.customer_id = o.customer_id;
+Query OK, 0 rows affected (0.02 sec)
+
+Use it:
+
+mysql> SELECT * FROM customer_order_view;
++-------------+---------------+----------+------------+-----------+--------------+
+| customer_id | Customer Name | order_id | order_date | status    | total_amount |
++-------------+---------------+----------+------------+-----------+--------------+
+|           1 | Omkar Kotkar  |        1 | 2026-08-01 | Delivered |     67500.00 |
+|           1 | Omkar Kotkar  |        4 | 2026-08-07 | Shipped   |      5000.00 |
+|           2 | Rahul Patil   |        2 | 2026-08-03 | Pending   |     30000.00 |
+|           3 | Sneha Sharma  |        3 | 2026-08-05 | Delivered |      2600.00 |
+|           4 | Amit Joshi    |        5 | 2026-08-10 | Cancelled |      1800.00 |
++-------------+---------------+----------+------------+-----------+--------------+
+5 rows in set (0.01 sec)
+
+Drop it:
+
+mysql> DROP VIEW customer_order_view;
+Query OK, 0 rows affected (0.01 sec)
+
+Stored Procedure
+
+Create a procedure to find products by category.
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE GetProductByCategory(IN cat_id INT)
+    -> BEGIN
+    -> SELECT
+    -> product_id,
+    -> product_name,
+    -> price,
+    -> stock
+    -> FROM product
+    -> WHERE category_id = cat_id;
+    -> END //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELIMITER ;
+mysql> CALL GetProductByCategory(1);
++------------+--------------+----------+-------+
+| product_id | product_name | price    | stock |
++------------+--------------+----------+-------+
+|          1 | Laptop       | 72000.00 |     9 |
+|          2 | Mobile Phone | 33000.00 |    20 |
+|          3 | Headphones   |  2750.00 |    50 |
++------------+--------------+----------+-------+
+3 rows in set (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
