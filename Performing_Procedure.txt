@@ -1,0 +1,232 @@
+mysql> show databases;
++--------------------------------+
+| Database                       |
++--------------------------------+
+| billing                        |
+| company                        |
+| e_commercedb                   |
+| information_schema             |
+| library_database               |
+| mysql                          |
+| mysql_practice_and_training    |
+| online_examdb                  |
+| perform_join_comp_assignment   |
+| perform_subquery               |
+| performance_schema             |
+| practice                       |
+| practice_aggregate_function    |
+| praticing_all_queries_commands |
+| sql_machine_test_1             |
+| sys                            |
+| team                           |
++--------------------------------+
+17 rows in set (0.19 sec)
+
+mysql> create database CollegeDB;
+Query OK, 1 row affected (0.06 sec)
+
+mysql> use CollegeDB;
+Database changed
+mysql> create table Student(id int primary key, name varchar(100), marks int, city varchar(100));
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> desc student;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| id    | int          | NO   | PRI | NULL    |       |
+| name  | varchar(100) | YES  |     | NULL    |       |
+| marks | int          | YES  |     | NULL    |       |
+| city  | varchar(100) | YES  |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+4 rows in set (0.03 sec)
+
+mysql> Insert into student values(1,"Amit", 85, "Nagpur");
+Query OK, 1 row affected (0.03 sec)
+
+mysql> Insert into student values(2,"Rahul", 60, "Pune"), (3,"Sneha", 90, "Mumbai"), (4,"Priya", 70, "Ahilyanagar"), (5,"Karan", 50, "Delhi"), (6,"Pria", 60, "Nagpur");
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++----+-------+-------+-------------+
+| id | name  | marks | city        |
++----+-------+-------+-------------+
+|  1 | Amit  |    85 | Nagpur      |
+|  2 | Rahul |    60 | Pune        |
+|  3 | Sneha |    90 | Mumbai      |
+|  4 | Priya |    70 | Ahilyanagar |
+|  5 | Karan |    50 | Delhi       |
+|  6 | Pria  |    60 | Nagpur      |
++----+-------+-------+-------------+
+6 rows in set (0.00 sec)
+
+mysql> Delimiter //
+mysql> create procedure GetAllStud()
+    -> BEGIN
+    -> SELECT * FROM Student;
+    -> END
+    -> //
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> call GetAllStud()//
++----+-------+-------+-------------+
+| id | name  | marks | city        |
++----+-------+-------+-------------+
+|  1 | Amit  |    85 | Nagpur      |
+|  2 | Rahul |    60 | Pune        |
+|  3 | Sneha |    90 | Mumbai      |
+|  4 | Priya |    70 | Ahilyanagar |
+|  5 | Karan |    50 | Delhi       |
+|  6 | Pria  |    60 | Nagpur      |
++----+-------+-------+-------------+
+6 rows in set (0.01 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DELIMITER $$
+mysql> CREATE PROCEDURE GetTopStud()
+    -> BEGIN
+    -> SELECT * FROM student where marks > 70;
+    -> END $$
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> call gettopstud()$$
++----+-------+-------+--------+
+| id | name  | marks | city   |
++----+-------+-------+--------+
+|  1 | Amit  |    85 | Nagpur |
+|  3 | Sneha |    90 | Mumbai |
++----+-------+-------+--------+
+2 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure getstudbycity(IN city_name varchar(50))
+    -> BEGIN
+    -> SELECT * FROM student where city = city_name;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call getstudbycity('Nagpur')//
++----+------+-------+--------+
+| id | name | marks | city   |
++----+------+-------+--------+
+|  1 | Amit |    85 | Nagpur |
+|  6 | Pria |    60 | Nagpur |
++----+------+-------+--------+
+2 rows in set (0.01 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> call getstudbycity('Ahilyanagar')//
++----+-------+-------+-------------+
+| id | name  | marks | city        |
++----+-------+-------+-------------+
+|  4 | Priya |    70 | Ahilyanagar |
++----+-------+-------+-------------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure addstud(IN sid int,)
+    -> IN sname varchar(50),
+    -> IN smarks INT,
+    ->     IN scity VARCHAR(50)
+    -> )
+    -> BEGIN
+    ->     INSERT INTO Student VALUES (sid, sname, smarks, scity);
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure addStud(
+    -> IN sid int,
+    -> IN sname varchar(50),
+    -> IN smarks int,
+    -> IN scity varchar(50)
+    -> )
+    -> BEGIN
+    -> INSERT INTO Student VALUE(sid, sname, smarks, scity);
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call addStud(7, "abc", 65, "Ahilyanagar") //
+Query OK, 1 row affected (0.02 sec)
+
+mysql> call getallstud() //
++----+-------+-------+-------------+
+| id | name  | marks | city        |
++----+-------+-------+-------------+
+|  1 | Amit  |    85 | Nagpur      |
+|  2 | Rahul |    60 | Pune        |
+|  3 | Sneha |    90 | Mumbai      |
+|  4 | Priya |    70 | Ahilyanagar |
+|  5 | Karan |    50 | Delhi       |
+|  6 | Pria  |    60 | Nagpur      |
+|  7 | abc   |    65 | Ahilyanagar |
++----+-------+-------+-------------+
+7 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELIMITER //
+mysql> create procedure updateMarks(
+    -> IN sid int,
+    -> IN newMarks int
+    -> )
+    -> BEGIN
+    -> Update Student SET marks = newMarks where id = sid;
+    -> end //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call updatemarks(2, 80);
+    -> //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> call getallstud() //
++----+-------+-------+-------------+
+| id | name  | marks | city        |
++----+-------+-------+-------------+
+|  1 | Amit  |    85 | Nagpur      |
+|  2 | Rahul |    80 | Pune        |
+|  3 | Sneha |    90 | Mumbai      |
+|  4 | Priya |    70 | Ahilyanagar |
+|  5 | Karan |    50 | Delhi       |
+|  6 | Pria  |    60 | Nagpur      |
+|  7 | abc   |    65 | Ahilyanagar |
++----+-------+-------+-------------+
+7 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER //
+mysql> create procedure updateCity(
+    -> IN sid int,
+    -> IN newCity varchar(50)
+    -> )
+    -> BEGIN
+    -> update student set city = newCity where id = sid;
+    -> end //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call updateCity(1, "Pune")//
+Query OK, 1 row affected (0.01 sec)
+
+mysql> call getallstud()//
++----+-------+-------+-------------+
+| id | name  | marks | city        |
++----+-------+-------+-------------+
+|  1 | Amit  |    85 | Pune        |
+|  2 | Rahul |    80 | Pune        |
+|  3 | Sneha |    90 | Mumbai      |
+|  4 | Priya |    70 | Ahilyanagar |
+|  5 | Karan |    50 | Delhi       |
+|  6 | Pria  |    60 | Nagpur      |
+|  7 | abc   |    65 | Ahilyanagar |
++----+-------+-------+-------------+
+7 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
