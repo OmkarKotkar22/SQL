@@ -1,0 +1,387 @@
+mysql> show databases;
++--------------------------------+
+| Database                       |
++--------------------------------+
+| billing                        |
+| collegedb                      |
+| company                        |
+| e_commercedb                   |
+| information_schema             |
+| library_database               |
+| mysql                          |
+| mysql_practice_and_training    |
+| online_examdb                  |
+| perform_join_comp_assignment   |
+| perform_subquery               |
+| performance_schema             |
+| practice                       |
+| practice_aggregate_function    |
+| praticing_all_queries_commands |
+| sql_machine_test_1             |
+| sys                            |
+| team                           |
++--------------------------------+
+18 rows in set (0.00 sec)
+
+mysql> use e_commercedb;
+Database changed
+mysql> show tables;
++------------------------+
+| Tables_in_e_commercedb |
++------------------------+
+| category               |
+| customer               |
+| orderitem              |
+| orders                 |
+| payment                |
+| product                |
++------------------------+
+6 rows in set (0.00 sec)
+
+mysql> desc category;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| category_id   | int          | NO   | PRI | NULL    |       |
+| category_name | varchar(100) | YES  |     | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc customer;
++-------------------+--------------+------+-----+---------+----------------+
+| Field             | Type         | Null | Key | Default | Extra          |
++-------------------+--------------+------+-----+---------+----------------+
+| customer_id       | int          | NO   | PRI | NULL    | auto_increment |
+| customer_name     | varchar(100) | YES  |     | NULL    |                |
+| email             | varchar(100) | YES  |     | NULL    |                |
+| gender            | varchar(10)  | YES  |     | NULL    |                |
+| city              | varchar(50)  | YES  |     | NULL    |                |
+| registration_date | date         | YES  |     | NULL    |                |
++-------------------+--------------+------+-----+---------+----------------+
+6 rows in set (0.01 sec)
+
+mysql> desc orderitem;
++---------------+---------------+------+-----+---------+-------+
+| Field         | Type          | Null | Key | Default | Extra |
++---------------+---------------+------+-----+---------+-------+
+| order_item_id | int           | NO   | PRI | NULL    |       |
+| order_id      | int           | YES  | MUL | NULL    |       |
+| product_id    | int           | YES  | MUL | NULL    |       |
+| quantity      | int           | YES  |     | NULL    |       |
+| subtotal      | decimal(10,2) | YES  |     | NULL    |       |
++---------------+---------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> desc orders;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| order_id     | int           | NO   | PRI | NULL    |       |
+| customer_id  | int           | YES  | MUL | NULL    |       |
+| order_date   | date          | YES  |     | NULL    |       |
+| total_amount | decimal(10,2) | YES  |     | NULL    |       |
+| order_status | varchar(20)   | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> desc product;
++----------------+---------------+------+-----+---------+-------+
+| Field          | Type          | Null | Key | Default | Extra |
++----------------+---------------+------+-----+---------+-------+
+| product_id     | int           | NO   | PRI | NULL    |       |
+| product_name   | varchar(150)  | YES  |     | NULL    |       |
+| category_id    | int           | YES  | MUL | NULL    |       |
+| price          | decimal(10,2) | YES  |     | NULL    |       |
+| stock_quantity | int           | YES  |     | NULL    |       |
++----------------+---------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> desc payment;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| payment_id     | int         | NO   | PRI | NULL    |       |
+| order_id       | int         | YES  | MUL | NULL    |       |
+| payment_date   | date        | YES  |     | NULL    |       |
+| payment_method | varchar(50) | YES  |     | NULL    |       |
+| payment_status | varchar(20) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from category;
+Empty set (0.00 sec)
+
+mysql> select * from product;
+Empty set (0.00 sec)
+
+mysql> select * from customer;
+Empty set (0.00 sec)
+
+mysql> select * from orderitem;
+Empty set (0.00 sec)
+
+mysql> select * from orders;
+Empty set (0.00 sec)
+
+mysql> select * from payment;
+Empty set (0.00 sec)
+
+mysql> INSERT INTO category (category_id, category_name) VALUES
+    -> (1, 'Electronics'),
+    -> (2, 'Clothing'),
+    -> (3, 'Books'),
+    -> (4, 'Home Appliances');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO product (product_id, product_name, category_id, price, stock_quantity) VALUES
+    -> (101, 'Smartphone', 1, 15000, 50),
+    -> (102, 'Laptop', 1, 60000, 20),
+    -> (103, 'T-Shirt', 2, 500, 100),
+    -> (104, 'Jeans', 2, 1200, 60),
+    -> (105, 'Java Programming Book', 3, 350, 80),
+    -> (106, 'Mixer Grinder', 4, 2500, 30);
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO customer (customer_name, email, gender, city, registration_date) VALUES
+    -> ('Amit Sharma', 'amit@gmail.com', 'Male', 'Nagpur', '2026-04-01'),
+    -> ('Rahul Patil', 'rahul@gmail.com', 'Male', 'Pune', '2026-04-02'),
+    -> ('Sneha Joshi', 'sneha@gmail.com', 'Female', 'Mumbai', '2026-04-03');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO orders (order_id, customer_id, order_date, total_amount, order_status) VALUES
+    -> (201, 1, '2026-04-04', 16000, 'Delivered'),
+    -> (202, 2, '2026-04-05', 60000, 'Shipped'),
+    -> (203, 3, '2026-04-06', 1050, 'Processing');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO orderitem (order_item_id, order_id, product_id, quantity, subtotal) VALUES
+    -> (1, 201, 101, 1, 15000),
+    -> (2, 201, 103, 2, 1000),
+    -> (3, 202, 102, 1, 60000),
+    -> (4, 203, 105, 3, 1050);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO payment (payment_id, order_id, payment_date, payment_method, payment_status) VALUES
+    -> (301, 201, '2026-04-04', 'UPI', 'Completed'),
+    -> (302, 202, '2026-04-05', 'Credit Card', 'Completed'),
+    -> (303, 203, '2026-04-06', 'Cash on Delivery', 'Pending');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from category;
++-------------+-----------------+
+| category_id | category_name   |
++-------------+-----------------+
+|           1 | Electronics     |
+|           2 | Clothing        |
+|           3 | Books           |
+|           4 | Home Appliances |
++-------------+-----------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from product;
++------------+-----------------------+-------------+----------+----------------+
+| product_id | product_name          | category_id | price    | stock_quantity |
++------------+-----------------------+-------------+----------+----------------+
+|        101 | Smartphone            |           1 | 15000.00 |             50 |
+|        102 | Laptop                |           1 | 60000.00 |             20 |
+|        103 | T-Shirt               |           2 |   500.00 |            100 |
+|        104 | Jeans                 |           2 |  1200.00 |             60 |
+|        105 | Java Programming Book |           3 |   350.00 |             80 |
+|        106 | Mixer Grinder         |           4 |  2500.00 |             30 |
++------------+-----------------------+-------------+----------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from customer;
++-------------+---------------+-----------------+--------+--------+-------------------+
+| customer_id | customer_name | email           | gender | city   | registration_date |
++-------------+---------------+-----------------+--------+--------+-------------------+
+|           1 | Amit Sharma   | amit@gmail.com  | Male   | Nagpur | 2026-04-01        |
+|           2 | Rahul Patil   | rahul@gmail.com | Male   | Pune   | 2026-04-02        |
+|           3 | Sneha Joshi   | sneha@gmail.com | Female | Mumbai | 2026-04-03        |
++-------------+---------------+-----------------+--------+--------+-------------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from orderitem;
++---------------+----------+------------+----------+----------+
+| order_item_id | order_id | product_id | quantity | subtotal |
++---------------+----------+------------+----------+----------+
+|             1 |      201 |        101 |        1 | 15000.00 |
+|             2 |      201 |        103 |        2 |  1000.00 |
+|             3 |      202 |        102 |        1 | 60000.00 |
+|             4 |      203 |        105 |        3 |  1050.00 |
++---------------+----------+------------+----------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from orders;
++----------+-------------+------------+--------------+--------------+
+| order_id | customer_id | order_date | total_amount | order_status |
++----------+-------------+------------+--------------+--------------+
+|      201 |           1 | 2026-04-04 |     16000.00 | Delivered    |
+|      202 |           2 | 2026-04-05 |     60000.00 | Shipped      |
+|      203 |           3 | 2026-04-06 |      1050.00 | Processing   |
++----------+-------------+------------+--------------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from payment;
++------------+----------+--------------+------------------+----------------+
+| payment_id | order_id | payment_date | payment_method   | payment_status |
++------------+----------+--------------+------------------+----------------+
+|        301 |      201 | 2026-04-04   | UPI              | Completed      |
+|        302 |      202 | 2026-04-05   | Credit Card      | Completed      |
+|        303 |      203 | 2026-04-06   | Cash on Delivery | Pending        |
++------------+----------+--------------+------------------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> select customer_name as Name, city as City from customer;
++-------------+--------+
+| Name        | City   |
++-------------+--------+
+| Amit Sharma | Nagpur |
+| Rahul Patil | Pune   |
+| Sneha Joshi | Mumbai |
++-------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from product where price > 1000;
++------------+---------------+-------------+----------+----------------+
+| product_id | product_name  | category_id | price    | stock_quantity |
++------------+---------------+-------------+----------+----------------+
+|        101 | Smartphone    |           1 | 15000.00 |             50 |
+|        102 | Laptop        |           1 | 60000.00 |             20 |
+|        104 | Jeans         |           2 |  1200.00 |             60 |
+|        106 | Mixer Grinder |           4 |  2500.00 |             30 |
++------------+---------------+-------------+----------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> select * from orders where order_date like "2026-04-04";
++----------+-------------+------------+--------------+--------------+
+| order_id | customer_id | order_date | total_amount | order_status |
++----------+-------------+------------+--------------+--------------+
+|      201 |           1 | 2026-04-04 |     16000.00 | Delivered    |
++----------+-------------+------------+--------------+--------------+
+1 row in set (0.01 sec)
+
+mysql> select * from product where stock_quantity < 50;
++------------+---------------+-------------+----------+----------------+
+| product_id | product_name  | category_id | price    | stock_quantity |
++------------+---------------+-------------+----------+----------------+
+|        102 | Laptop        |           1 | 60000.00 |             20 |
+|        106 | Mixer Grinder |           4 |  2500.00 |             30 |
++------------+---------------+-------------+----------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from customer where city = "Mumbai";
++-------------+---------------+-----------------+--------+--------+-------------------+
+| customer_id | customer_name | email           | gender | city   | registration_date |
++-------------+---------------+-----------------+--------+--------+-------------------+
+|           3 | Sneha Joshi   | sneha@gmail.com | Female | Mumbai | 2026-04-03        |
++-------------+---------------+-----------------+--------+--------+-------------------+
+1 row in set (0.01 sec)
+
+mysql> select * from product where category_id = 1;
++------------+--------------+-------------+----------+----------------+
+| product_id | product_name | category_id | price    | stock_quantity |
++------------+--------------+-------------+----------+----------------+
+|        101 | Smartphone   |           1 | 15000.00 |             50 |
+|        102 | Laptop       |           1 | 60000.00 |             20 |
++------------+--------------+-------------+----------+----------------+
+2 rows in set (0.01 sec)
+
+mysql> select * from oders where oder_status = "Delivered";
+ERROR 1146 (42S02): Table 'e_commercedb.oders' doesn't exist
+mysql> select * from orders where oder_status = "Delivered";
+ERROR 1054 (42S22): Unknown column 'oder_status' in 'where clause'
+mysql> select * from orders where order_status = "Delivered";
++----------+-------------+------------+--------------+--------------+
+| order_id | customer_id | order_date | total_amount | order_status |
++----------+-------------+------------+--------------+--------------+
+|      201 |           1 | 2026-04-04 |     16000.00 | Delivered    |
++----------+-------------+------------+--------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> select * from customer where registration_date < "2026-04-01";
+Empty set (0.01 sec)
+
+mysql> select * from customer where registration_date > "2026-04-01";
++-------------+---------------+-----------------+--------+--------+-------------------+
+| customer_id | customer_name | email           | gender | city   | registration_date |
++-------------+---------------+-----------------+--------+--------+-------------------+
+|           2 | Rahul Patil   | rahul@gmail.com | Male   | Pune   | 2026-04-02        |
+|           3 | Sneha Joshi   | sneha@gmail.com | Female | Mumbai | 2026-04-03        |
++-------------+---------------+-----------------+--------+--------+-------------------+
+2 rows in set (0.00 sec)
+
+mysql> select c.customer_name as Customer, o.order_id from customer join orders on o.order_id = o.customer_id;
+ERROR 1054 (42S22): Unknown column 'c.customer_name' in 'field list'
+mysql> select c.customer_name as Customer, o.order_id from customer c join orders o on o.order_id = o.customer_id;
+Empty set (0.01 sec)
+
+mysql> select c.customer_name as Customer, o.order_id from customer c join orders o on o.order_id = c.customer_id;
+Empty set (0.00 sec)
+
+mysql> select c.customer_name as Customer, o.order_id, o.order_date, o.total_amount, o.order_status from customer c join orders o on c.customer_id = o.customer_id;
++-------------+----------+------------+--------------+--------------+
+| Customer    | order_id | order_date | total_amount | order_status |
++-------------+----------+------------+--------------+--------------+
+| Amit Sharma |      201 | 2026-04-04 |     16000.00 | Delivered    |
+| Rahul Patil |      202 | 2026-04-05 |     60000.00 | Shipped      |
+| Sneha Joshi |      203 | 2026-04-06 |      1050.00 | Processing   |
++-------------+----------+------------+--------------+--------------+
+3 rows in set (0.02 sec)
+
+mysql> select o.order_id as "Order Id", p.product_name as "Product Name" from orders o join orderitem oi on o.order_id = oi.order_id join product p on oi.product_id = p.product_id;
++----------+-----------------------+
+| Order Id | Product Name          |
++----------+-----------------------+
+|      201 | Smartphone            |
+|      201 | T-Shirt               |
+|      202 | Laptop                |
+|      203 | Java Programming Book |
++----------+-----------------------+
+4 rows in set (0.03 sec)
+
+mysql> select c.customer_name, p.product_name, p.stock_quantity from customer c join order o on c.customer_id = o.customer_id join orderitem oi on o.order_id = oi.order_id join product p on oi_product_id = p.product_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order o on c.customer_id = o.customer_id join orderitem oi on o.order_id = oi.or' at line 1
+mysql> select c.customer_name, p.product_name, p.stock_quantity from customer c join orders o on c.customer_id = o.customer_id join orderitem oi on o.order_id = oi.order_id join product p on oi_product_id = p.product_id;
+ERROR 1054 (42S22): Unknown column 'oi_product_id' in 'on clause'
+mysql> select c.customer_name, p.product_name, p.stock_quantity from customer c join orders o on c.customer_id = o.customer_id join orderitem oi on o.order_id = oi.order_id join product p on oi.product_id = p.product_id;
++---------------+-----------------------+----------------+
+| customer_name | product_name          | stock_quantity |
++---------------+-----------------------+----------------+
+| Amit Sharma   | Smartphone            |             50 |
+| Amit Sharma   | T-Shirt               |            100 |
+| Rahul Patil   | Laptop                |             20 |
+| Sneha Joshi   | Java Programming Book |             80 |
++---------------+-----------------------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> select c.category_name, p.product_name from customer c join product p on c.category_id = p.category_id;
+ERROR 1054 (42S22): Unknown column 'c.category_name' in 'field list'
+mysql> select c.category_name, p.product_name from category c join product p on c.category_id = p.category_id;
++-----------------+-----------------------+
+| category_name   | product_name          |
++-----------------+-----------------------+
+| Electronics     | Smartphone            |
+| Electronics     | Laptop                |
+| Clothing        | T-Shirt               |
+| Clothing        | Jeans                 |
+| Books           | Java Programming Book |
+| Home Appliances | Mixer Grinder         |
++-----------------+-----------------------+
+6 rows in set (0.01 sec)
+
+mysql> select o.order_id, o.order_date, o.total_amount, o.order_status, p.payment_method from orders o join payment p on o.order_id = p.order_id;
++----------+------------+--------------+--------------+------------------+
+| order_id | order_date | total_amount | order_status | payment_method   |
++----------+------------+--------------+--------------+------------------+
+|      201 | 2026-04-04 |     16000.00 | Delivered    | UPI              |
+|      202 | 2026-04-05 |     60000.00 | Shipped      | Credit Card      |
+|      203 | 2026-04-06 |      1050.00 | Processing   | Cash on Delivery |
++----------+------------+--------------+--------------+------------------+
+3 rows in set (0.00 sec)
