@@ -117,3 +117,285 @@ select emp_name, salary, dept_id from employee e where salary < (select max(sala
 
 -- 30. Display employees who are working on projects handled by employees earning more than 70000.
 
+
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| company_db         |
+| ecommerce_db       |
+| employee_tracker   |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+7 rows in set (0.01 sec)
+
+mysql> use company_db;
+Database changed
+mysql> SELECT * FROM employees;
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+|           1 | Rahul         | IT         |  50000 |
+|           2 | Amit          | HR         |  40000 |
+|           3 | Priya         | IT         |  60000 |
+|           4 | Sneha         | Sales      |  45000 |
+|           5 | Raj           | HR         |  55000 |
++-------------+---------------+------------+--------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT *
+    -> FROM employees
+    -> WHERE salary > (
+    -> SELECT AVG(salary)
+    -> FROM employees
+    -> );
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+|           3 | Priya         | IT         |  60000 |
+|           5 | Raj           | HR         |  55000 |
++-------------+---------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM employees
+    -> WHERE salary = (
+    -> SELECT MAX(salary)
+    -> FROM employees
+    -> );
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+|           3 | Priya         | IT         |  60000 |
++-------------+---------------+------------+--------+
+1 row in set (0.01 sec)
+
+mysql> SELECT *
+    -> FROM employees
+    -> WHERE salary > (
+    -> SELECT AVG(salary)
+    -> FROM employees
+    -> );
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+|           3 | Priya         | IT         |  60000 |
+|           5 | Raj           | HR         |  55000 |
++-------------+---------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM employees
+    -> WHERE salary < (
+    -> SELECT AVG(salary)
+    -> FROM employees
+    -> );
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+|           2 | Amit          | HR         |  40000 |
+|           4 | Sneha         | Sales      |  45000 |
++-------------+---------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM employees
+    -> WHERE department IN (
+    -> SELECT department
+    -> FROM employees
+    -> WHERE salary > 50000
+    -> );
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+|           1 | Rahul         | IT         |  50000 |
+|           2 | Amit          | HR         |  40000 |
+|           3 | Priya         | IT         |  60000 |
+|           5 | Raj           | HR         |  55000 |
++-------------+---------------+------------+--------+
+4 rows in set (0.03 sec)
+
+mysql> SELECT *
+    -> FROM employees
+    -> WHERE department NOT IN (
+    -> SELECT department
+    -> FROM employees
+    -> WHERE salary > 50000
+    -> );
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+|           4 | Sneha         | Sales      |  45000 |
++-------------+---------------+------------+--------+
+1 row in set (0.04 sec)
+
+mysql> SELECT *
+    -> FROM employees e
+    -> WHERE EXISTS (
+    -> SELECT 1
+    -> FROM employees
+    -> WHERE department = 'IT'
+    -> );
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+|           1 | Rahul         | IT         |  50000 |
+|           2 | Amit          | HR         |  40000 |
+|           3 | Priya         | IT         |  60000 |
+|           4 | Sneha         | Sales      |  45000 |
+|           5 | Raj           | HR         |  55000 |
++-------------+---------------+------------+--------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT *
+    -> FROM employees e
+    -> WHERE NOT EXISTS (
+    -> SELECT 1
+    -> FROM employees
+    -> WHERE department = 'Finance'
+    -> );
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+|           1 | Rahul         | IT         |  50000 |
+|           2 | Amit          | HR         |  40000 |
+|           3 | Priya         | IT         |  60000 |
+|           4 | Sneha         | Sales      |  45000 |
+|           5 | Raj           | HR         |  55000 |
++-------------+---------------+------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM employees
+    -> WHERE NOT EXISTS (
+    -> SELECT 1
+    -> FROM employees
+    -> WHERE department = 'Finance'
+    -> );
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+|           1 | Rahul         | IT         |  50000 |
+|           2 | Amit          | HR         |  40000 |
+|           3 | Priya         | IT         |  60000 |
+|           4 | Sneha         | Sales      |  45000 |
+|           5 | Raj           | HR         |  55000 |
++-------------+---------------+------------+--------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT *
+    -> FROM employees
+    -> WHERE salary > ANY (
+    -> SELECT salary
+    -> FROM employees
+    -> WHERE department = 'HR'
+    -> );
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+|           1 | Rahul         | IT         |  50000 |
+|           3 | Priya         | IT         |  60000 |
+|           4 | Sneha         | Sales      |  45000 |
+|           5 | Raj           | HR         |  55000 |
++-------------+---------------+------------+--------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT *
+    -> FROM employees
+    -> WHERE salary > ANY(40000, 500000) (
+    -> SELECT salary
+    -> FROM employees
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '40000, 500000) (
+SELECT salary
+FROM employees
+)' at line 3
+mysql> SELECT *
+    -> FROM employees
+    -> WHERE salary > ANY(40000) (
+    -> SELECT salary
+    -> FROM employees
+    -> WHERE department = 'HR'
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '40000) (
+SELECT salary
+FROM employees
+WHERE department = 'HR'
+)' at line 3
+mysql> SELECT *
+    -> FROM employees
+    -> WHERE salary > ANY (
+    -> ^C
+mysql> SELECT *
+    -> FROM employees
+    -> WHERE salary > ALL (
+    -> SELECT salary
+    -> FROM employees
+    -> WHERE department = 'HR'
+    -> );
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+|           3 | Priya         | IT         |  60000 |
++-------------+---------------+------------+--------+
+1 row in set (0.01 sec)
+
+mysql> SELECT department, total_salary
+    -> FROM
+    -> (SELECT department, SUM(salary) AS total_salary
+    -> FROM employees
+    -> GROUP BY department
+    -> ) AS result;
++------------+--------------+
+| department | total_salary |
++------------+--------------+
+| IT         |       110000 |
+| HR         |        95000 |
+| Sales      |        45000 |
++------------+--------------+
+3 rows in set (0.01 sec)
+
+mysql> SELECT department, total_salary
+    -> FROM
+    -> (SELECT department, SUM(salary) AS total_salary
+    -> FROM employees
+    -> GROUP BY department
+    -> );
+ERROR 1248 (42000): Every derived table must have its own alias
+mysql> SELECT
+    -> employee_name,
+    -> salary,
+    -> (SELECT AVG(salary) FROM employees) AS average_salary
+    -> FROM employees;
++---------------+--------+----------------+
+| employee_name | salary | average_salary |
++---------------+--------+----------------+
+| Rahul         |  50000 |     50000.0000 |
+| Amit          |  40000 |     50000.0000 |
+| Priya         |  60000 |     50000.0000 |
+| Sneha         |  45000 |     50000.0000 |
+| Raj           |  55000 |     50000.0000 |
++---------------+--------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM employees e
+    -> WHERE salary > (
+    ->     SELECT AVG(salary)
+    ->     FROM employees
+    ->     WHERE department = e.department
+    -> );
++-------------+---------------+------------+--------+
+| employee_id | employee_name | department | salary |
++-------------+---------------+------------+--------+
+|           3 | Priya         | IT         |  60000 |
+|           5 | Raj           | HR         |  55000 |
++-------------+---------------+------------+--------+
+2 rows in set (0.01 sec)
+
+mysql>
+
