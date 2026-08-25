@@ -293,10 +293,6 @@ mysql> select * from product where category_id = 1;
 +------------+--------------+-------------+----------+----------------+
 2 rows in set (0.01 sec)
 
-mysql> select * from oders where oder_status = "Delivered";
-ERROR 1146 (42S02): Table 'e_commercedb.oders' doesn't exist
-mysql> select * from orders where oder_status = "Delivered";
-ERROR 1054 (42S22): Unknown column 'oder_status' in 'where clause'
 mysql> select * from orders where order_status = "Delivered";
 +----------+-------------+------------+--------------+--------------+
 | order_id | customer_id | order_date | total_amount | order_status |
